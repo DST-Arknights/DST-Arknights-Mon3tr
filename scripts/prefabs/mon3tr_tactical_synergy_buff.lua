@@ -10,10 +10,10 @@ end
 
 local function ApplyEffect(inst, target, remain_time)
   if target.components.combat then
-    target.components.combat.attackspeedmodifiers:SetModifier(inst, inst.buffData.attack_speed, ATTACK_MULTIPLIER_KEY)
+    target.components.combat.attackspeedmodifiers:SetModifier(inst, inst.buffData.attack_speed_multiplier, ATTACK_MULTIPLIER_KEY)
   end
   local template = STRINGS.UI.MON3TR_TACTICAL_SYNERGY_BUFF.DESC
-  local percent = math.floor((inst.buffData.attack_speed - 1) * 100 + 0.5)
+  local percent = math.floor((inst.buffData.attack_speed_multiplier - 1) * 100 + 0.5)
   inst.components.ark_buff_icon:SetDesc(string.format(template, percent))
   inst.components.ark_buff_icon:SetRemainingTime(remain_time)
 end
@@ -78,7 +78,7 @@ local fn = function()
   inst.entity:SetCanSleep(false)
   inst:AddComponent("timer")
   inst:ListenForEvent("timerdone", OnTimerDone)
-  inst.buffData = { attack_speed = 1.1 }
+  inst.buffData = { attack_speed_multiplier = 1.1 }
   inst:AddComponent("debuff")
   inst.components.debuff:SetAttachedFn(OnAttached)
   inst.components.debuff:SetDetachedFn(OnDetached)

@@ -127,9 +127,18 @@ local function OnHitOther(inst, data)
     })
     local playerElite = inst.components.ark_elite and inst.components.ark_elite.elite or 1
     if playerElite > 1 then
-        local attack_speed = skillConfig.elites[playerElite].tactical_synergy_attack_speed
+        local eliteConfig = skillConfig.elites[playerElite] or {}
+        local passive_attack_speed_multiplier = eliteConfig.tactical_synergy_passive_attack_speed_multiplier or 1
+        local attack_speed_multiplier = passive_attack_speed_multiplier
+        if skill2:IsActivating() then
+            local skill2Config = skill2:GetLevelConfig() or {}
+            local passive_bonus_scale = skill2Config.tactical_synergy_passive_bonus_scale or 1
+            -- 被动 1.1 => 增益部分 0.1；技能二 1.5 倍放大后变为 0.15；最终倍率 1.15
+            local passive_bonus = passive_attack_speed_multiplier - 1
+            attack_speed_multiplier = 1 + passive_bonus * passive_bonus_scale
+        end
         for _, target in ipairs(chain) do
-            target:AddDebuff("mon3tr_tactical_synergy_buff", "mon3tr_tactical_synergy_buff", { attack_speed = attack_speed })
+            target:AddDebuff("mon3tr_tactical_synergy_buff", "mon3tr_tactical_synergy_buff", { attack_speed_multiplier = attack_speed_multiplier })
         end
     end
 end
