@@ -5,7 +5,7 @@ local assets =
 
 local MAX_LEN = 15
 local SEG_LEN = 2
-local LIFE_TIME = 0.3
+local LIFE_TIME = 0.2
 local BEAM_COLOUR = { 0.5, 1, 0.5 }
 
 local function CreateSegFxBase()

@@ -66,6 +66,8 @@ end
 -- This initializes for the server only. Components are added here.
 local master_postinit = function(inst)
 
+  -- inst.AnimState:AddOverrideBuild("mon3tr_attacks")
+
   -- choose which sounds this character will play
   inst.soundsname = "willow"
 

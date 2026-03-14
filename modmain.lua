@@ -4,7 +4,7 @@ GLOBAL.setmetatable(env, {
   end
 })
 
-PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_self_repair_buff", "mon3tr_tactical_synergy_buff", "mon3tr_heal_chain_fx", "mon3tr_heal_fx"}
+PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_self_repair_buff", "mon3tr_tactical_synergy_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon"}
 Assets = {
   Asset("ATLAS", "bigportraits/mon3tr.xml"),
   Asset("ATLAS", "images/saveslot_portraits/mon3tr.xml"),
@@ -44,3 +44,5 @@ local skin_modes = {
 AddModCharacter('mon3tr', 'FEMALE', skin_modes)
 local skillConfig = require "mon3tr_skill_config"
 AddSkillLevelUpRecipes('mon3tr', skillConfig.skills)
+
+modimport("modmain/SG_mon3tr")

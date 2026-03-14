@@ -21,7 +21,7 @@ local skillConfig = {
     activationMode = ARK_CONSTANTS.ACTIVATION_MODE.AUTO,
     lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[1],
     atlas = "images/ui_mon3tr_skill.xml",
-    image = "skill1.tex",
+    image = "skill1_64.tex",
     levels = { {
       activationEnergy = 5,
       maxActivationStacks = 3,
@@ -81,7 +81,7 @@ local skillConfig = {
     lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[2],
     hotkey = KEY_X,
     atlas = "images/ui_mon3tr_skill.xml",
-    image = "skill2.tex",
+    image = "skill2_64.tex",
     levels = { {
       activationEnergy = 15,
       buffDuration = 30,
@@ -152,66 +152,66 @@ local skillConfig = {
     lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[3],
     hotkey = KEY_C,
     atlas = "images/ui_mon3tr_skill.xml",
-    image = "skill3.tex",
+    image = "skill3_64.tex",
     levels = { {
-      activationEnergy = 15,
-      buffDuration = 25,
+      activationEnergy = 1, -- TODO: 15
+      buffDuration = 15, -- TODO: 25
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][1],
-      config = { healChainCount = 3, attack_damage_multiplier = 2 },
+      config = { healChainCount = 3, attack_damage_multiplier = 2, health_bonus = 5000, lose_health_per_second = 80 },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill1", 5) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][2],
-      config = { healChainCount = 3, attack_damage_multiplier = 2.2 },
+      config = { healChainCount = 3, attack_damage_multiplier = 2.2, health_bonus = 5000, lose_health_per_second = 80 },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill1", 5), Ingredient("ark_item_mtl_sl_boss1", 4), Ingredient("ark_item_mtl_sl_rush1", 4) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][3],
-      config = { healChainCount = 3, attack_damage_multiplier = 2.3 },
+      config = { healChainCount = 3, attack_damage_multiplier = 2.3, health_bonus = 5000, lose_health_per_second = 80 },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_g2", 7) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][4],
-      config = { healChainCount = 3, attack_damage_multiplier = 2.5 },
+      config = { healChainCount = 3, attack_damage_multiplier = 2.5, health_bonus = 5000, lose_health_per_second = 80  },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill1", 8), Ingredient("ark_item_mtl_sl_strg2", 4), Ingredient("ark_item_mtl_sl_ketone2", 4) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][5],
-      config = { healChainCount = 3, attack_damage_multiplier = 2.6 },
+      config = { healChainCount = 3, attack_damage_multiplier = 2.6, health_bonus = 5000, lose_health_per_second = 80 },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_strg3", 7) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
         desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][6],
-      config = { healChainCount = 3, attack_damage_multiplier = 2.7 },
+      config = { healChainCount = 3, attack_damage_multiplier = 2.7, health_bonus = 5000, lose_health_per_second = 80 },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_ccf", 5), Ingredient("ark_item_mtl_sl_rush3", 3) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][7],
-      config = { healChainCount = 3, attack_damage_multiplier = 2.8 },
+      config = { healChainCount = 3, attack_damage_multiplier = 2.8, health_bonus = 5000, lose_health_per_second = 80 },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_plcf", 4), Ingredient("ark_item_mtl_sl_iam3", 7) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][8],
-      config = { healChainCount = 3, attack_damage_multiplier = 3 },
+      config = { healChainCount = 3, attack_damage_multiplier = 3, health_bonus = 5000, lose_health_per_second = 80 },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill3", 12), Ingredient("ark_item_mtl_sl_xwb", 4), Ingredient("ark_item_mtl_sl_rma7024", 7) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][9],
-      config = { healChainCount = 3 , attack_damage_multiplier = 3.1 },
+      config = { healChainCount = 3 , attack_damage_multiplier = 3.1, health_bonus = 5000, lose_health_per_second = 80 },
       nextLevelIngredients = { Ingredient("ark_item_mtl_skill3", 15), Ingredient("ark_item_mtl_sl_oeu", 6), Ingredient("ark_item_mtl_sl_iam4", 1) }
     }, {
       activationEnergy = 15,
       buffDuration = 25,
       desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][9],
-      config = { healChainCount = 3, attack_damage_multiplier = 3.3 },
+      config = { healChainCount = 3, attack_damage_multiplier = 3.3, health_bonus = 5000, lose_health_per_second = 80 },
     }}
   } }
 }
