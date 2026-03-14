@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="b5">
     <folder id="0" name="wrath">
-        <file id="0" name="wrath/wrath-00.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="1" name="wrath/wrath-01.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="2" name="wrath/wrath-02.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="3" name="wrath/wrath-03.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="4" name="wrath/wrath-04.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="5" name="wrath/wrath-05.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="6" name="wrath/wrath-06.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="7" name="wrath/wrath-07.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="8" name="wrath/wrath-08.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="9" name="wrath/wrath-09.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="10" name="wrath/wrath-10.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="11" name="wrath/wrath-11.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="12" name="wrath/wrath-12.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="13" name="wrath/wrath-13.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="14" name="wrath/wrath-14.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="15" name="wrath/wrath-15.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="16" name="wrath/wrath-16.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="17" name="wrath/wrath-17.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
-        <file id="18" name="wrath/wrath-18.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="0" name="wrath/wrath-00.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="1" name="wrath/wrath-01.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="2" name="wrath/wrath-02.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="3" name="wrath/wrath-03.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="4" name="wrath/wrath-04.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="5" name="wrath/wrath-05.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="6" name="wrath/wrath-06.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="7" name="wrath/wrath-07.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="8" name="wrath/wrath-08.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="9" name="wrath/wrath-09.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="10" name="wrath/wrath-10.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="11" name="wrath/wrath-11.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="12" name="wrath/wrath-12.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="13" name="wrath/wrath-13.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="14" name="wrath/wrath-14.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="15" name="wrath/wrath-15.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="16" name="wrath/wrath-16.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="17" name="wrath/wrath-17.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="18" name="wrath/wrath-18.png" width="310" height="500" pivot_x="0.45" pivot_y="0.1"/>
     </folder>
     <entity id="0" name="mon3tr_wrath_fx">
         <animation id="0" name="idle" length="760">
