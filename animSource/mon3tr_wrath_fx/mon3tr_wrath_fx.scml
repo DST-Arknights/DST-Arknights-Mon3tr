@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="b5">
+    <folder id="0" name="wrath">
+        <file id="0" name="wrath/wrath-00.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="1" name="wrath/wrath-01.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="2" name="wrath/wrath-02.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="3" name="wrath/wrath-03.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="4" name="wrath/wrath-04.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="5" name="wrath/wrath-05.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="6" name="wrath/wrath-06.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="7" name="wrath/wrath-07.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="8" name="wrath/wrath-08.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="9" name="wrath/wrath-09.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="10" name="wrath/wrath-10.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="11" name="wrath/wrath-11.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="12" name="wrath/wrath-12.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="13" name="wrath/wrath-13.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="14" name="wrath/wrath-14.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="15" name="wrath/wrath-15.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="16" name="wrath/wrath-16.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="17" name="wrath/wrath-17.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+        <file id="18" name="wrath/wrath-18.png" width="248" height="400" pivot_x="0.45" pivot_y="0.1"/>
+    </folder>
+    <entity id="0" name="mon3tr_wrath_fx">
+        <animation id="0" name="idle" length="760">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="40">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+                <key id="2" time="80">
+                    <object_ref id="0" timeline="0" key="2" z_index="0"/>
+                </key>
+                <key id="3" time="120">
+                    <object_ref id="0" timeline="0" key="3" z_index="0"/>
+                </key>
+                <key id="4" time="160">
+                    <object_ref id="0" timeline="0" key="4" z_index="0"/>
+                </key>
+                <key id="5" time="200">
+                    <object_ref id="0" timeline="0" key="5" z_index="0"/>
+                </key>
+                <key id="6" time="240">
+                    <object_ref id="0" timeline="0" key="6" z_index="0"/>
+                </key>
+                <key id="7" time="280">
+                    <object_ref id="0" timeline="0" key="7" z_index="0"/>
+                </key>
+                <key id="8" time="320">
+                    <object_ref id="0" timeline="0" key="8" z_index="0"/>
+                </key>
+                <key id="9" time="360">
+                    <object_ref id="0" timeline="0" key="9" z_index="0"/>
+                </key>
+                <key id="10" time="400">
+                    <object_ref id="0" timeline="0" key="10" z_index="0"/>
+                </key>
+                <key id="11" time="440">
+                    <object_ref id="0" timeline="0" key="11" z_index="0"/>
+                </key>
+                <key id="12" time="480">
+                    <object_ref id="0" timeline="0" key="12" z_index="0"/>
+                </key>
+                <key id="13" time="520">
+                    <object_ref id="0" timeline="0" key="13" z_index="0"/>
+                </key>
+                <key id="14" time="560">
+                    <object_ref id="0" timeline="0" key="14" z_index="0"/>
+                </key>
+                <key id="15" time="600">
+                    <object_ref id="0" timeline="0" key="15" z_index="0"/>
+                </key>
+                <key id="16" time="640">
+                    <object_ref id="0" timeline="0" key="16" z_index="0"/>
+                </key>
+                <key id="17" time="680">
+                    <object_ref id="0" timeline="0" key="17" z_index="0"/>
+                </key>
+                <key id="18" time="720">
+                    <object_ref id="0" timeline="0" key="18" z_index="0"/>
+                </key>
+                <key id="19" time="760">
+                    <object_ref id="0" timeline="0" key="19" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="wrath-00">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" angle="0"/>
+                </key>
+                <key id="1" time="40" spin="0">
+                    <object folder="0" file="1" angle="0"/>
+                </key>
+                <key id="2" time="80" spin="0">
+                    <object folder="0" file="2" angle="0"/>
+                </key>
+                <key id="3" time="120" spin="0">
+                    <object folder="0" file="3" angle="0"/>
+                </key>
+                <key id="4" time="160" spin="0">
+                    <object folder="0" file="4" angle="0"/>
+                </key>
+                <key id="5" time="200" spin="0">
+                    <object folder="0" file="5" angle="0"/>
+                </key>
+                <key id="6" time="240" spin="0">
+                    <object folder="0" file="6" angle="0"/>
+                </key>
+                <key id="7" time="280" spin="0">
+                    <object folder="0" file="7" angle="0"/>
+                </key>
+                <key id="8" time="320" spin="0">
+                    <object folder="0" file="8" angle="0"/>
+                </key>
+                <key id="9" time="360" spin="0">
+                    <object folder="0" file="9" angle="0"/>
+                </key>
+                <key id="10" time="400" spin="0">
+                    <object folder="0" file="10" angle="0"/>
+                </key>
+                <key id="11" time="440" spin="0">
+                    <object folder="0" file="11" angle="0"/>
+                </key>
+                <key id="12" time="480" spin="0">
+                    <object folder="0" file="12" angle="0"/>
+                </key>
+                <key id="13" time="520" spin="0">
+                    <object folder="0" file="13" angle="0"/>
+                </key>
+                <key id="14" time="560" spin="0">
+                    <object folder="0" file="14" angle="0"/>
+                </key>
+                <key id="15" time="600" spin="0">
+                    <object folder="0" file="15" angle="0"/>
+                </key>
+                <key id="16" time="640" spin="0">
+                    <object folder="0" file="16" angle="0"/>
+                </key>
+                <key id="17" time="680" spin="0">
+                    <object folder="0" file="17" angle="0"/>
+                </key>
+                <key id="18" time="720" spin="0">
+                    <object folder="0" file="18" angle="0"/>
+                </key>
+                <key id="19" time="760" spin="0">
+                    <object folder="0" file="18" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>
