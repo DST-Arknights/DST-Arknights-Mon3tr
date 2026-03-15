@@ -223,6 +223,12 @@ AddStategraphState("wilson", State{
             inst.sg.statemem.flash = 1.3
             inst.sg:RemoveStateTag("noattack")
             inst.components.health:SetInvincible(false)
+            local targetpos = inst.sg.statemem.targetpos
+            SpawnPrefab("groundpoundring_fx").Transform:SetPosition(targetpos.x, 0, targetpos.z)
+            
+            SpawnPrefab("pine_needles_chop").Transform:SetPosition(targetpos.x, 0, targetpos.z)
+            SpawnPrefab("boss_ripple_fx").Transform:SetPosition(targetpos.x, 0, targetpos.z)
+            -- SpawnPrefab("groundpound_fx").Transform:SetPosition(targetpos.x, 0, targetpos.z)
 
             inst.SoundEmitter:PlaySound("dontstarve/movement/bodyfall_dirt")
             inst.SoundEmitter:PlaySound("dontstarve/common/deathpoof")
@@ -359,21 +365,25 @@ AddStategraphState("wilson", State{
 AddComponentPostInit("equippable", function(self)
     local _IsRestricted = self.IsRestricted
     self.IsRestricted = function (self, target)
-        local skill = target.components.ark_skill and target.components.ark_skill:GetSkill("skill3")
-        if skill and skill:IsActivating() then
-            return false
+        if self.equipslot == EQUIPSLOTS.HANDS then
+            local skill = target.components.ark_skill and target.components.ark_skill:GetSkill("skill3")
+            if skill and skill:IsActivating() then
+                return true
+            end
         end
         return _IsRestricted(self, target)
     end
 end)
 
-AddClassPostConstruct("components/equippable", function(self)
+AddClassPostConstruct("components/equippable_replica", function(self)
     local _IsRestricted = self.IsRestricted
     self.IsRestricted = function (self, target)
-        local comrep = target.replica.ark_skill
-        if comrep then
-            if comrep:IsActivating("skill3") then
-                return false
+        if self:EquipSlot() == EQUIPSLOTS.HANDS then
+            local comrep = target.replica.ark_skill
+            if comrep then
+                if comrep:IsActivating("skill3") then
+                    return true
+                end
             end
         end
         return _IsRestricted(self, target)

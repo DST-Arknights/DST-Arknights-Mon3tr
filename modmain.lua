@@ -45,4 +45,4 @@ AddModCharacter('mon3tr', 'FEMALE', skin_modes)
 local skillConfig = require "mon3tr_skill_config"
 AddSkillLevelUpRecipes('mon3tr', skillConfig.skills)
 
-modimport("modmain/SG_mon3tr")
+modimport("modmain/mon3tr")

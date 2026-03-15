@@ -17,9 +17,6 @@ local fxs = { {
   build = "mon3tr_wrath_fx",
   anim = "idle",
   loop = true,
-  fn = function(inst)
-    inst.AnimState:SetScale(1.2, 1.2, 1.2)
-  end,
 } }
 
 local fxPrefabs = {}
