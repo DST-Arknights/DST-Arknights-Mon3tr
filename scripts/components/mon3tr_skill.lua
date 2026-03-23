@@ -148,6 +148,17 @@ local function OnHitOther(inst, data)
     end
 end
 
+-- 一帧内只触发一次onhitother
+local function OnHitOtherTask(inst, data)
+    if inst._onhitother_task then
+        return
+    end
+    inst._onhitother_task = inst:DoTaskInTime(0, function()
+        inst._onhitother_task = nil
+    end)
+    OnHitOther(inst, data)
+end
+
 local function SafeMapCall(map, fnName, default, ...)
     local fn = map ~= nil and map[fnName] or nil
     if fn == nil then
@@ -319,6 +330,9 @@ local function OnSkill3ActivateEffect(inst)
             inst.components.inventory:GiveItem(item)
         end
     end
+    -- 添加武器
+    inst.components.mon3tr_skill:SetupSkill3Weapon()
+    -- 无僵直
     -- 添加愤怒特效
     inst._wrath_fx = SpawnPrefab("mon3tr_wrath_fx")
     inst._wrath_fx.entity:SetParent(inst.entity)
@@ -368,6 +382,7 @@ local function OnSkill3Deactivate(inst)
         inst._wrath_fx:Remove()
         inst._wrath_fx = nil
     end
+    inst.components.mon3tr_skill:RemoveSkill3Weapon()
      -- 同步技能状态
 end
 
@@ -478,8 +493,38 @@ function Mon3trSkill:HealChain(source, data)
     return chain
 end
 
+local attackHookedSymbol = Symbol("mon3tr_skill_attack_hooked")
+
+local function OnPlayerIdle(inst, data)
+    if data.newstate == "idle" then
+        local comp = inst.components.mon3tr_skill
+        if comp then
+            if comp.f_weapon then
+                comp.f_weapon.AnimState:PlayAnimation("f_idle", true)
+            end
+            if comp.b_weapon then
+                comp.b_weapon.AnimState:PlayAnimation("b_idle", true)
+            end
+        end
+    end
+end
+
+local function OnAttackSpeedChanged(inst, data)
+    ArkLogger:Debug("OnAttackSpeedChanged", data.speed)
+    local comp = inst.components.mon3tr_skill
+    if comp and data and data.speed then
+        if comp.f_weapon then
+            comp.f_weapon.AnimState:SetDeltaTimeMultiplier(data.speed)
+        end
+        if comp.b_weapon then
+            comp.b_weapon.AnimState:SetDeltaTimeMultiplier(data.speed)
+        end
+    end
+end
+
+
 function Mon3trSkill:RegisterSkill()
-    self.inst:ListenForEvent("onhitother", OnHitOther)
+    self.inst:ListenForEvent("onhitother", OnHitOtherTask)
     local skill1 = self.inst.components.ark_skill:GetSkill("skill1")
     skill1:SetOnActivate(OnSkill1Activate)
 
@@ -488,6 +533,21 @@ function Mon3trSkill:RegisterSkill()
     skill3:SetOnActivate(OnSkill3Activate)
     skill3:SetOnActivateEffect(OnSkill3ActivateEffect)
     skill3:SetOnDeactivate(OnSkill3Deactivate)
+    if not self.inst[attackHookedSymbol] then
+        self.inst[attackHookedSymbol] = true
+        local _CombatDoAttack = self.inst.components.combat.DoAttack
+        function self.inst.components.combat:DoAttack(targ, weapon, projectile, stimuli, instancemult, instrangeoverride, instpos)
+            _CombatDoAttack(self, targ, weapon, projectile, stimuli, instancemult, instrangeoverride, instpos)
+            if skill3:IsActivating() then
+            -- (target, range, weapon, validfn, stimuli, excludetags, onlyontarget)
+                self:DoAreaAttack(self.inst, 3, self:GetWeapon(), nil, stimuli, nil, nil)
+            end
+        end
+    end
+    -- 监听进入idle时, 有武器播放武器的idle
+    self.inst:ListenForEvent("sgstatechange", OnPlayerIdle)
+    -- attackspeedchanged, 修改武器攻速
+    self.inst:ListenForEvent("attackspeedchanged", OnAttackSpeedChanged)
 end
 
 function Mon3trSkill:ForceDeactivateSkill3()
@@ -499,10 +559,56 @@ function Mon3trSkill._force_deactivate_skill3_cb(inst)
     inst.components.mon3tr_skill:ForceDeactivateSkill3()
 end
 
+function Mon3trSkill:SetupSkill3Weapon()
+    ArkLogger:Debug("SetupSkill3Weapon")
+    if not self.f_weapon then
+        local f_weapon = SpawnPrefab("mon3tr_weapon")
+        f_weapon.entity:SetParent(self.inst.entity)
+        -- f_weapon.entity:AddFollower()
+        -- f_weapon.Follower:FollowSymbol(self.inst.GUID, "torso", 0, 0, 0, true)
+        -- f_weapon.Transform:SetFromProxy(self.inst.GUID)
+        f_weapon.Transform:SetPosition(0, 0, 0)
+        f_weapon.AnimState:SetSortOrder(1)
+        f_weapon.AnimState:PlayAnimation("f_idle", true)
+        self.f_weapon = f_weapon
+    end
+    if not self.b_weapon then
+        local b_weapon = SpawnPrefab("mon3tr_weapon")
+        b_weapon.entity:SetParent(self.inst.entity)
+        -- b_weapon.entity:AddFollower()
+        -- b_weapon.Follower:FollowSymbol(self.inst.GUID, "torso", 0, 0, 0, true)
+        -- b_weapon.Transform:SetFromProxy(self.inst.GUID)
+        b_weapon.Transform:SetPosition(0, 0, 0)
+        b_weapon.AnimState:SetSortOrder(1)
+        b_weapon.AnimState:PlayAnimation("b_idle", true)
+        self.b_weapon = b_weapon
+    end
+end
+
+function Mon3trSkill:IsSkill3Activating()
+    local skill3 = self.inst.components.ark_skill:GetSkill("skill3")
+    return skill3:IsActivating()
+end
+
+function Mon3trSkill:RemoveSkill3Weapon()
+    ArkLogger:Debug("RemoveSkill3Weapon")
+    if self.f_weapon then
+        self.f_weapon:Remove()
+        self.f_weapon = nil
+    end
+    if self.b_weapon then
+        self.b_weapon:Remove()
+        self.b_weapon = nil
+    end
+end
+
 function Mon3trSkill:OnRemoveFromEntity()
     self:RemoveConstructBeacon()
     self.inst:RemoveComponent("ark_skill")
     self.inst:RemoveEventCallback("onhitother", OnHitOther)
+    self.inst:RemoveEventCallback("sgstatechange", OnPlayerIdle)
+    self.inst:RemoveEventCallback("attackspeedchanged", OnAttackSpeedChanged)
+    self:RemoveSkill3Weapon()
 end
 
 function Mon3trSkill:OnRemoveEntity()

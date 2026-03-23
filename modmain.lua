@@ -4,7 +4,7 @@ GLOBAL.setmetatable(env, {
   end
 })
 
-PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_self_repair_buff", "mon3tr_tactical_synergy_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon"}
+PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_self_repair_buff", "mon3tr_tactical_synergy_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon", "mon3tr_weapon"}
 Assets = {
   Asset("ATLAS", "bigportraits/mon3tr.xml"),
   Asset("ATLAS", "images/saveslot_portraits/mon3tr.xml"),
@@ -17,7 +17,7 @@ Assets = {
   Asset("ATLAS", "images/names_mon3tr.xml"),
   Asset("ATLAS", "images/names_gold_mon3tr.xml"),
 }
-
+AddReplicableComponent("mon3tr_skill")
 AddMinimapAtlas("images/map_icons/mon3tr.xml")
 
 MergePOFile('languages/mon3tr_chinese_s.po', LOC.GetLocaleCode(LANGUAGE.CHINESE_S), true)
