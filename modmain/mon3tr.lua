@@ -93,7 +93,7 @@ AddStategraphPostInit("wilson", function(sg)
       -- TODO: 修改这里的动画即可
       inst.AnimState:PlayAnimation("deploytoss_lag")
       -- inst.AnimState:PushAnimation("deploytoss_pre")
-			inst.AnimState:PushAnimation("deploytoss", false)
+			inst.AnimState:PushAnimation("atk", false)
       inst.SoundEmitter:KillAllSounds()
       local comp = inst.components.mon3tr_skill
       if comp then
