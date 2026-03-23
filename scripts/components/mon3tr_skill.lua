@@ -568,7 +568,7 @@ function Mon3trSkill:SetupSkill3Weapon()
         -- f_weapon.Follower:FollowSymbol(self.inst.GUID, "torso", 0, 0, 0, true)
         -- f_weapon.Transform:SetFromProxy(self.inst.GUID)
         f_weapon.Transform:SetPosition(0, 0, 0)
-        f_weapon.AnimState:SetSortOrder(1)
+        f_weapon.AnimState:SetFinalOffset(7)
         f_weapon.AnimState:PlayAnimation("f_idle", true)
         self.f_weapon = f_weapon
     end
@@ -579,7 +579,7 @@ function Mon3trSkill:SetupSkill3Weapon()
         -- b_weapon.Follower:FollowSymbol(self.inst.GUID, "torso", 0, 0, 0, true)
         -- b_weapon.Transform:SetFromProxy(self.inst.GUID)
         b_weapon.Transform:SetPosition(0, 0, 0)
-        b_weapon.AnimState:SetSortOrder(1)
+        b_weapon.AnimState:SetFinalOffset(-1)
         b_weapon.AnimState:PlayAnimation("b_idle", true)
         self.b_weapon = b_weapon
     end
