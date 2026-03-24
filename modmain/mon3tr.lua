@@ -126,7 +126,9 @@ AddStategraphPostInit("wilson", function(sg)
   if normal_attack_fn then
     table.insert(sg.states["attack"].timeline, TimeEvent(MON3TR_SKILL3_ATTACK_FRAME, function(inst)
       if inst.components.mon3tr_skill and inst.components.mon3tr_skill:IsSkill3Activating() then
-        ArkLogger:Debug("Skill3 is activating, do skill3 attack")
+        -- 震荡波特效
+        local fx = SpawnPrefab("construct_claw_attack_shockwave_fx")
+        fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
         normal_attack_fn(inst)
       end
     end))

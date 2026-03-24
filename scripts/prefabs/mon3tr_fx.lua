@@ -17,6 +17,15 @@ local fxs = { {
   build = "mon3tr_wrath_fx",
   anim = "idle",
   loop = true,
+}, {
+  name = "construct_claw_attack_shockwave_fx",
+  bank = "fx_dock_crackleandpop",
+  build = "fx_dock_crackleandpop",
+  anim = "pop",
+  fn = function(inst)
+    -- 地面播放
+    inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround)
+  end,
 } }
 
 local fxPrefabs = {}
