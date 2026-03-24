@@ -26,4 +26,4 @@ local function fn()
   return inst
 end
 
-return Prefab("mon3tr_weapon", fn, assets)
+return Prefab("construct_claw", fn, assets)

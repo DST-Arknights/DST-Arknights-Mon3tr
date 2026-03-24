@@ -8,6 +8,22 @@ local SKILL3_APPROACH_MAX_OFFSET = 2
 local SKILL3_APPROACH_MIN_DISTANCE = 1
 local SKILL3_POSITION_SEARCH_ATTEMPTS = 12
 
+local SKILL3_LIGHT_UPDATE_INTERVAL = 0.2
+local SKILL3_LIGHT_BASE_RADIUS = 2.2
+local SKILL3_LIGHT_RADIUS_PER_LEVEL = 0.15
+local SKILL3_LIGHT_MAX_RADIUS = 3.8
+local SKILL3_LIGHT_BASE_INTENSITY = 0.95
+-- 用低falloff制造更清晰的边缘，接近手电筒光圈感
+local SKILL3_LIGHT_BASE_FALLOFF = 0.12
+local SKILL3_LIGHT_GREEN_FADE_DURATION = 60
+local SKILL3_LIGHT_RED_COLOR = { 1, 0.15, 0.15 }
+local SKILL3_LIGHT_GREEN_COLOR = { 0.2, 1, 0.25 }
+
+local SKILL3_BEACON_LIGHT_RADIUS = 1.2
+local SKILL3_BEACON_LIGHT_INTENSITY = 0.8
+local SKILL3_BEACON_LIGHT_FALLOFF = 0.1
+local SKILL3_BEACON_LIGHT_COLOR = { 1, 0.1, 0.1 }
+
 local function OnSkill1Activate(inst, data)
 end
 
@@ -145,6 +161,40 @@ local function OnHitOther(inst, data)
         for _, target in ipairs(chain) do
             target:AddDebuff("mon3tr_tactical_synergy_buff", "mon3tr_tactical_synergy_buff", { attack_speed_multiplier = attack_speed_multiplier })
         end
+    end
+end
+
+local function GetSkill3LifestealAmount(inst, data)
+    if data == nil then
+        return 0
+    end
+
+    local damage = data.damage or data.damageresolved or data.finaldamage
+    if damage == nil and inst.components.combat ~= nil then
+        damage = inst.components.combat.defaultdamage
+    end
+
+    return math.max(0, damage or 0)
+end
+
+local function OnHitOtherSkill3Lifesteal(inst, data)
+    local skillComp = inst.components.mon3tr_skill
+    if skillComp == nil or not skillComp:IsSkill3Activating() then
+        return
+    end
+    if data == nil or data.target == nil or not data.target:IsValid() then
+        return
+    end
+    if data.target.components ~= nil and data.target.components.health ~= nil and data.target.components.health:IsDead() then
+        return
+    end
+    if inst.components.health == nil or inst.components.health:IsDead() then
+        return
+    end
+
+    local lifesteal = GetSkill3LifestealAmount(inst, data)
+    if lifesteal > 0 then
+        inst.components.health:DoDelta(lifesteal)
     end
 end
 
@@ -323,6 +373,7 @@ local function OnSkill3ActivateEffect(inst)
         -- 添加minhealth监听, 强制结束技能
         inst:ListenForEvent("minhealth", inst.components.mon3tr_skill._force_deactivate_skill3_cb)
     end
+    inst.components.mon3tr_skill:StartSkill3RedLight()
     -- 卸载手持装备
     if inst.components.inventory then
         local item = inst.components.inventory:Unequip(EQUIPSLOTS.HANDS)
@@ -382,6 +433,7 @@ local function OnSkill3Deactivate(inst)
         inst._wrath_fx:Remove()
         inst._wrath_fx = nil
     end
+    inst.components.mon3tr_skill:StartSkill3GreenFade()
     inst.components.mon3tr_skill:RemoveSkill3Weapon()
      -- 同步技能状态
 end
@@ -390,12 +442,158 @@ local Mon3trSkill = Class(function(self, inst)
     self.inst = inst
     self.healRateMultiplier = 0.75
     self.construct_beacon = nil
+    self.skill3_light_state = "off"
+    self.skill3_light_intensity = 0
+    self.skill3_light_fade_end_time = nil
+    self.skill3_light_fade_duration = SKILL3_LIGHT_GREEN_FADE_DURATION
+    self.skill3_light_params = nil
+    self.skill3_light_task = nil
+    inst.entity:AddLight()
+    inst.Light:Enable(false)
     inst:AddComponent("ark_skill")
     for _, skill in ipairs(skillConfig.skills) do
         inst.components.ark_skill:RegisterSkill(skill)
     end
     self:RegisterSkill()
 end)
+
+function Mon3trSkill:GetSkill3LightParams()
+    local skill3 = self.inst.components.ark_skill ~= nil and self.inst.components.ark_skill:GetSkill("skill3") or nil
+    local levelConfig = skill3 ~= nil and skill3:GetLevelConfig() or {}
+    local level = 1
+    if skill3 ~= nil and skill3.GetLevel ~= nil then
+        level = skill3:GetLevel() or 1
+    end
+
+    local radiusByLevel = SKILL3_LIGHT_BASE_RADIUS + math.max(0, level - 1) * SKILL3_LIGHT_RADIUS_PER_LEVEL
+    return {
+        radius = math.min(levelConfig.skill3_light_radius or radiusByLevel, SKILL3_LIGHT_MAX_RADIUS),
+        falloff = levelConfig.skill3_light_falloff or SKILL3_LIGHT_BASE_FALLOFF,
+        intensity = levelConfig.skill3_light_intensity or SKILL3_LIGHT_BASE_INTENSITY,
+        greenFadeDuration = levelConfig.skill3_light_green_fade_duration or SKILL3_LIGHT_GREEN_FADE_DURATION,
+    }
+end
+
+function Mon3trSkill:CancelSkill3LightTask()
+    if self.skill3_light_task ~= nil then
+        self.skill3_light_task:Cancel()
+        self.skill3_light_task = nil
+    end
+end
+
+function Mon3trSkill:ApplySkill3Light(color)
+    if self.skill3_light_state == "off" or self.skill3_light_intensity <= 0 then
+        self.inst.Light:Enable(false)
+        return
+    end
+
+    local params = self.skill3_light_params or self:GetSkill3LightParams()
+    self.skill3_light_params = params
+    self.inst.Light:Enable(true)
+    self.inst.Light:SetRadius(params.radius)
+    self.inst.Light:SetFalloff(params.falloff)
+    self.inst.Light:SetIntensity(params.intensity * self.skill3_light_intensity)
+    if color ~= nil then
+        self.inst.Light:SetColour(color[1], color[2], color[3])
+    end
+end
+
+function Mon3trSkill:StartSkill3RedLight()
+    self:CancelSkill3LightTask()
+    self.skill3_light_params = self:GetSkill3LightParams()
+    self.skill3_light_state = "red"
+    self.skill3_light_intensity = 1
+    self.skill3_light_fade_end_time = nil
+    self.skill3_light_fade_duration = self.skill3_light_params.greenFadeDuration
+    self:ApplySkill3Light(SKILL3_LIGHT_RED_COLOR)
+end
+
+function Mon3trSkill:StartSkill3GreenFade(remaining, initialIntensity, fadeDuration)
+    self:CancelSkill3LightTask()
+
+    self.skill3_light_params = self:GetSkill3LightParams()
+    local duration = fadeDuration or self.skill3_light_params.greenFadeDuration or SKILL3_LIGHT_GREEN_FADE_DURATION
+    local remain = remaining or duration
+    if remain <= 0 or duration <= 0 then
+        self:StopSkill3Light()
+        return
+    end
+
+    self.skill3_light_state = "green_fade"
+    self.skill3_light_intensity = math.max(0, math.min(1, initialIntensity or 1))
+    self.skill3_light_fade_duration = duration
+    self.skill3_light_fade_end_time = GetTime() + remain
+    self:ApplySkill3Light(SKILL3_LIGHT_GREEN_COLOR)
+
+    self.skill3_light_task = self.inst:DoPeriodicTask(SKILL3_LIGHT_UPDATE_INTERVAL, function()
+        if self.skill3_light_fade_end_time == nil then
+            self:StopSkill3Light()
+            return
+        end
+
+        local left = self.skill3_light_fade_end_time - GetTime()
+        if left <= 0 then
+            self:StopSkill3Light()
+            return
+        end
+
+        local total = math.max(0.001, self.skill3_light_fade_duration or SKILL3_LIGHT_GREEN_FADE_DURATION)
+        self.skill3_light_intensity = math.max(0, math.min(1, left / total))
+        self:ApplySkill3Light(SKILL3_LIGHT_GREEN_COLOR)
+    end)
+end
+
+function Mon3trSkill:StopSkill3Light()
+    self:CancelSkill3LightTask()
+    self.skill3_light_state = "off"
+    self.skill3_light_intensity = 0
+    self.skill3_light_fade_end_time = nil
+    self.inst.Light:Enable(false)
+end
+
+function Mon3trSkill:GetSkill3LightSaveData()
+    local data = {
+        state = self.skill3_light_state,
+        intensity = self.skill3_light_intensity,
+        fade_duration = self.skill3_light_fade_duration,
+    }
+    if self.skill3_light_state == "green_fade" and self.skill3_light_fade_end_time ~= nil then
+        data.fade_remaining = math.max(0, self.skill3_light_fade_end_time - GetTime())
+    end
+    return data
+end
+
+function Mon3trSkill:LoadSkill3LightData(data)
+    if data == nil then
+        self:StopSkill3Light()
+        return
+    end
+
+    local intensity = math.max(0, math.min(1, data.intensity or 0))
+    if data.state == "red" then
+        self:StartSkill3RedLight()
+        self.skill3_light_intensity = intensity > 0 and intensity or 1
+        self:ApplySkill3Light(SKILL3_LIGHT_RED_COLOR)
+        return
+    end
+    if data.state == "green_fade" then
+        self:StartSkill3GreenFade(data.fade_remaining, intensity, data.fade_duration)
+        return
+    end
+    self:StopSkill3Light()
+end
+
+function Mon3trSkill:SetupBeaconRedLight(beacon)
+    if beacon == nil or not beacon:IsValid() then
+        return
+    end
+    beacon.entity:AddLight()
+    beacon.Light:Enable(true)
+    beacon.Light:SetRadius(SKILL3_BEACON_LIGHT_RADIUS)
+    beacon.Light:SetIntensity(SKILL3_BEACON_LIGHT_INTENSITY)
+    beacon.Light:SetFalloff(SKILL3_BEACON_LIGHT_FALLOFF)
+    beacon.Light:SetColour(SKILL3_BEACON_LIGHT_COLOR[1], SKILL3_BEACON_LIGHT_COLOR[2], SKILL3_BEACON_LIGHT_COLOR[3])
+end
 
 function Mon3trSkill:RemoveConstructBeacon()
     local beacon = self.construct_beacon
@@ -410,6 +608,7 @@ function Mon3trSkill:SpawnConstructBeaconAt(x, y, z)
 
     local beacon = SpawnPrefab("construct_beacon")
     beacon.Transform:SetPosition(x, y or 0, z)
+    self:SetupBeaconRedLight(beacon)
     self.construct_beacon = beacon
     beacon:ListenForEvent("onremove", function()
         if self.construct_beacon == beacon then
@@ -422,6 +621,7 @@ end
 
 function Mon3trSkill:OnSave()
     local data = {}
+    data.skill3_light = self:GetSkill3LightSaveData()
     local beacon = self.construct_beacon
     if beacon ~= nil then
         local x, y, z = beacon.Transform:GetWorldPosition()
@@ -435,6 +635,7 @@ function Mon3trSkill:OnSave()
 end
 
 function Mon3trSkill:OnLoad(data)
+    self:LoadSkill3LightData(data and data.skill3_light or nil)
     if data and data.construct_beacon then
         local beaconData = data.construct_beacon
         self:SpawnConstructBeaconAt(beaconData.x, beaconData.y, beaconData.z)
@@ -525,6 +726,7 @@ end
 
 function Mon3trSkill:RegisterSkill()
     self.inst:ListenForEvent("onhitother", OnHitOtherTask)
+    self.inst:ListenForEvent("onhitother", OnHitOtherSkill3Lifesteal)
     local skill1 = self.inst.components.ark_skill:GetSkill("skill1")
     skill1:SetOnActivate(OnSkill1Activate)
 
@@ -562,7 +764,7 @@ end
 function Mon3trSkill:SetupSkill3Weapon()
     ArkLogger:Debug("SetupSkill3Weapon")
     if not self.f_weapon then
-        local f_weapon = SpawnPrefab("mon3tr_weapon")
+        local f_weapon = SpawnPrefab("construct_claw")
         f_weapon.entity:SetParent(self.inst.entity)
         -- f_weapon.entity:AddFollower()
         -- f_weapon.Follower:FollowSymbol(self.inst.GUID, "torso", 0, 0, 0, true)
@@ -573,7 +775,7 @@ function Mon3trSkill:SetupSkill3Weapon()
         self.f_weapon = f_weapon
     end
     if not self.b_weapon then
-        local b_weapon = SpawnPrefab("mon3tr_weapon")
+        local b_weapon = SpawnPrefab("construct_claw")
         b_weapon.entity:SetParent(self.inst.entity)
         -- b_weapon.entity:AddFollower()
         -- b_weapon.Follower:FollowSymbol(self.inst.GUID, "torso", 0, 0, 0, true)
@@ -605,7 +807,8 @@ end
 function Mon3trSkill:OnRemoveFromEntity()
     self:RemoveConstructBeacon()
     self.inst:RemoveComponent("ark_skill")
-    self.inst:RemoveEventCallback("onhitother", OnHitOther)
+    self.inst:RemoveEventCallback("onhitother", OnHitOtherTask)
+    self.inst:RemoveEventCallback("onhitother", OnHitOtherSkill3Lifesteal)
     self.inst:RemoveEventCallback("sgstatechange", OnPlayerIdle)
     self.inst:RemoveEventCallback("attackspeedchanged", OnAttackSpeedChanged)
     self:RemoveSkill3Weapon()

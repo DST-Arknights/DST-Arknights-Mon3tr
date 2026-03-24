@@ -4,7 +4,7 @@ GLOBAL.setmetatable(env, {
   end
 })
 
-PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_self_repair_buff", "mon3tr_tactical_synergy_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon", "mon3tr_weapon"}
+PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_self_repair_buff", "mon3tr_tactical_synergy_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon", "construct_claw"}
 Assets = {
   Asset("ATLAS", "bigportraits/mon3tr.xml"),
   Asset("ATLAS", "images/saveslot_portraits/mon3tr.xml"),
