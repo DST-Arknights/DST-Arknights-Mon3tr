@@ -4,18 +4,13 @@ local HEAL_CHAIN_RANGE = 16
 local HEAL_CHAIN_EXCLUDE_TAGS = { "INLIMBO", "flight", "invisible", "notarget", "noattack" }
 
 local SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY = "mon3tr_skill3_attack_damage_multiplier"
+local SKILL3_MIN_HEALTH_KEY = "mon3tr_skill3_min_health"
+local SKILL3_MIN_HEALTH_REMOVE_DELAY = 2
 local SKILL3_APPROACH_MAX_OFFSET = 2
 local SKILL3_APPROACH_MIN_DISTANCE = 1
 local SKILL3_POSITION_SEARCH_ATTEMPTS = 12
 
 local SKILL3_LIGHT_UPDATE_INTERVAL = 0.2
-local SKILL3_LIGHT_BASE_RADIUS = 2.2
-local SKILL3_LIGHT_RADIUS_PER_LEVEL = 0.15
-local SKILL3_LIGHT_MAX_RADIUS = 3.8
-local SKILL3_LIGHT_BASE_INTENSITY = 0.95
--- 用低falloff制造更清晰的边缘，接近手电筒光圈感
-local SKILL3_LIGHT_BASE_FALLOFF = 0.12
-local SKILL3_LIGHT_GREEN_FADE_DURATION = 60
 local SKILL3_LIGHT_RED_COLOR = { 1, 0.15, 0.15 }
 local SKILL3_LIGHT_GREEN_COLOR = { 0.2, 1, 0.25 }
 
@@ -198,6 +193,14 @@ local function OnHitOtherSkill3Lifesteal(inst, data)
     end
 end
 
+local OnMinHealth = PriorityEventCallback(function (inst)
+    local skillComp = inst.components.mon3tr_skill
+    if skillComp == nil then
+        return
+    end
+    skillComp:ForceDeactivateSkill3()
+end, { priority = 10 })
+
 -- 一帧内只触发一次onhitother
 local function OnHitOtherTask(inst, data)
     if inst._onhitother_task then
@@ -356,6 +359,10 @@ local function OnSkill3ActivateEffect(inst)
     inst.components.combat.externaldamagemultipliers:SetModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY, attack_damage_multiplier)
     inst.components.combat.truedamagemultipliers:SetModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY, 1)
     if inst.components.health then
+        if inst._skill3_min_health_remove_task then
+            inst._skill3_min_health_remove_task:Cancel()
+            inst._skill3_min_health_remove_task = nil
+        end
         -- 血量上限增加
         local health_bonus = levelConfig.health_bonus or 0
         local current_max_health = inst.components.health.maxhealth
@@ -368,10 +375,9 @@ local function OnSkill3ActivateEffect(inst)
             end)
         end
         -- 锁血
-        inst._skill3_prev_min_health = inst.components.health.minhealth
-        inst.components.health:SetMinHealth(1)
+        inst.components.health.minhealthmodifiers:SetModifier(SKILL3_MIN_HEALTH_KEY, 1)
         -- 添加minhealth监听, 强制结束技能
-        inst:ListenForEvent("minhealth", inst.components.mon3tr_skill._force_deactivate_skill3_cb)
+        inst:ListenForEvent("minhealth", OnMinHealth)
     end
     inst.components.mon3tr_skill:StartSkill3RedLight()
     -- 卸载手持装备
@@ -384,10 +390,12 @@ local function OnSkill3ActivateEffect(inst)
     -- 添加武器
     inst.components.mon3tr_skill:SetupSkill3Weapon()
     -- 无僵直
+    inst:AddTag('immune_stun')
+    -- 阻止M3茧甲回血
+    inst:AddTag('no_construct_armor_exchange')
     -- 添加愤怒特效
     inst._wrath_fx = SpawnPrefab("mon3tr_wrath_fx")
     inst._wrath_fx.entity:SetParent(inst.entity)
-     -- 同步技能状态
 end
 
 local function OnSkill3Deactivate(inst)
@@ -409,10 +417,18 @@ local function OnSkill3Deactivate(inst)
         local new_max_health = math.max(current_max_health - health_bonus, 1)
         inst.components.health:SetMaxHealth(new_max_health)
         inst.components.health:SetPercent(current_percent)
-        -- 解锁锁血
-        local min_health = inst._skill3_prev_min_health or 0
-        inst.components.health:SetMinHealth(min_health)
-        inst._skill3_prev_min_health = nil
+        -- 技能结束后延时移除锁血，避免落地瞬间被秒
+        if inst._skill3_min_health_remove_task then
+            inst._skill3_min_health_remove_task:Cancel()
+            inst._skill3_min_health_remove_task = nil
+        end
+        inst._skill3_min_health_remove_task = inst:DoTaskInTime(SKILL3_MIN_HEALTH_REMOVE_DELAY, function()
+            inst._skill3_min_health_remove_task = nil
+            local currentSkill3 = inst.components.ark_skill and inst.components.ark_skill:GetSkill("skill3") or nil
+            if inst.components.health and (currentSkill3 == nil or not currentSkill3:IsActivating()) then
+                inst.components.health.minhealthmodifiers:RemoveModifier(SKILL3_MIN_HEALTH_KEY)
+            end
+        end)
         -- 回到初始位置
         local construct_beacon = inst.components.mon3tr_skill.construct_beacon
         if construct_beacon and construct_beacon:IsValid() then
@@ -427,15 +443,16 @@ local function OnSkill3Deactivate(inst)
             inst.components.health:DoDelta(-lose_health)
         end
         -- 移除minhealth监听
-        inst:RemoveEventCallback("minhealth", inst.components.mon3tr_skill._force_deactivate_skill3_cb)
+        inst:RemoveEventCallback("minhealth", OnMinHealth)
     end
+    inst:RemoveTag('immune_stun')
+    inst:RemoveTag('no_construct_armor_exchange')
     if inst._wrath_fx then
         inst._wrath_fx:Remove()
         inst._wrath_fx = nil
     end
     inst.components.mon3tr_skill:StartSkill3GreenFade()
     inst.components.mon3tr_skill:RemoveSkill3Weapon()
-     -- 同步技能状态
 end
 
 local Mon3trSkill = Class(function(self, inst)
@@ -445,7 +462,7 @@ local Mon3trSkill = Class(function(self, inst)
     self.skill3_light_state = "off"
     self.skill3_light_intensity = 0
     self.skill3_light_fade_end_time = nil
-    self.skill3_light_fade_duration = SKILL3_LIGHT_GREEN_FADE_DURATION
+    self.skill3_light_fade_duration = 60
     self.skill3_light_params = nil
     self.skill3_light_task = nil
     inst.entity:AddLight()
@@ -458,19 +475,12 @@ local Mon3trSkill = Class(function(self, inst)
 end)
 
 function Mon3trSkill:GetSkill3LightParams()
-    local skill3 = self.inst.components.ark_skill ~= nil and self.inst.components.ark_skill:GetSkill("skill3") or nil
-    local levelConfig = skill3 ~= nil and skill3:GetLevelConfig() or {}
-    local level = 1
-    if skill3 ~= nil and skill3.GetLevel ~= nil then
-        level = skill3:GetLevel() or 1
-    end
-
-    local radiusByLevel = SKILL3_LIGHT_BASE_RADIUS + math.max(0, level - 1) * SKILL3_LIGHT_RADIUS_PER_LEVEL
     return {
-        radius = math.min(levelConfig.skill3_light_radius or radiusByLevel, SKILL3_LIGHT_MAX_RADIUS),
-        falloff = levelConfig.skill3_light_falloff or SKILL3_LIGHT_BASE_FALLOFF,
-        intensity = levelConfig.skill3_light_intensity or SKILL3_LIGHT_BASE_INTENSITY,
-        greenFadeDuration = levelConfig.skill3_light_green_fade_duration or SKILL3_LIGHT_GREEN_FADE_DURATION,
+        radius = 2.2,
+        -- 用低falloff制造更清晰的边缘，接近手电筒光圈感
+        falloff = 0.95,
+        intensity = 0.95,
+        greenFadeDuration = 30,
     }
 end
 
@@ -512,7 +522,7 @@ function Mon3trSkill:StartSkill3GreenFade(remaining, initialIntensity, fadeDurat
     self:CancelSkill3LightTask()
 
     self.skill3_light_params = self:GetSkill3LightParams()
-    local duration = fadeDuration or self.skill3_light_params.greenFadeDuration or SKILL3_LIGHT_GREEN_FADE_DURATION
+    local duration = fadeDuration or self.skill3_light_params.greenFadeDuration or 60
     local remain = remaining or duration
     if remain <= 0 or duration <= 0 then
         self:StopSkill3Light()
@@ -537,7 +547,7 @@ function Mon3trSkill:StartSkill3GreenFade(remaining, initialIntensity, fadeDurat
             return
         end
 
-        local total = math.max(0.001, self.skill3_light_fade_duration or SKILL3_LIGHT_GREEN_FADE_DURATION)
+        local total = math.max(0.001, self.skill3_light_fade_duration or 60)
         self.skill3_light_intensity = math.max(0, math.min(1, left / total))
         self:ApplySkill3Light(SKILL3_LIGHT_GREEN_COLOR)
     end)
@@ -757,10 +767,6 @@ function Mon3trSkill:ForceDeactivateSkill3()
     skill3:SetEnergyRecovering(true)
 end
 
-function Mon3trSkill._force_deactivate_skill3_cb(inst)
-    inst.components.mon3tr_skill:ForceDeactivateSkill3()
-end
-
 function Mon3trSkill:SetupSkill3Weapon()
     ArkLogger:Debug("SetupSkill3Weapon")
     if not self.f_weapon then
@@ -805,6 +811,10 @@ function Mon3trSkill:RemoveSkill3Weapon()
 end
 
 function Mon3trSkill:OnRemoveFromEntity()
+    if self.inst._skill3_min_health_remove_task then
+        self.inst._skill3_min_health_remove_task:Cancel()
+        self.inst._skill3_min_health_remove_task = nil
+    end
     self:RemoveConstructBeacon()
     self.inst:RemoveComponent("ark_skill")
     self.inst:RemoveEventCallback("onhitother", OnHitOtherTask)
@@ -815,6 +825,10 @@ function Mon3trSkill:OnRemoveFromEntity()
 end
 
 function Mon3trSkill:OnRemoveEntity()
+    if self.inst._skill3_min_health_remove_task then
+        self.inst._skill3_min_health_remove_task:Cancel()
+        self.inst._skill3_min_health_remove_task = nil
+    end
     self:RemoveConstructBeacon()
 end
 

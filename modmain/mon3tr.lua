@@ -4,86 +4,6 @@ local MON3TR_SKILL3_ATTACK_FRAME = 21 * FRAMES
 local function Chronological(a, b)
 	return a.time < b.time
 end
-local function DoHurtSound(inst)
-    if inst.hurtsoundoverride ~= nil then
-        inst.SoundEmitter:PlaySound(inst.hurtsoundoverride, nil, inst.hurtsoundvolume)
-    elseif not inst:HasTag("mime") then
-        inst.SoundEmitter:PlaySound((inst.talker_path_override or "dontstarve/characters/")..(inst.soundsname or inst.prefab).."/hurt", nil, inst.hurtsoundvolume)
-    end
-end
-local function WouldEnterFinalElse(inst, data)
-    data = data or {}
-
-    if inst.components.health == nil or inst.components.health:IsDead() then
-        return false
-    end
-    if inst.sg:HasAnyStateTag("drowning", "falling") then
-        return false
-    end
-
-    if data.weapon ~= nil and data.weapon:HasTag("tranquilizer")
-        and (inst.sg:HasStateTag("bedroll") or inst.sg:HasStateTag("knockout")) then
-        return false
-    end
-
-    if inst.sg:HasStateTag("transform") or inst.sg:HasStateTag("dismounting") then
-        return false
-    end
-
-    if inst.sg:HasStateTag("sleeping") then
-        return false
-    end
-
-    if inst.sg:HasStateTag("parrying") and data.redirected then
-        return false
-    end
-
-    if inst.sg:HasAnyStateTag("devoured", "suspended") then
-        return false
-    end
-
-    if inst.sg:HasStateTag("nointerrupt") then
-        return false
-    end
-
-    if data.attacker ~= nil
-        and data.attacker:HasTag("groundspike")
-        and not inst.components.rider:IsRiding()
-        and not inst:HasTag("wereplayer") then
-        return false
-    end
-
-    if data.attacker ~= nil
-        and data.attacker.sg ~= nil
-        and data.attacker.sg:HasStateTag("pushing") then
-        return false
-    end
-
-    if inst.sg:HasStateTag("shell") then
-        return false
-    end
-
-    if inst.components.pinnable ~= nil and inst.components.pinnable:IsStuck() then
-        return false
-    end
-
-    if data.stimuli == "darkness" then
-        return false
-    end
-
-    if data.stimuli == "electric"
-        and inst.sg:HasStateTag("electrocute")
-        and inst.sg:GetTimeInState() < 3 * FRAMES then
-        return false
-    end
-
-    if data.stimuli == "electric"
-        and not (inst.components.inventory:IsInsulated() or inst.sg:HasStateTag("noelectrocute")) then
-        return false
-    end
-
-    return true
-end
 
 AddStategraphPostInit("wilson", function(sg)
   local OldAttackOnEnter = sg.states["attack"].onenter
@@ -136,7 +56,6 @@ AddStategraphPostInit("wilson", function(sg)
   end
   local OldAttackOnExit = sg.states["attack"].onexit
   sg.states["attack"].onexit = function(inst, ...)
-    ArkLogger:Debug("Attack exit", debugstack())
     OldAttackOnExit(inst, ...)
     local comp = inst.components.mon3tr_skill
     if comp then
@@ -148,15 +67,6 @@ AddStategraphPostInit("wilson", function(sg)
       end
     end
   end
-  local OldEventAttackedFn = sg.events.attacked.fn
-  sg.events.attacked.fn = function(inst, data)
-    if WouldEnterFinalElse(inst, data) and inst.components.mon3tr_skill ~= nil and inst.components.mon3tr_skill:IsSkill3Activating() then
-      inst.SoundEmitter:PlaySound("dontstarve/wilson/hit")
-      DoHurtSound(inst)
-      return
-    end
-    return OldEventAttackedFn(inst, data)
-  end
 end)
 
 AddStategraphPostInit("wilson_client", function(sg)
@@ -164,7 +74,10 @@ AddStategraphPostInit("wilson_client", function(sg)
   sg.states["attack"].onenter = function(inst, ...)
     OldAttackOnEnter(inst, ...)
     if inst.components.mon3tr_skill and inst.components.mon3tr_skill:IsSkill3Activating() then
-      inst.AnimState:PlayAnimation("punch")
+      -- TODO: 修改这里的动画即可
+      inst.AnimState:PlayAnimation("deploytoss_lag")
+      -- inst.AnimState:PushAnimation("deploytoss_pre")
+      inst.AnimState:PushAnimation("atk", false)
       inst.SoundEmitter:KillAllSounds()
     end
   end
