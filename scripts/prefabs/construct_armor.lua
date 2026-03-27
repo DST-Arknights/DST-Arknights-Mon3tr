@@ -6,7 +6,7 @@ local assets =
 
 local MAX_CONDITION = 2000
 local EXCHANGE_RATE_PER_SECOND = MAX_CONDITION / (12 * 60)
-local EXCHANGE_TICK = 0.5
+local EXCHANGE_TICK = 1
 local EXCHANGE_PAUSE_AFTER_DAMAGE = 15
 
 local ABSORB_PERCENT_WHEN_CONDITION_LOSS = 1
@@ -17,7 +17,12 @@ end
 
 local function DoArmorHealthExchange(inst)
   local owner = inst.components.inventoryitem ~= nil and inst.components.inventoryitem.owner or nil
-  if owner == nil or owner.components.health == nil or owner.components.health:IsDead() then
+  if owner == nil or owner.components.health == nil or owner.components.health:IsDead() or owner.components.health:IsInvincible() then
+    return
+  end
+
+  -- owner 有标签时不执行该任务
+  if owner:HasTag("no_construct_armor_exchange") then
     return
   end
 
@@ -112,7 +117,6 @@ local function OnTakeDamage(inst, damage_amount)
 end
 
 local function OnArmorConditionChange(inst, data)
-  ArkLogger:Debug("OnArmorConditionChange", data.percent)
   if data.percent <= 0 then
     inst.components.armor:SetAbsorption(0)
   else
