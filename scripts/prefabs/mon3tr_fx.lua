@@ -19,12 +19,18 @@ local fxs = { {
   loop = true,
 }, {
   name = "construct_claw_attack_shockwave_fx",
-  bank = "fx_dock_crackleandpop",
-  build = "fx_dock_crackleandpop",
-  anim = "pop",
+  bank = "construct_claw_attack_shockwave_fx",
+  build = "construct_claw_attack_shockwave_fx",
+  anim = "boom",
   fn = function(inst)
     -- 地面播放
     inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround)
+    -- 随机角度
+    inst.Transform:SetRotation(math.random() * 360)
+    -- 脚底层级
+    inst.AnimState:SetLayer(LAYER_BACKGROUND)
+    -- 1级排序
+    inst.AnimState:SetSortOrder(1)
   end,
 } }
 
