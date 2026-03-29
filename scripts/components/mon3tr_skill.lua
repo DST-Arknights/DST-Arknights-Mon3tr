@@ -14,11 +14,6 @@ local SKILL3_LIGHT_UPDATE_INTERVAL = 0.2
 local SKILL3_LIGHT_RED_COLOR = { 1, 0.15, 0.15 }
 local SKILL3_LIGHT_GREEN_COLOR = { 0.2, 1, 0.25 }
 
-local SKILL3_BEACON_LIGHT_RADIUS = 1.2
-local SKILL3_BEACON_LIGHT_INTENSITY = 0.8
-local SKILL3_BEACON_LIGHT_FALLOFF = 0.1
-local SKILL3_BEACON_LIGHT_COLOR = { 1, 0.1, 0.1 }
-
 local function OnSkill1Activate(inst, data)
 end
 
@@ -476,7 +471,7 @@ end)
 
 function Mon3trSkill:GetSkill3LightParams()
     return {
-        radius = 2.2,
+        radius = 2.4,
         -- 用低falloff制造更清晰的边缘，接近手电筒光圈感
         falloff = 0.95,
         intensity = 0.95,
@@ -593,18 +588,6 @@ function Mon3trSkill:LoadSkill3LightData(data)
     self:StopSkill3Light()
 end
 
-function Mon3trSkill:SetupBeaconRedLight(beacon)
-    if beacon == nil or not beacon:IsValid() then
-        return
-    end
-    beacon.entity:AddLight()
-    beacon.Light:Enable(true)
-    beacon.Light:SetRadius(SKILL3_BEACON_LIGHT_RADIUS)
-    beacon.Light:SetIntensity(SKILL3_BEACON_LIGHT_INTENSITY)
-    beacon.Light:SetFalloff(SKILL3_BEACON_LIGHT_FALLOFF)
-    beacon.Light:SetColour(SKILL3_BEACON_LIGHT_COLOR[1], SKILL3_BEACON_LIGHT_COLOR[2], SKILL3_BEACON_LIGHT_COLOR[3])
-end
-
 function Mon3trSkill:RemoveConstructBeacon()
     local beacon = self.construct_beacon
     self.construct_beacon = nil
@@ -618,7 +601,6 @@ function Mon3trSkill:SpawnConstructBeaconAt(x, y, z)
 
     local beacon = SpawnPrefab("construct_beacon")
     beacon.Transform:SetPosition(x, y or 0, z)
-    self:SetupBeaconRedLight(beacon)
     self.construct_beacon = beacon
     beacon:ListenForEvent("onremove", function()
         if self.construct_beacon == beacon then
