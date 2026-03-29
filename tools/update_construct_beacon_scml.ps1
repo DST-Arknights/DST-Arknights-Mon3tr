@@ -1,9 +1,10 @@
 param(
-    [string]$ScmlPath = "construct_beacon.scml",
+    [string]$ScmlPath = "animSource/construct_beacon/construct_beacon.scml",
     [int]$FrameCount = 40,
     [int]$FrameDurationMs = 33,
     [double]$MaxFloatY = 4.0,
     [double]$StartPhaseRad = 0.0,
+    [int]$FloatCycleImageLoops = 2,
     [int]$ImageWidth = 73,
     [int]$ImageHeight = 84
 )
@@ -13,6 +14,12 @@ $ErrorActionPreference = "Stop"
 
 $fullPath = Resolve-Path $ScmlPath
 [xml]$xml = Get-Content -LiteralPath $fullPath
+
+if ($FloatCycleImageLoops -lt 1) {
+    throw "FloatCycleImageLoops must be >= 1"
+}
+
+$totalFrameCount = $FrameCount * $FloatCycleImageLoops
 
 $folder = $xml.spriter_data.folder
 $entity = $xml.spriter_data.entity
@@ -37,7 +44,7 @@ for ($i = 1; $i -le $FrameCount; $i++) {
     $null = $folder.AppendChild($fileNode)
 }
 
-$animation.SetAttribute("length", ($FrameCount * $FrameDurationMs).ToString())
+$animation.SetAttribute("length", ($totalFrameCount * $FrameDurationMs).ToString())
 
 $mainlineKeyNodes = $mainline.SelectNodes("key")
 foreach ($node in @($mainlineKeyNodes)) {
@@ -49,7 +56,7 @@ foreach ($node in @($timelineKeyNodes)) {
     $null = $timeline.RemoveChild($node)
 }
 
-for ($i = 0; $i -lt $FrameCount; $i++) {
+for ($i = 0; $i -lt $totalFrameCount; $i++) {
     $time = $i * $FrameDurationMs
 
     $mainKey = $xml.CreateElement("key")
@@ -75,13 +82,15 @@ for ($i = 0; $i -lt $FrameCount; $i++) {
 
     # Smooth periodic floating with phase control.
     # Range is [0, MaxFloatY], and default phase starts at the lowest point (y=0).
-    # This guarantees same position at loop boundary.
-    $angle = 2.0 * [Math]::PI * $i / $FrameCount + $StartPhaseRad
+    # One full floating cycle spans FloatCycleImageLoops image-animation loops.
+    $angle = 2.0 * [Math]::PI * $i / $totalFrameCount + $StartPhaseRad
     $y = [Math]::Round(0.5 * $MaxFloatY * (1.0 - [Math]::Cos($angle)), 3)
+
+    $fileIndex = $i % $FrameCount
 
     $obj = $xml.CreateElement("object")
     $obj.SetAttribute("folder", "0")
-    $obj.SetAttribute("file", $i.ToString())
+    $obj.SetAttribute("file", $fileIndex.ToString())
     $obj.SetAttribute("x", "0")
     $obj.SetAttribute("y", [string]$y)
     $null = $timelineKey.AppendChild($obj)
@@ -102,4 +111,4 @@ $xml.Save($writer)
 $writer.Close()
 
 Write-Host "Updated $fullPath"
-Write-Host "FrameCount=$FrameCount FrameDurationMs=$FrameDurationMs MaxFloatY=$MaxFloatY StartPhaseRad=$StartPhaseRad"
+Write-Host "FrameCount=$FrameCount FloatCycleImageLoops=$FloatCycleImageLoops TotalFrameCount=$totalFrameCount FrameDurationMs=$FrameDurationMs MaxFloatY=$MaxFloatY StartPhaseRad=$StartPhaseRad"
