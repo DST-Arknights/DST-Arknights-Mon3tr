@@ -667,10 +667,13 @@ function Mon3trSkill:HealChain(source, data)
     if #chain > 0 and source ~= nil then
         connectHealChain(source, chain[1])
         source:SpawnChild("mon3tr_heal_fx")
+        source:SpawnChild("mon3tr_heal_fx_2")
         chain[1]:SpawnChild("mon3tr_heal_fx")
+        chain[1]:SpawnChild("mon3tr_heal_fx_2")
         if #chain > 1 then
             for i = 1, #chain - 1 do
                 chain[i + 1]:SpawnChild("mon3tr_heal_fx")
+                chain[i + 1]:SpawnChild("mon3tr_heal_fx_2")
                 connectHealChain(chain[i], chain[i + 1])
             end
         end

@@ -1,15 +1,27 @@
 local fxs = { {
   name = "mon3tr_heal_fx",
-  bank = "carnival_sparkle",
-  build = "carnival_sparkle",
-  anim = "sparkle",
-  sound = "summerevent/cannon/fire2",
+  bank = "mon3tr_heal_fx",
+  build = "mon3tr_heal_fx",
+  anim = "idle",
+  scale_with_parent_size = true,
   fn = function(inst)
+    inst.AnimState:SetDeltaTimeMultiplier(0.3)
     inst.AnimState:SetFinalOffset(1)
-    -- 设置淡绿色
-    inst.AnimState:SetMultColour(0.5, 1, 0.5, 1)
-    -- 播放速度1.2倍
-    inst.AnimState:SetDeltaTimeMultiplier(1.5)
+    inst.Transform:SetPosition(0, 1.5, 0)
+    inst.AnimState:SetScale(3.3, 3.3, 3.3)
+    inst.AnimState:SetMultColour(1, 1, 1, 0.95)
+  end,
+}, {
+  name = "mon3tr_heal_fx_2",
+  bank = "mon3tr_heal_fx_2",
+  build = "mon3tr_heal_fx_2",
+  anim = "idle",
+  scale_with_parent_size = true,
+  fn = function(inst)
+    inst.AnimState:SetDeltaTimeMultiplier(0.5)
+    inst.AnimState:SetFinalOffset(2)
+    inst.Transform:SetPosition(0, 1.5, 0)
+    inst.AnimState:SetScale(6, 6, 6)
   end,
 }, {
   name = "mon3tr_wrath_fx",
