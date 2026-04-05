@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+	<folder id="0" name="fx">
+		<file id="0" name="fx/fx-0.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="1" name="fx/fx-1.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="2" name="fx/fx-2.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="3" name="fx/fx-3.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="4" name="fx/fx-4.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="5" name="fx/fx-5.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="6" name="fx/fx-6.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="7" name="fx/fx-7.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="8" name="fx/fx-8.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="9" name="fx/fx-9.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="10" name="fx/fx-10.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="11" name="fx/fx-11.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="12" name="fx/fx-12.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="13" name="fx/fx-13.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="14" name="fx/fx-14.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="15" name="fx/fx-15.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="16" name="fx/fx-16.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="17" name="fx/fx-17.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="18" name="fx/fx-18.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+		<file id="19" name="fx/fx-19.png" width="200" height="200" pivot_x="0.5" pivot_y="0.5" />
+	</folder>
+	<entity id="0" name="mon3tr_heal_fx_2">
+		<animation id="0" name="idle" length="627" interval="33">
+			<mainline>
+				<key id="0" time="0">
+					<object_ref id="0" timeline="0" key="0" z_index="0" name="fx" />
+				</key>
+				<key id="1" time="33">
+					<object_ref id="0" timeline="0" key="1" z_index="0" name="fx" />
+				</key>
+				<key id="2" time="66">
+					<object_ref id="0" timeline="0" key="2" z_index="0" name="fx" />
+				</key>
+				<key id="3" time="99">
+					<object_ref id="0" timeline="0" key="3" z_index="0" name="fx" />
+				</key>
+				<key id="4" time="132">
+					<object_ref id="0" timeline="0" key="4" z_index="0" name="fx" />
+				</key>
+				<key id="5" time="165">
+					<object_ref id="0" timeline="0" key="5" z_index="0" name="fx" />
+				</key>
+				<key id="6" time="198">
+					<object_ref id="0" timeline="0" key="6" z_index="0" name="fx" />
+				</key>
+				<key id="7" time="231">
+					<object_ref id="0" timeline="0" key="7" z_index="0" name="fx" />
+				</key>
+				<key id="8" time="264">
+					<object_ref id="0" timeline="0" key="8" z_index="0" name="fx" />
+				</key>
+				<key id="9" time="297">
+					<object_ref id="0" timeline="0" key="9" z_index="0" name="fx" />
+				</key>
+				<key id="10" time="330">
+					<object_ref id="0" timeline="0" key="10" z_index="0" name="fx" />
+				</key>
+				<key id="11" time="363">
+					<object_ref id="0" timeline="0" key="11" z_index="0" name="fx" />
+				</key>
+				<key id="12" time="396">
+					<object_ref id="0" timeline="0" key="12" z_index="0" name="fx" />
+				</key>
+				<key id="13" time="429">
+					<object_ref id="0" timeline="0" key="13" z_index="0" name="fx" />
+				</key>
+				<key id="14" time="462">
+					<object_ref id="0" timeline="0" key="14" z_index="0" name="fx" />
+				</key>
+				<key id="15" time="495">
+					<object_ref id="0" timeline="0" key="15" z_index="0" name="fx" />
+				</key>
+				<key id="16" time="528">
+					<object_ref id="0" timeline="0" key="16" z_index="0" name="fx" />
+				</key>
+				<key id="17" time="561">
+					<object_ref id="0" timeline="0" key="17" z_index="0" name="fx" />
+				</key>
+				<key id="18" time="594">
+					<object_ref id="0" timeline="0" key="18" z_index="0" name="fx" />
+				</key>
+				<key id="19" time="627">
+					<object_ref id="0" timeline="0" key="19" z_index="0" name="fx" />
+				</key>
+			</mainline>
+			<timeline id="0" name="fx">
+				<key id="0" time="0" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="1" time="33" spin="0" curve_type="instant">
+					<object folder="0" file="1" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="2" time="66" spin="0" curve_type="instant">
+					<object folder="0" file="2" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="3" time="99" spin="0" curve_type="instant">
+					<object folder="0" file="3" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="4" time="132" spin="0" curve_type="instant">
+					<object folder="0" file="4" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="5" time="165" spin="0" curve_type="instant">
+					<object folder="0" file="5" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="6" time="198" spin="0" curve_type="instant">
+					<object folder="0" file="6" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="7" time="231" spin="0" curve_type="instant">
+					<object folder="0" file="7" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="8" time="264" spin="0" curve_type="instant">
+					<object folder="0" file="8" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="9" time="297" spin="0" curve_type="instant">
+					<object folder="0" file="9" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="10" time="330" spin="0" curve_type="instant">
+					<object folder="0" file="10" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="11" time="363" spin="0" curve_type="instant">
+					<object folder="0" file="11" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="12" time="396" spin="0" curve_type="instant">
+					<object folder="0" file="12" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="13" time="429" spin="0" curve_type="instant">
+					<object folder="0" file="13" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="14" time="462" spin="0" curve_type="instant">
+					<object folder="0" file="14" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="15" time="495" spin="0" curve_type="instant">
+					<object folder="0" file="15" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="16" time="528" spin="0" curve_type="instant">
+					<object folder="0" file="16" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="17" time="561" spin="0" curve_type="instant">
+					<object folder="0" file="17" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="18" time="594" spin="0" curve_type="instant">
+					<object folder="0" file="18" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="19" time="627" spin="0" curve_type="instant">
+					<object folder="0" file="19" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+			</timeline>
+		</animation>
+	</entity>
+</spriter_data>
