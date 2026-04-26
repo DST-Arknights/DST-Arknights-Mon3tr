@@ -1,69 +1,68 @@
-local NORMAL_ATTACK_FRAME = 8 * FRAMES
-local MON3TR_SKILL3_ATTACK_FRAME = 21 * FRAMES
+local function GetMon3trSkill3(inst)
+  return inst.components.ark_skill and inst.components.ark_skill:GetSkill("mon3tr_skill3") or nil
+end
 
-local function Chronological(a, b)
-	return a.time < b.time
+local function IsMon3trSkill3Activating(inst)
+  local skill = GetMon3trSkill3(inst)
+  if skill ~= nil then
+    return skill:IsActivating()
+  end
+  if inst.replica.ark_skill ~= nil then
+    return inst.replica.ark_skill:IsActivating("mon3tr_skill3")
+  end
+  return false
 end
 
 AddStategraphPostInit("wilson", function(sg)
   local OldAttackOnEnter = sg.states["attack"].onenter
   sg.states["attack"].onenter = function(inst, ...)
     OldAttackOnEnter(inst, ...)
-    if inst.components.mon3tr_skill and inst.components.mon3tr_skill:IsSkill3Activating() then
+    if IsMon3trSkill3Activating(inst) and IsSGPunchAttack(inst) then
+      local skill = GetMon3trSkill3(inst)
       -- TODO: 修改这里的动画即可
       inst.AnimState:PlayAnimation("deploytoss_lag")
       -- inst.AnimState:PushAnimation("deploytoss_pre")
 			inst.AnimState:PushAnimation("atk", false)
       inst.SoundEmitter:KillAllSounds()
-      local comp = inst.components.mon3tr_skill
-      if comp then
-        if comp.f_weapon then
-          comp.f_weapon.AnimState:PlayAnimation("f_attack", false)
-          comp.f_weapon.AnimState:PushAnimation("f_idle", true)
-        end
-        if comp.b_weapon then
-          comp.b_weapon.AnimState:PlayAnimation("b_attack", false)
-          comp.b_weapon.AnimState:PushAnimation("b_idle", true)
-        end
+      if skill.f_weapon then
+        skill.f_weapon.AnimState:PlayAnimation("f_attack", false)
+        skill.f_weapon.AnimState:PushAnimation("f_idle", true)
+      end
+      if skill.b_weapon then
+        skill.b_weapon.AnimState:PlayAnimation("b_attack", false)
+        skill.b_weapon.AnimState:PushAnimation("b_idle", true)
       end
     end
   end
-  local normal_attack_fn = nil
-  -- 遍历timeline, 替换第六帧攻击函数
-  for i, v in ipairs(sg.states["attack"].timeline) do
-    if v.time == NORMAL_ATTACK_FRAME then
-      normal_attack_fn = v.fn
-      sg.states["attack"].timeline[i].fn = function(inst)
-        if inst.components.mon3tr_skill and inst.components.mon3tr_skill:IsSkill3Activating() then
-          ArkLogger:Debug("Skill3 is activating, skip normal attack")
-          return
-        end
-        normal_attack_fn(inst)
+  PatchSgTimeline(sg.states["attack"].timeline, {
+    PatchTimeEvent(8 * FRAMES, function(next, inst)
+      if IsMon3trSkill3Activating(inst) and IsSGPunchAttack(inst) then
+        ArkLogger:Debug("Skill3 is activating, skip normal attack")
+        return
       end
-    end
-  end
-  -- 插入新的技能攻击帧
-  if normal_attack_fn then
-    table.insert(sg.states["attack"].timeline, TimeEvent(MON3TR_SKILL3_ATTACK_FRAME, function(inst)
-      if inst.components.mon3tr_skill and inst.components.mon3tr_skill:IsSkill3Activating() then
+      return next(inst)
+    end),
+    PatchTimeEvent(21 * FRAMES, function(next, inst)
+      if IsMon3trSkill3Activating(inst) and IsSGPunchAttack(inst) then
         -- 震荡波特效
         local fx = SpawnPrefab("construct_claw_attack_shockwave_fx")
         fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
-        normal_attack_fn(inst)
+        -- 注意：这里没有调用next，因为技能攻击帧的函数逻辑和普通攻击完全不同
+        return
       end
-    end))
-		table.sort(sg.states["attack"].timeline, Chronological)
-  end
+      return next(inst)
+    end),
+  })
   local OldAttackOnExit = sg.states["attack"].onexit
   sg.states["attack"].onexit = function(inst, ...)
     OldAttackOnExit(inst, ...)
-    local comp = inst.components.mon3tr_skill
-    if comp then
-      if comp.f_weapon then
-        comp.f_weapon.AnimState:PlayAnimation("f_idle", true)
+    if IsMon3trSkill3Activating(inst) then
+      local skill = GetMon3trSkill3(inst)
+      if skill.f_weapon then
+        skill.f_weapon.AnimState:PlayAnimation("f_idle", true)
       end
-      if comp.b_weapon then
-        comp.b_weapon.AnimState:PlayAnimation("b_idle", true)
+      if skill.b_weapon then
+        skill.b_weapon.AnimState:PlayAnimation("b_idle", true)
       end
     end
   end
@@ -73,8 +72,7 @@ AddStategraphPostInit("wilson_client", function(sg)
   local OldAttackOnEnter = sg.states["attack"].onenter
   sg.states["attack"].onenter = function(inst, ...)
     OldAttackOnEnter(inst, ...)
-    if inst.components.mon3tr_skill and inst.components.mon3tr_skill:IsSkill3Activating() then
-      -- TODO: 修改这里的动画即可
+    if IsMon3trSkill3Activating(inst) and IsSGPunchAttack(inst) then
       inst.AnimState:PlayAnimation("deploytoss_lag")
       -- inst.AnimState:PushAnimation("deploytoss_pre")
       inst.AnimState:PushAnimation("atk", false)
@@ -139,13 +137,10 @@ AddStategraphState("wilson", State {
   tags = { "aoe", "doing", "busy", "nointerrupt", "pausepredict", "nomorph", "mon3tr_skill" },
 
   onenter = function(inst, data)
-    -- 有特效删除特效
-    if inst._wrath_fx then
-      inst._wrath_fx:Remove()
-      inst._wrath_fx = nil
-    end
-    if inst.components.mon3tr_skill then
-      inst.components.mon3tr_skill:RemoveSkill3Weapon()
+    local skill = GetMon3trSkill3(inst)
+    if skill then
+      skill:RemoveWrathFx()
+      skill:RemoveConstructBeacon()
     end
     if data ~= nil then
       inst.sg.statemem.data = data
@@ -163,7 +158,10 @@ AddStategraphState("wilson", State {
       inst.SoundEmitter:PlaySound("dontstarve/movement/bodyfall_dirt", nil, .4)
       inst.SoundEmitter:PlaySound("dontstarve/common/deathpoof")
       local x, y, z = inst.sg.statemem.data.startingpos:Get()
-      inst.components.mon3tr_skill:SpawnConstructBeaconAt(x, y, z)
+      local skill = GetMon3trSkill3(inst)
+      if skill then
+        skill:SpawnConstructBeaconAt(x, y, z)
+      end
       inst.sg:SetTimeout(0.5)
       return
     end
@@ -222,12 +220,10 @@ AddStategraphState("wilson", State {
       inst.DynamicShadow:Enable(true)
     end
     -- 重新生成特效
-    if not inst._wrath_fx then
-      inst._wrath_fx = SpawnPrefab("mon3tr_wrath_fx")
-      inst._wrath_fx.entity:SetParent(inst.entity)
-    end
-    if inst.components.mon3tr_skill then
-      inst.components.mon3tr_skill:SetupSkill3Weapon()
+    local skill = GetMon3trSkill3(inst)
+    if skill then
+      skill:SpawnWrathFx()
+      skill:SetupSkill3Weapon()
     end
     inst:Show()
   end,
@@ -399,9 +395,9 @@ AddStategraphState("wilson", State {
     inst.Physics:Teleport(data.targetpos.x, 0, data.targetpos.z)
     inst.AnimState:PlayAnimation("superjump_land")
     inst.SoundEmitter:PlaySound("dontstarve/movement/bodyfall_dirt", nil, .35)
-
-    if data.beacon ~= nil and data.beacon:IsValid() then
-      data.beacon:Remove()
+    local skill3 = GetMon3trSkill3(inst)
+    if skill3 then
+      skill3:RemoveConstructBeacon()
     end
   end,
 
@@ -438,8 +434,7 @@ AddComponentPostInit("equippable", function(self)
   local _IsRestricted = self.IsRestricted
   self.IsRestricted = function(self, target)
     if self.equipslot == EQUIPSLOTS.HANDS then
-      local skill = target.components.mon3tr_skill
-      if skill and skill:IsSkill3Activating() then
+      if IsMon3trSkill3Activating(target) then
         return true
       end
     end
@@ -451,11 +446,8 @@ AddClassPostConstruct("components/equippable_replica", function(self)
   local _IsRestricted = self.IsRestricted
   self.IsRestricted = function(self, target)
     if self:EquipSlot() == EQUIPSLOTS.HANDS then
-      local comrep = target.replica.mon3tr_skill
-      if comrep then
-        if comrep:IsSkill3Activating() then
-          return true
-        end
+      if IsMon3trSkill3Activating(target) then
+        return true
       end
     end
     return _IsRestricted(self, target)

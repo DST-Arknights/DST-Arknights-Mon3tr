@@ -4,6 +4,7 @@ local assets =
 {
   Asset("SCRIPT", "scripts/prefabs/player_common.lua"),
   Asset("ATLAS", "images/ui_mon3tr_skill.xml"),
+  Asset("ATLAS", "images/map_icons/mon3tr.xml"),
 }
 
 local start_inv = { "construct_sword", "ark_backpack" }
@@ -22,7 +23,7 @@ local function onbecameghost(inst)
 end
 
 -- When loading or spawning the character
-local function onload(inst)
+local function Onload(inst)
   inst:ListenForEvent("ms_respawnedfromghost", onbecamehuman)
   inst:ListenForEvent("ms_becameghost", onbecameghost)
 
@@ -33,32 +34,18 @@ local function onload(inst)
   end
 end
 
-local function onNewSpawn(inst)
-  onload(inst)
+local function OnNewSpawn(inst)
+  inst.components.ark_skill:AddSkill("mon3tr_skill1")
+  inst.components.ark_skill:AddSkill("mon3tr_skill2")
+  inst.components.ark_skill:AddSkill("mon3tr_skill3")
+  Onload(inst)
 end
 
 local function OnApplyElite(inst, elite)
-  if inst.components.ark_skill then
-    if elite == 1 then
-      inst.components.ark_skill:GetSkill("skill1"):Unlock()
-      inst.components.ark_skill:GetSkill("skill2"):Lock()
-    elseif elite == 2 then
-      inst.components.ark_skill:GetSkill("skill1"):Unlock()
-      inst.components.ark_skill:GetSkill("skill2"):Unlock()
-      inst.components.ark_skill:GetSkill("skill3"):Lock()
-    elseif elite == 3 then
-      inst.components.ark_skill:GetSkill("skill1"):Unlock()
-      inst.components.ark_skill:GetSkill("skill2"):Unlock()
-      inst.components.ark_skill:GetSkill("skill3"):Unlock()
-    end
-  end
 end
 
 -- This initializes for both the server and client. Tags can be added here.
 local common_postinit = function(inst)
-  inst:DoTaskInTime(1, function()
-    ArkLogger:Debug("mon3tr loaded", inst)
-  end)
   -- Minimap icon
   inst.MiniMapEntity:SetIcon("mon3tr.tex")
 end
@@ -80,22 +67,30 @@ local master_postinit = function(inst)
   inst.components.sanity:SetMax(TUNING.MON3TR_SANITY)
 
   -- Damage multiplier (optional)
-  inst.components.combat.damagemultiplier = 1
   -- inst.components.combat:SetDefaultDamage(10)
 
   -- Hunger rate (optional)
   inst.components.hunger.hungerrate = 1 * TUNING.WILSON_HUNGER_RATE
 
   -- Skill
-  inst:AddComponent("mon3tr_skill")
   inst:AddComponent("ark_elite")
   inst.components.ark_elite:SetRarity(6)
-  inst.components.ark_elite:OnApplyElite(OnApplyElite)
+  inst.components.ark_elite:SetOnApplyElite(OnApplyElite)
   inst.components.ark_elite:SetMaxHealthBonus(100)
   inst.components.ark_elite:SetMaxDamageBonus(20)
+  inst:AddComponent("ark_skill")
+  inst.components.ark_skill:DeclareBuiltinSkill("mon3tr_skill1", {
+    requiredElite = 1,
+  })
+  inst.components.ark_skill:DeclareBuiltinSkill("mon3tr_skill2", {
+    requiredElite = 2,
+  })
+  inst.components.ark_skill:DeclareBuiltinSkill("mon3tr_skill3", {
+    requiredElite = 3,
+  })
   inst:AddComponent("ark_currency")
-  inst.OnLoad = onload
-  inst.OnNewSpawn = onNewSpawn
+  inst.OnLoad = Onload
+  inst.OnNewSpawn = OnNewSpawn
 
 end
 

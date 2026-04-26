@@ -10,14 +10,12 @@ Assets = {
   Asset("ATLAS", "images/saveslot_portraits/mon3tr.xml"),
   Asset("ATLAS", "images/selectscreen_portraits/mon3tr.xml"),
   Asset("ATLAS", "images/selectscreen_portraits/mon3tr_silho.xml"),
-  Asset("ATLAS", "images/map_icons/mon3tr.xml"),
   Asset("ATLAS", "images/avatars/avatar_mon3tr.xml"),
   Asset("ATLAS", "images/avatars/avatar_ghost_mon3tr.xml"),
   Asset("ATLAS", "images/avatars/self_inspect_mon3tr.xml"),
   Asset("ATLAS", "images/names_mon3tr.xml"),
   Asset("ATLAS", "images/names_gold_mon3tr.xml"),
 }
-AddReplicableComponent("mon3tr_skill")
 AddMinimapAtlas("images/map_icons/mon3tr.xml")
 
 MergePOFile('languages/mon3tr_chinese_s.po', LOC.GetLocaleCode(LANGUAGE.CHINESE_S), true)
@@ -32,17 +30,30 @@ TUNING.MON3TR_HEALTH = 150
 TUNING.MON3TR_HUNGER = 150
 TUNING.MON3TR_SANITY = 200
 
+
 local skin_modes = {
     { 
         type = "ghost_skin",
         anim_bank = "ghost",
-        idle_anim = "idle", 
+        idle_anim = "idle",
         scale = 0.75, 
         offset = { 0, -25 } 
     },
 }
 AddModCharacter('mon3tr', 'FEMALE', skin_modes)
-local skillConfig = require "mon3tr_skill_config"
-AddSkillLevelUpRecipes('mon3tr', skillConfig.skills)
+
+TUNING.MON3TR_ELITE = {{
+    self_repair_attack_multiplier = 1.03,
+  },
+  {
+    tactical_synergy_passive_attack_speed_multiplier = 1.1,
+    self_repair_attack_multiplier = 1.05,
+  },
+  {
+    tactical_synergy_passive_attack_speed_multiplier = 1.2,
+    self_repair_attack_multiplier = 1.15,
+  }
+}
 
 modimport("modmain/mon3tr")
+modimport("modmain/mon3tr_skill")
