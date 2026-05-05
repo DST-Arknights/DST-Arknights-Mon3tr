@@ -67,7 +67,7 @@ local function CreateSegFx(seg, rot, scale, isend)
     fx.AnimState:SetLightOverride(1)
 
     fx.entity:SetParent(seg.entity)
-    fx.Follower:FollowSymbol(seg.GUID, "marker")
+    fx.Follower:FollowSymbol(seg.GUID, "marker", 0, -1, 0)
 
     fx.shadow = CreateSegFxShadow(seg, rot, scale, isend)
 
@@ -181,12 +181,10 @@ local function fn()
 
     inst:AddTag("CLASSIFIED")
     inst:AddTag("notarget")
+    inst:AddTag("NOCLICK")
 
     inst.len = net_byte(inst.GUID, "mon3tr_heal_chain_fx.len", "beamdirty")
     inst.rot = net_byte(inst.GUID, "mon3tr_heal_chain_fx.rot", "beamdirty")
-
-    inst:SetPrefabNameOverride("mon3tr")
-    inst.CanMouseThrough = CanMouseThrough
 
     inst.entity:SetPristine()
 

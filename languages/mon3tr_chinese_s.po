@@ -78,107 +78,107 @@ msgstr "// :TODO"
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.1
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.1"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.2
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.2"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.3
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.3"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.4
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.4"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.5
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.5"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.6
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.6"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.7
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.7"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.8
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.8"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.9
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.9"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.10
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1.10"
 msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于\n攻击力110%的生命"
+msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.1
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.1"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，治疗提升攻速的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.2
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.2"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.3
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.3"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.4
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.4"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.5
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.5"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.6
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.6"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.7
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.7"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.8
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.8"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.9
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.9"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.10
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2.10"
 msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友\n军相当于攻击力100%的生命，第二天赋的\n效果提升至1.5倍"
+msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.3.1
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.3.1"
 msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
+msgstr "解除手持装备，吸收重构体武器最高10%的耐久转为基础攻击力\n普通攻击时对附近造成300%基础攻击力的真实伤害\n生命上限+5000，每秒流失80点生命值\n攻击时治疗自身基础攻击力100%的生命。\n技能结束或受到致命伤害时，返回初始位置"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.3.2
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.3.2"

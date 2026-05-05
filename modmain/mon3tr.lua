@@ -19,7 +19,6 @@ AddStategraphPostInit("wilson", function(sg)
     OldAttackOnEnter(inst, ...)
     if IsMon3trSkill3Activating(inst) and IsSGPunchAttack(inst) then
       local skill = GetMon3trSkill3(inst)
-      -- TODO: 修改这里的动画即可
       inst.AnimState:PlayAnimation("deploytoss_lag")
       -- inst.AnimState:PushAnimation("deploytoss_pre")
 			inst.AnimState:PushAnimation("atk", false)
@@ -47,7 +46,8 @@ AddStategraphPostInit("wilson", function(sg)
         -- 震荡波特效
         local fx = SpawnPrefab("construct_claw_attack_shockwave_fx")
         fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
-        -- 注意：这里没有调用next，因为技能攻击帧的函数逻辑和普通攻击完全不同
+        inst:PerformBufferedAction()
+        inst.sg:RemoveStateTag("abouttoattack")
         return
       end
       return next(inst)
@@ -157,10 +157,9 @@ AddStategraphState("wilson", State {
 
       inst.SoundEmitter:PlaySound("dontstarve/movement/bodyfall_dirt", nil, .4)
       inst.SoundEmitter:PlaySound("dontstarve/common/deathpoof")
-      local x, y, z = inst.sg.statemem.data.startingpos:Get()
       local skill = GetMon3trSkill3(inst)
       if skill then
-        skill:SpawnConstructBeaconAt(x, y, z)
+        skill:SpawnConstructBeacon()
       end
       inst.sg:SetTimeout(0.5)
       return

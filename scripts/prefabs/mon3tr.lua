@@ -48,6 +48,7 @@ end
 local common_postinit = function(inst)
   -- Minimap icon
   inst.MiniMapEntity:SetIcon("mon3tr.tex")
+  inst:AddTag("ark_character")
 end
 
 -- This initializes for the server only. Components are added here.
@@ -79,13 +80,13 @@ local master_postinit = function(inst)
   inst.components.ark_elite:SetMaxHealthBonus(100)
   inst.components.ark_elite:SetMaxDamageBonus(20)
   inst:AddComponent("ark_skill")
-  inst.components.ark_skill:DeclareBuiltinSkill("mon3tr_skill1", {
+  inst.components.ark_skill:DeclareBuiltin("mon3tr_skill1", {
     requiredElite = 1,
   })
-  inst.components.ark_skill:DeclareBuiltinSkill("mon3tr_skill2", {
+  inst.components.ark_skill:DeclareBuiltin("mon3tr_skill2", {
     requiredElite = 2,
   })
-  inst.components.ark_skill:DeclareBuiltinSkill("mon3tr_skill3", {
+  inst.components.ark_skill:DeclareBuiltin("mon3tr_skill3", {
     requiredElite = 3,
   })
   inst:AddComponent("ark_currency")

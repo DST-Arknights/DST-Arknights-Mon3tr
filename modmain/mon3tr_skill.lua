@@ -6,6 +6,7 @@ local HEAL_CHAIN_EXCLUDE_TAGS = { "INLIMBO", "flight", "invisible", "notarget", 
 
 local SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY = "mon3tr_skill3_attack_damage_multiplier"
 local SKILL3_MIN_HEALTH_KEY = "mon3tr_skill3_min_health"
+local SKILL3_SWORD_DAMAGE_BONUS_KEY = "construct_sword_skill3_bonus"
 local SKILL3_MIN_HEALTH_REMOVE_DELAY = 5 -- 3技能结束的无敌保护持续时间
 local SKILL3_APPROACH_MAX_OFFSET = 2
 local SKILL3_APPROACH_MIN_DISTANCE = 1
@@ -96,12 +97,12 @@ local function FindBestHealTarget(from, source, owner, visited)
   return best
 end
 
-local function FindHealChain(inst, source, maxCount)
+local function FindHealChain(inst, from, maxCount)
   local chain = {}
   local visited = {}
-  local from = source
+  local from = from
   while #chain < maxCount and from ~= nil do
-    local best = FindBestHealTarget(from, source, inst, visited)
+    local best = FindBestHealTarget(from, from, inst, visited)
     if best == nil then
       break
     end
@@ -112,7 +113,7 @@ local function FindHealChain(inst, source, maxCount)
   return chain
 end
 
-local function HealChain(inst, source, data)
+local function HealChain(inst, from, data)
   local healRateAttenuation = 0.75
   local healRate = data.rate or 0
   local healCount = data.count or 0
@@ -121,11 +122,11 @@ local function HealChain(inst, source, data)
     return {}
   end
 
-  local chain = FindHealChain(inst, source, healCount)
-  if #chain > 0 and source ~= nil then
-    ConnectHealChain(source, chain[1])
-    source:SpawnChild("mon3tr_heal_fx")
-    source:SpawnChild("mon3tr_heal_fx_2")
+  local chain = FindHealChain(inst, from, healCount)
+  if #chain > 0 and from ~= nil then
+    ConnectHealChain(from, chain[1])
+    from:SpawnChild("mon3tr_heal_fx")
+    from:SpawnChild("mon3tr_heal_fx_2")
     chain[1]:SpawnChild("mon3tr_heal_fx")
     chain[1]:SpawnChild("mon3tr_heal_fx_2")
     if #chain > 1 then
@@ -141,7 +142,15 @@ local function HealChain(inst, source, data)
   for _, target in ipairs(chain) do
     nextRate = nextRate * healRateAttenuation
     if target.components.health then
-      target.components.health:DoDelta(healHealth * nextRate)
+      local actualHeal = target.components.health:DoDelta(healHealth * nextRate, nil, "mon3tr_skill_heal", false, inst)
+      if actualHeal ~= nil and actualHeal > 0 then
+        -- 被治疗事件
+        target:PushEvent("mon3tr_healed", {
+          amount = actualHeal,
+          first = from,
+          source = inst,
+        })
+      end
     end
   end
   return chain
@@ -207,38 +216,9 @@ local function OnHitOther(inst, data)
   end
 end
 
-local function GetSkill3LifestealAmount(inst, data)
-  if data == nil then
-    return 0
-  end
-
-  local damage = data.damage or data.damageresolved or data.finaldamage
-  if damage == nil then
-    damage = inst.components.combat.defaultdamage
-  end
-
-  return math.max(0, damage or 0)
-end
-
 local function OnHitOtherSkill3Lifesteal(inst, data)
-  local skill = inst.components.ark_skill and inst.components.ark_skill:GetSkill("mon3tr_skill3") or nil
-  if not skill or not skill:IsActivating() then
-    return
-  end
-  if data == nil or data.target == nil or not data.target:IsValid() then
-    return
-  end
-  if data.target.components ~= nil and data.target.components.health ~= nil and data.target.components.health:IsDead() then
-    return
-  end
-  if inst.components.health == nil or inst.components.health:IsDead() then
-    return
-  end
-
-  local lifesteal = GetSkill3LifestealAmount(inst, data)
-  if lifesteal > 0 then
-    inst.components.health:DoDelta(lifesteal, false, "mon3tr_skill3_lifesteal", nil, data.target, true)
-  end
+  local lifesteal = inst.components.combat.defaultdamage or 0
+  inst.components.health:DoDelta(lifesteal, false, "mon3tr_skill3_lifesteal", nil, data.target, true)
 end
 
 local function OnHitOtherTask(inst, data)
@@ -412,32 +392,36 @@ local function RemoveConstructBeaconCallback(inst)
   end
 end
 
-local function OnSkill3DoAttack(inst, data)
+local function OnSkill3AttackOther(inst, data)
   local skill = inst.components.ark_skill and inst.components.ark_skill:GetSkill("mon3tr_skill3") or nil
+  ArkLogger:Debug("Mon3tr Skill3 DoAttack", skill and skill:IsActivating())
   if skill and skill:IsActivating() then
     local combat = inst.components.combat
-    combat:DoAreaAttack(inst, 3, combat:GetWeapon(), nil, nil, nil, nil)
+    combat:DoAreaAttack(inst, 3, combat:GetWeapon(), function(ent)
+      return data and ent ~= data.target or true
+    end, nil, nil, nil)
   end
 end
 
 local function InstallSkill3Interface(skill)
-  function skill:SpawnConstructBeaconAt(x, y, z)
-    if not self._construct_beacon then
+  function skill:SpawnConstructBeacon()
+    local pos = self:GetState("start_pos")
+    if pos and not self.construct_beacon then
       local beacon = SpawnPrefab("construct_beacon")
-      beacon.Transform:SetPosition(x, y, z)
-      self._construct_beacon = beacon
+      beacon.Transform:SetPosition(pos.x, pos.y, pos.z)
+      self.construct_beacon = beacon
     end
-    return self._construct_beacon
+    return self.construct_beacon
   end
 
   function skill:GetConstructBeacon()
-    return self._construct_beacon
+    return self.construct_beacon
   end
 
   function skill:RemoveConstructBeacon()
-    if self._construct_beacon then
-      self._construct_beacon:Remove()
-      self._construct_beacon = nil
+    if self.construct_beacon then
+      self.construct_beacon:Remove()
+      self.construct_beacon = nil
     end
   end
 
@@ -499,7 +483,7 @@ local function InstallSkill3Interface(skill)
     light.Light:SetColour(1, 0.15, 0.15)
   end
 
-  function skill:StartSkill3GreenFade()
+  function skill:StartGreenFade(continueBefore)
     local inst = self.inst
     CancelSkill3LightTask(self)
     local light = self._mon3tr_skill3_light_fx
@@ -509,15 +493,15 @@ local function InstallSkill3Interface(skill)
     light.Light:SetIntensity(0.95)
     light.Light:SetColour(0.2, 1, 0.25)
     local lightDuration = 30
-    if not self._skill3_light_start_time then
-      self._skill3_light_start_time = GetTime()
+    if not continueBefore then
+      self:SetState("green_light_start_time", GetTime())
     end
     self._mon3tr_skill3_extinguish_task = inst:DoPeriodicTask(SKILL3_LIGHT_UPDATE_INTERVAL, function()
-      local remain = self._skill3_light_start_time + lightDuration - GetTime()
+      local start_time = self:GetState("green_light_start_time") or 0
+      local remain = start_time + lightDuration - GetTime()
       if remain <= 0 then
         light.Light:Enable(false)
         CancelSkill3LightTask(self)
-        self._skill3_light_start_time = nil
       else
         local intensity = math.max(0, math.min(1, remain / lightDuration))
         light.Light:SetIntensity(0.95 * intensity)
@@ -533,7 +517,7 @@ local function OnSkill3Install(skill)
     skill._mon3tr_skill3_light_fx.Transform:SetPosition(0, 0, 0)
     skill._mon3tr_skill3_light_fx.Light:Enable(false)
   end
-  skill:ListenForEvent("doattack", OnSkill3DoAttack)
+  skill:ListenForEvent("onattackother", OnSkill3AttackOther)
   InstallSkill3Interface(skill)
   OnCommonSkillInstall(skill)
   skill:ListenForEvent("onhitother", OnHitOtherSkill3Lifesteal)
@@ -551,22 +535,34 @@ end
 
 local function OnSkill3Activate(skill, data)
   local inst = skill.inst
-  local activePos = nil
+  local targetpos = nil
   if inst.components.combat and inst.components.combat.target then
-    activePos = GetSkill3ActivePosFromTarget(inst, inst.components.combat.target)
+    targetpos = GetSkill3ActivePosFromTarget(inst, inst.components.combat.target)
   end
-  if activePos == nil and data and data.target then
-    activePos = GetSkill3ActivePosFromTarget(inst, data.target)
+  if targetpos == nil and data and data.target then
+    targetpos = GetSkill3ActivePosFromTarget(inst, data.target)
   end
-  if activePos == nil and data and data.targetPos then
-    activePos = GetSkill3ActivePosFromPoint(data.targetPos)
+  if targetpos == nil and data and data.targetPos then
+    targetpos = GetSkill3ActivePosFromPoint(data.targetPos)
   end
-  if not activePos then
-    -- TODO: 提醒玩家无法找到合适的位置
+  if not targetpos then
     return
   end
+  skill:SetState("construct_sword_bonus", nil)
+  if inst.components.inventory ~= nil and inst.components.combat ~= nil then
+    local handItem = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
+    if handItem ~= nil and handItem.prefab == "construct_sword" and handItem.ConsumeSkill3DurabilityBonus ~= nil then
+      local bonus = handItem:ConsumeSkill3DurabilityBonus()
+      if bonus > 0 then
+        skill:SetState("construct_sword_bonus", bonus)
+      end
+    end
+  end
+  local x, y, z = inst.Transform:GetWorldPosition()
+  skill:SetState("start_pos", { x = x, y = y, z = z })
+  inst.components.health:SetPercent(1)
   inst.sg:GoToState("mon3tr_superjump_pre", {
-    targetpos = activePos,
+    targetpos = targetpos,
   })
 end
 
@@ -583,21 +579,26 @@ end, { priority = 10 })
 
 local SKILL3_MODIFIER_KEY = "mon3tr_skill3_modifier"
 local function OnSkill3ActivateEffect(skill)
-  ArkLogger:Debug("Mon3tr Skill3 Activate Effect")
   local inst = skill.inst
 
   local levelParams = skill:GetLevelParams()
-  local attackDamageMultiplier = levelParams.attack_damage_multiplier or 1
-  inst.components.combat.externaldamagemultipliers:SetModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY,
-    attackDamageMultiplier)
-  inst.components.combat.truedamagemultipliers:SetModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY, 1)
+  if inst.components.combat ~= nil then
+    local bonus = skill:GetState("construct_sword_bonus")
+    inst.components.combat.defaultdamageaddmodifiers:SetModifier(SKILL3_SWORD_DAMAGE_BONUS_KEY, bonus or 0)
+    inst.components.combat.externaldamagemultipliers:SetModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY,
+      levelParams.attack_damage_multiplier)
+    inst.components.combat.truedamagemultipliers:SetModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY, 1)
+    -- inst.components.combat.noimpactsound = true
+  end
   if inst.components.health then
     if skill._skill3_min_health_remove_task then
       skill._skill3_min_health_remove_task:Cancel()
       skill._skill3_min_health_remove_task = nil
     end
     local healthBonus = levelParams.health_bonus or 0
+    local currentPercent = inst.components.health:GetPercent()
     inst.components.health.maxhealthaddmodifiers:SetModifier(inst, healthBonus, SKILL3_MODIFIER_KEY)
+    inst.components.health:SetPercent(currentPercent)
     if not skill._skill3_lose_health_task then
       local loseHealthPerSecond = levelParams.lose_health_per_second or 0
       skill._skill3_lose_health_task = inst:DoPeriodicTask(1, function()
@@ -615,6 +616,7 @@ local function OnSkill3ActivateEffect(skill)
     end
   end
   skill:SetupSkill3Weapon()
+  skill:SpawnConstructBeacon()
   skill:SpawnWrathFx()
   inst:AddTag("immune_stun")
   inst:AddTag("no_construct_armor_exchange")
@@ -628,13 +630,19 @@ local function OnSkill3Deactivate(skill, data)
     skill._skill3_lose_health_task = nil
   end
   if inst.components.combat then
+    inst.components.combat.defaultdamageaddmodifiers:RemoveModifier(SKILL3_SWORD_DAMAGE_BONUS_KEY)
     inst.components.combat.externaldamagemultipliers:RemoveModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY)
     inst.components.combat.truedamagemultipliers:RemoveModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY)
+    -- inst.components.combat.noimpactsound = false
   end
+  skill:SetState("construct_sword_bonus", nil)
   if inst.components.health then
     local currentPercent = inst.components.health:GetPercent()
     inst.components.health.maxhealthaddmodifiers:RemoveModifier(inst, SKILL3_MODIFIER_KEY)
-    inst.components.health:SetPercent(currentPercent)
+    -- 大于最小值才重新设置百分比, 避免重新触发最小血量事件导致已装备的M3茧甲被消耗
+    if inst.components.health.currenthealth > inst.components.health.minhealth then
+      inst.components.health:SetPercent(currentPercent)
+    end
     if skill._skill3_min_health_remove_task then
       skill._skill3_min_health_remove_task:Cancel()
       skill._skill3_min_health_remove_task = nil
@@ -654,38 +662,19 @@ local function OnSkill3Deactivate(skill, data)
       beacon = construct_beacon,
     })
   end
-  inst:RemoveEventCallback("minhealth", OnMinHealth)
+  -- 下一帧才能移除, 否则可能额外触发M3茧甲的最小血量事件
+  inst:DoTaskInTime(0, function()
+    inst:RemoveEventCallback("minhealth", OnMinHealth)
+  end)
   inst:RemoveTag("immune_stun")
   inst:RemoveTag("no_construct_armor_exchange")
   skill:RemoveWrathFx()
-  skill:StartSkill3GreenFade()
+  skill:StartGreenFade()
   skill:RemoveSkill3Weapon()
 end
 
-local function OnSkill3Save(skill, data)
-  local data = {
-    skill3_light_start_time = skill._skill3_light_start_time,
-  }
-  local construct_beacon = skill:GetConstructBeacon()
-  if construct_beacon then
-    local x, y, z = construct_beacon.Transform:GetWorldPosition()
-    data.construct_beacon_pos = {
-      x = x,
-      y = y,
-      z = z,
-    }
-  end
-  return data
-end
-
 local function OnSkill3Load(skill, data)
-  if data.skill3_light_start_time then
-    skill._skill3_light_start_time = data.skill3_light_start_time
-  end
-  if data.construct_beacon_pos then
-    local beaconData = data.construct_beacon_pos
-    skill:SpawnConstructBeaconAt(beaconData.x, beaconData.y, beaconData.z)
-  end
+  skill:StartGreenFade(true)
 end
 
 local skills = { {
@@ -826,7 +815,6 @@ local skills = { {
   hotkey = KEY_C,
   atlas = "images/ui_mon3tr_skill.xml",
   image = "skill3_64.tex",
-  OnAdd = OnCommonSkillAdd,
   OnInstall = OnSkill3Install,
   OnRemove = OnSkill3Remove,
   OnActivate = OnSkill3Activate,
@@ -897,5 +885,7 @@ local skills = { {
 } }
 
 for _, skill in ipairs(skills) do
+  -- TODO: 先只保留一级, 剩余所有级删除
+  skill.levels = { skill.levels[1] }
   RegisterArkSkill(skill)
 end
