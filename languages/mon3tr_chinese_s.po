@@ -244,3 +244,23 @@ msgstr "自我修复"
 msgctxt "STRINGS.UI.MON3TR_SELF_REPAIR_BUFF.DESC"
 msgid "Characters around Reconstruction gain +%d%% ATK, buff lasts %ds after leaving."
 msgstr "重构体周围的角色攻击力增加%d%%, 离开后持续 %d秒"
+
+#. STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL2_0"
+msgctxt "STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL2_0"
+msgid "My claws will listen for me."
+msgstr "我的爪子会替我听诊。"
+
+#. STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_0"
+msgctxt "STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_0"
+msgid "Switching form."
+msgstr "正在切换形态。"
+
+#. STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_1"
+msgctxt "STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_1"
+msgid "Destruction and healing."
+msgstr "毁灭，同时治愈。"
+
+#. STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_2"
+msgctxt "STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_2"
+msgid "Engage the enemy, swift battle."
+msgstr "接敌，速战速决。"

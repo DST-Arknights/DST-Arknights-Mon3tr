@@ -357,6 +357,9 @@ local function OnCommonSkillInstall(skill)
   end
 end
 
+local function OnSkill2Activate(skill, data)
+  SayAndVoice(skill.inst, "MON3TR_SKILL2_0")
+end
 
 local function OnPlayerIdle(inst, data)
   if data.newstate ~= "idle" then
@@ -564,6 +567,9 @@ local function OnSkill3Activate(skill, data)
   inst.sg:GoToState("mon3tr_superjump_pre", {
     targetpos = targetpos,
   })
+  -- 0-2随机播放一个台词
+  local randomVoice = math.random(0, 2)
+  inst:SayAndVoice("MON3TR_SKILL3_" .. randomVoice)
 end
 
 local function ForceDeactivateSkill3(inst)
@@ -746,6 +752,7 @@ local skills = { {
   atlas = "images/ui_mon3tr_skill.xml",
   image = "skill2_64.tex",
   OnInstall = OnCommonSkillInstall,
+  OnActivate = OnSkill2Activate,
   levels = { {
     activationEnergy = 15,
     buffDuration = 30,
@@ -820,7 +827,6 @@ local skills = { {
   OnActivate = OnSkill3Activate,
   OnActivateEffect = OnSkill3ActivateEffect,
   OnDeactivate = OnSkill3Deactivate,
-  OnSave = OnSkill3Save,
   OnLoad = OnSkill3Load,
   levels = { {
     activationEnergy = 1,

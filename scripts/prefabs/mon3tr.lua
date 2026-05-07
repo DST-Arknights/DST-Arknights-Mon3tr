@@ -1,5 +1,5 @@
 local MakePlayerCharacter = require "prefabs/player_common"
-
+local mon3tr_voice = "mon3tr_voice"
 local assets =
 {
   Asset("SCRIPT", "scripts/prefabs/player_common.lua"),
@@ -57,7 +57,7 @@ local master_postinit = function(inst)
   -- inst.AnimState:AddOverrideBuild("mon3tr_attacks")
 
   -- choose which sounds this character will play
-  inst.soundsname = "willow"
+  inst.talksoundoverride = "mon3tr/jp/talk_LP"
 
   -- Uncomment if "wathgrithr"(Wigfrid) or "webber" voice is used
   -- inst.talker_path_override = "dontstarve_DLC001/characters/"
@@ -90,6 +90,9 @@ local master_postinit = function(inst)
     requiredElite = 3,
   })
   inst:AddComponent("ark_currency")
+  inst:AddComponent("i18n_talker")
+  inst.components.i18n_talker:RegisterVoice(mon3tr_voice)
+  inst.components.i18n_talker:SetVoiceLang('jp')
   inst.OnLoad = Onload
   inst.OnNewSpawn = OnNewSpawn
 
