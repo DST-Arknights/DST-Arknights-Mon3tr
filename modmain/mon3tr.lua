@@ -340,6 +340,11 @@ AddStategraphState("wilson", State {
       inst.sg:GoToState("idle", true)
       return
     end
+    -- 先记录下construct_beacon
+    local skill = GetMon3trSkill3(inst)
+    if skill then
+      data.construct_beacon = skill:GetConstructBeacon()
+    end
 
     inst.components.locomotor:Stop()
     inst.sg.statemem.data = data
@@ -397,6 +402,9 @@ AddStategraphState("wilson", State {
     local skill3 = GetMon3trSkill3(inst)
     if skill3 then
       skill3:RemoveConstructBeacon()
+    elseif data.construct_beacon and data.construct_beacon:IsValid() then
+      -- 如果技能3已经被移除了，但construct_beacon还在场上，就把它删了
+      data.construct_beacon:Remove()
     end
   end,
 

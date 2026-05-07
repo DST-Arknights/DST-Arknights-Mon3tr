@@ -15,6 +15,8 @@ Assets = {
   Asset("ATLAS", "images/avatars/self_inspect_mon3tr.xml"),
   Asset("ATLAS", "images/names_mon3tr.xml"),
   Asset("ATLAS", "images/names_gold_mon3tr.xml"),
+  Asset("SOUNDPACKAGE", "sound/mon3tr.fev"),
+  Asset("SOUND", "sound/mon3tr.fsb"),
 }
 AddMinimapAtlas("images/map_icons/mon3tr.xml")
 
@@ -57,3 +59,5 @@ TUNING.MON3TR_ELITE = {{
 
 modimport("modmain/mon3tr")
 modimport("modmain/mon3tr_skill")
+local mon3tr_voice = require "mon3tr_voice"
+RegisterVoice("mon3tr", mon3tr_voice)

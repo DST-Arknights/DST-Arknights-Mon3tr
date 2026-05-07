@@ -2,6 +2,7 @@ RegisterInventoryItemAtlas("images/inventoryimages/construct_armor.xml", "constr
 local assets =
 {
   Asset("ANIM", "anim/construct_armor.zip"),
+  Asset("ATLAS", "images/inventoryimages/construct_armor.xml"),
 }
 
 local MAX_CONDITION = 2000

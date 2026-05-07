@@ -4,9 +4,7 @@ local ATTACK_RECOVERY_ENERGY = 1
 local HEAL_CHAIN_RANGE = 16
 local HEAL_CHAIN_EXCLUDE_TAGS = { "INLIMBO", "flight", "invisible", "notarget", "noattack" }
 
-local SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY = "mon3tr_skill3_attack_damage_multiplier"
-local SKILL3_MIN_HEALTH_KEY = "mon3tr_skill3_min_health"
-local SKILL3_SWORD_DAMAGE_BONUS_KEY = "construct_sword_skill3_bonus"
+local MON3TR_SKILL3_MODIFIER_KEY = "mon3tr_skill3_modifier"
 local SKILL3_MIN_HEALTH_REMOVE_DELAY = 5 -- 3技能结束的无敌保护持续时间
 local SKILL3_APPROACH_MAX_OFFSET = 2
 local SKILL3_APPROACH_MIN_DISTANCE = 1
@@ -569,7 +567,7 @@ local function OnSkill3Activate(skill, data)
   })
   -- 0-2随机播放一个台词
   local randomVoice = math.random(0, 2)
-  inst:SayAndVoice("MON3TR_SKILL3_" .. randomVoice)
+  SayAndVoice(skill.inst, "MON3TR_SKILL3_" .. randomVoice)
 end
 
 local function ForceDeactivateSkill3(inst)
@@ -583,17 +581,21 @@ local OnMinHealth = PriorityEventCallback(function(inst)
   ForceDeactivateSkill3(inst)
 end, { priority = 10 })
 
-local SKILL3_MODIFIER_KEY = "mon3tr_skill3_modifier"
 local function OnSkill3ActivateEffect(skill)
   local inst = skill.inst
 
   local levelParams = skill:GetLevelParams()
   if inst.components.combat ~= nil then
     local bonus = skill:GetState("construct_sword_bonus")
-    inst.components.combat.defaultdamageaddmodifiers:SetModifier(SKILL3_SWORD_DAMAGE_BONUS_KEY, bonus or 0)
-    inst.components.combat.externaldamagemultipliers:SetModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY,
+    inst.components.combat.defaultdamageaddmodifiers:SetModifier(MON3TR_SKILL3_MODIFIER_KEY, bonus or 0)
+    inst.components.combat.externaldamagemultipliers:SetModifier(MON3TR_SKILL3_MODIFIER_KEY,
       levelParams.attack_damage_multiplier)
-    inst.components.combat.truedamagemultipliers:SetModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY, 1)
+    inst.components.combat.truedamagemultipliers:SetModifier(MON3TR_SKILL3_MODIFIER_KEY, 1)
+    -- 攻速修改
+    inst.components.combat.attackspeedmodifiers:SetModifier(MON3TR_SKILL3_MODIFIER_KEY, levelParams.attack_speed_multiplier)
+    -- 攻击距离增加
+    inst.components.combat.attackrangeaddmodifiers:SetModifier(MON3TR_SKILL3_MODIFIER_KEY, levelParams.attack_range_bonus)
+    inst.components.combat.hitrangeaddmodifiers:SetModifier(MON3TR_SKILL3_MODIFIER_KEY, levelParams.attack_range_bonus)
     -- inst.components.combat.noimpactsound = true
   end
   if inst.components.health then
@@ -603,7 +605,7 @@ local function OnSkill3ActivateEffect(skill)
     end
     local healthBonus = levelParams.health_bonus or 0
     local currentPercent = inst.components.health:GetPercent()
-    inst.components.health.maxhealthaddmodifiers:SetModifier(inst, healthBonus, SKILL3_MODIFIER_KEY)
+    inst.components.health.maxhealthaddmodifiers:SetModifier(inst, healthBonus, MON3TR_SKILL3_MODIFIER_KEY)
     inst.components.health:SetPercent(currentPercent)
     if not skill._skill3_lose_health_task then
       local loseHealthPerSecond = levelParams.lose_health_per_second or 0
@@ -611,7 +613,7 @@ local function OnSkill3ActivateEffect(skill)
         inst.components.health:DoDelta(-loseHealthPerSecond)
       end)
     end
-    inst.components.health.minhealthmodifiers:SetModifier(SKILL3_MIN_HEALTH_KEY, 1)
+    inst.components.health.minhealthmodifiers:SetModifier(MON3TR_SKILL3_MODIFIER_KEY, 1)
     inst:ListenForEvent("minhealth", OnMinHealth)
   end
   skill:StartSkill3RedLight()
@@ -636,15 +638,18 @@ local function OnSkill3Deactivate(skill, data)
     skill._skill3_lose_health_task = nil
   end
   if inst.components.combat then
-    inst.components.combat.defaultdamageaddmodifiers:RemoveModifier(SKILL3_SWORD_DAMAGE_BONUS_KEY)
-    inst.components.combat.externaldamagemultipliers:RemoveModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY)
-    inst.components.combat.truedamagemultipliers:RemoveModifier(SKILL3_ATTACK_DAMAGE_MULTIPLIER_KEY)
+    inst.components.combat.defaultdamageaddmodifiers:RemoveModifier(MON3TR_SKILL3_MODIFIER_KEY)
+    inst.components.combat.externaldamagemultipliers:RemoveModifier(MON3TR_SKILL3_MODIFIER_KEY)
+    inst.components.combat.truedamagemultipliers:RemoveModifier(MON3TR_SKILL3_MODIFIER_KEY)
+    inst.components.combat.attackspeedmodifiers:RemoveModifier(MON3TR_SKILL3_MODIFIER_KEY)
+    inst.components.combat.attackrangeaddmodifiers:RemoveModifier(MON3TR_SKILL3_MODIFIER_KEY)
+    inst.components.combat.hitrangeaddmodifiers:RemoveModifier(MON3TR_SKILL3_MODIFIER_KEY)
     -- inst.components.combat.noimpactsound = false
   end
   skill:SetState("construct_sword_bonus", nil)
   if inst.components.health then
     local currentPercent = inst.components.health:GetPercent()
-    inst.components.health.maxhealthaddmodifiers:RemoveModifier(inst, SKILL3_MODIFIER_KEY)
+    inst.components.health.maxhealthaddmodifiers:RemoveModifier(inst, MON3TR_SKILL3_MODIFIER_KEY)
     -- 大于最小值才重新设置百分比, 避免重新触发最小血量事件导致已装备的M3茧甲被消耗
     if inst.components.health.currenthealth > inst.components.health.minhealth then
       inst.components.health:SetPercent(currentPercent)
@@ -656,7 +661,7 @@ local function OnSkill3Deactivate(skill, data)
     skill._skill3_min_health_remove_task = inst:DoTaskInTime(SKILL3_MIN_HEALTH_REMOVE_DELAY, function()
       skill._skill3_min_health_remove_task = nil
       if inst.components.health then
-        inst.components.health.minhealthmodifiers:RemoveModifier(SKILL3_MIN_HEALTH_KEY)
+        inst.components.health.minhealthmodifiers:RemoveModifier(MON3TR_SKILL3_MODIFIER_KEY)
       end
     end)
   end
@@ -690,7 +695,8 @@ local skills = { {
   activationMode = ARK_CONSTANTS.ACTIVATION_MODE.AUTO,
   lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[1],
   atlas = "images/ui_mon3tr_skill.xml",
-  image = "skill1_64.tex",
+  image = "skill1.tex",
+  recipe_image = "skill1_recipe.tex",
   OnInstall = OnCommonSkillInstall,
   levels = { {
     activationEnergy = 5,
@@ -750,7 +756,8 @@ local skills = { {
   lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[2],
   hotkey = KEY_X,
   atlas = "images/ui_mon3tr_skill.xml",
-  image = "skill2_64.tex",
+  image = "skill2.tex",
+  recipe_image = "skill2_recipe.tex",
   OnInstall = OnCommonSkillInstall,
   OnActivate = OnSkill2Activate,
   levels = { {
@@ -821,7 +828,8 @@ local skills = { {
   lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[3],
   hotkey = KEY_C,
   atlas = "images/ui_mon3tr_skill.xml",
-  image = "skill3_64.tex",
+  image = "skill3.tex",
+  recipe_image = "skill3_recipe.tex",
   OnInstall = OnSkill3Install,
   OnRemove = OnSkill3Remove,
   OnActivate = OnSkill3Activate,
@@ -832,60 +840,60 @@ local skills = { {
     activationEnergy = 1,
     buffDuration = 125,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][1],
-    params = { healChainCount = 3, attack_damage_multiplier = 2, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 2, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80, },
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][2],
-    params = { healChainCount = 3, attack_damage_multiplier = 2.2, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 2.2, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 5) }
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][3],
-    params = { healChainCount = 3, attack_damage_multiplier = 2.3, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 2.3, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 5), Ingredient("ark_item_mtl_sl_boss1", 4), Ingredient("ark_item_mtl_sl_rush1", 4) }
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][4],
-    params = { healChainCount = 3, attack_damage_multiplier = 2.5, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 2.5, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_g2", 7) }
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][5],
-    params = { healChainCount = 3, attack_damage_multiplier = 2.6, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 2.6, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 8), Ingredient("ark_item_mtl_sl_strg2", 4), Ingredient("ark_item_mtl_sl_ketone2", 4) }
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][6],
-    params = { healChainCount = 3, attack_damage_multiplier = 2.7, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 2.7, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_strg3", 7) }
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][7],
-    params = { healChainCount = 3, attack_damage_multiplier = 2.8, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 2.8, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_ccf", 5), Ingredient("ark_item_mtl_sl_rush3", 3) }
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][8],
-    params = { healChainCount = 3, attack_damage_multiplier = 3, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 3, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_plcf", 4), Ingredient("ark_item_mtl_sl_iam3", 7) }
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][9],
-    params = { healChainCount = 3, attack_damage_multiplier = 3.1, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 3.1, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 12), Ingredient("ark_item_mtl_sl_xwb", 4), Ingredient("ark_item_mtl_sl_rma7024", 7) }
   }, {
     activationEnergy = 15,
     buffDuration = 25,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][9],
-    params = { healChainCount = 3, attack_damage_multiplier = 3.3, health_bonus = 5000, lose_health_per_second = 80 },
+    params = { healChainCount = 3, attack_damage_multiplier = 3.3, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 15), Ingredient("ark_item_mtl_sl_oeu", 6), Ingredient("ark_item_mtl_sl_iam4", 1) }
   } }
 } }

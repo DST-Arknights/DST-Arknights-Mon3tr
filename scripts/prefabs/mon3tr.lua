@@ -1,5 +1,4 @@
 local MakePlayerCharacter = require "prefabs/player_common"
-local mon3tr_voice = "mon3tr_voice"
 local assets =
 {
   Asset("SCRIPT", "scripts/prefabs/player_common.lua"),
@@ -91,7 +90,7 @@ local master_postinit = function(inst)
   })
   inst:AddComponent("ark_currency")
   inst:AddComponent("i18n_talker")
-  inst.components.i18n_talker:RegisterVoice(mon3tr_voice)
+  inst.components.i18n_talker:SetupVoice('mon3tr')
   inst.components.i18n_talker:SetVoiceLang('jp')
   inst.OnLoad = Onload
   inst.OnNewSpawn = OnNewSpawn
