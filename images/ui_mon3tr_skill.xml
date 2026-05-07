@@ -1,1 +1,12 @@
-<Atlas><Texture filename="ui_mon3tr_skill.tex" /><Elements><Element name="skill2.tex" u1="0.0009765625" u2="0.2490234375" v1="0.501953125" v2="0.998046875" /><Element name="skill1.tex" u1="0.2509765625" u2="0.4990234375" v1="0.501953125" v2="0.998046875" /><Element name="skill3.tex" u1="0.5009765625" u2="0.7490234375" v1="0.501953125" v2="0.998046875" /><Element name="skill3_64.tex" u1="0.7509765625" u2="0.8740234375" v1="0.751953125" v2="0.998046875" /><Element name="skill2_64.tex" u1="0.8759765625" u2="0.9990234375" v1="0.751953125" v2="0.998046875" /><Element name="skill1_64.tex" u1="0.7509765625" u2="0.8740234375" v1="0.501953125" v2="0.748046875" /></Elements></Atlas>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Atlas>
+	<Texture filename="ui_mon3tr_skill.tex" />
+	<Elements>
+		<Element name="skill1.tex" u1="0.001" u2="0.249" v2="0.999" v1="0.501" variant="" />
+		<Element name="skill1_recipe.tex" u1="0.251" u2="0.499" v2="0.999" v1="0.501" variant="" />
+		<Element name="skill2.tex" u1="0.001" u2="0.249" v2="0.499" v1="0.001" variant="" />
+		<Element name="skill2_recipe.tex" u1="0.251" u2="0.499" v2="0.499" v1="0.001" variant="" />
+		<Element name="skill3.tex" u1="0.501" u2="0.7411875" v2="0.999" v1="0.5088125" variant="" />
+		<Element name="skill3_recipe.tex" u1="0.7431875" u2="0.98728125" v2="0.999" v1="0.5088125" variant="" />
+	</Elements>
+</Atlas>
