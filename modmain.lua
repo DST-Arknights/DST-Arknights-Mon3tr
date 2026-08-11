@@ -4,7 +4,9 @@ GLOBAL.setmetatable(env, {
   end
 })
 
-PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_self_repair_buff", "mon3tr_tactical_synergy_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon", "construct_claw", "construct_armor"}
+assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
+
+PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon", "construct_claw"}
 Assets = {
   Asset("ATLAS", "bigportraits/mon3tr.xml"),
   Asset("ATLAS", "images/saveslot_portraits/mon3tr.xml"),
@@ -20,7 +22,9 @@ Assets = {
 }
 AddMinimapAtlas("images/map_icons/mon3tr.xml")
 
-MergePOFile('languages/mon3tr_chinese_s.po', LOC.GetLocaleCode(LANGUAGE.CHINESE_S), true)
+RegisterPOFile(GetModConfigData("language"), {
+  zh = 'languages/mon3tr_chinese_s.po',
+})
 ArkLogger:DeclareLogger('TRACE', 'Mon3tr')
 
 local mon3tr_starting_items = {"construct_sword", "ark_backpack"}
