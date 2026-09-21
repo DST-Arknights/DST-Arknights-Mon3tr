@@ -47,6 +47,8 @@ end
 local common_postinit = function(inst)
   -- Minimap icon
   inst.MiniMapEntity:SetIcon("mon3tr.tex")
+  -- choose which sounds this character will play
+  inst.talksoundoverride = "mon3tr/jp/talk_LP"
   inst:AddTag("ark_character")
 end
 
@@ -54,9 +56,6 @@ end
 local master_postinit = function(inst)
 
   -- inst.AnimState:AddOverrideBuild("mon3tr_attacks")
-
-  -- choose which sounds this character will play
-  inst.talksoundoverride = "mon3tr/jp/talk_LP"
 
   -- Uncomment if "wathgrithr"(Wigfrid) or "webber" voice is used
   -- inst.talker_path_override = "dontstarve_DLC001/characters/"
@@ -89,9 +88,7 @@ local master_postinit = function(inst)
     requiredElite = 3,
   })
   inst:AddComponent("ark_currency")
-  inst:AddComponent("i18n_talker")
-  inst.components.i18n_talker:SetupVoice('mon3tr')
-  inst.components.i18n_talker:SetVoiceLang('jp')
+  BindVoice(inst, "mon3tr")
   inst.OnLoad = Onload
   inst.OnNewSpawn = OnNewSpawn
 

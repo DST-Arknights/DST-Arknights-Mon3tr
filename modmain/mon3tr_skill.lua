@@ -577,9 +577,9 @@ local function ForceDeactivateSkill3(inst)
   end
 end
 
-local OnMinHealth = PriorityEventCallback(function(inst)
+local OnMinHealth = function(inst)
   ForceDeactivateSkill3(inst)
-end, { priority = 10 })
+end
 
 local function OnSkill3ActivateEffect(skill)
   local inst = skill.inst
@@ -614,7 +614,7 @@ local function OnSkill3ActivateEffect(skill)
       end)
     end
     inst.components.health.minhealthmodifiers:SetModifier(MON3TR_SKILL3_MODIFIER_KEY, 1)
-    inst:ListenForEvent("minhealth", OnMinHealth)
+    inst:PriorityListenForEvent("minhealth", OnMinHealth, nil, { priority = 10 })
   end
   skill:StartSkill3RedLight()
   if inst.components.inventory then
@@ -675,7 +675,7 @@ local function OnSkill3Deactivate(skill, data)
   end
   -- 下一帧才能移除, 否则可能额外触发M3茧甲的最小血量事件
   inst:DoTaskInTime(0, function()
-    inst:RemoveEventCallback("minhealth", OnMinHealth)
+    inst:PriorityRemoveEventCallback("minhealth", OnMinHealth)
   end)
   inst:RemoveTag("immune_stun")
   inst:RemoveTag("no_construct_armor_exchange")

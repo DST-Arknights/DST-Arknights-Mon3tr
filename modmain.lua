@@ -63,5 +63,4 @@ TUNING.MON3TR_ELITE = {{
 
 modimport("modmain/mon3tr")
 modimport("modmain/mon3tr_skill")
-local mon3tr_voice = require "mon3tr_voice"
-RegisterVoice("mon3tr", mon3tr_voice)
+RegisterVoice("mon3tr", "languages/mon3tr_voice", { voice_lang = "jp" })
