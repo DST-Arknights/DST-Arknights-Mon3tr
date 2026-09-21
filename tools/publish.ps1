@@ -1,29 +1,23 @@
-# 发布入口（跨 DST mod 项目可复用）
-param(
-    [Parameter(Mandatory = $true)]
-    [ValidateSet('patch', 'minor', 'major')]
-    [string]$Bump,
-
-    [switch]$SkipChecks,
-
-    [switch]$DryRun
-)
+# 项目发布入口；公共流程和配置契约由 DST-ArknightsItemPackage 统一实现。
+#
+# 用法:
+#   pwsh ./tools/publish.ps1 -Bump patch
+#   pwsh ./tools/publish.ps1 -DistOnly
 
 $ErrorActionPreference = 'Stop'
 
-# 项目根目录 = 当前工作目录（在哪个项目下执行就发布哪个项目）
-$projectRoot = Resolve-Path (Get-Location)
-if (-not (Test-Path (Join-Path $projectRoot 'modinfo.lua'))) {
-    Write-Error "当前目录未找到 modinfo.lua，请在 DST mod 项目根目录执行此脚本。"
-    Write-Error "当前目录: $projectRoot"
-    exit 1
+$projectConfig = @{
+    WorkshopDeps = @{
+        'DST-ArknightsItemPackage' = 'workshop-3677284770'
+    }
 }
 
-$sharedModule = Join-Path $env:USERPROFILE 'projects/DST-ArknightsItemPackage/tools/publish/publish.psm1'
-if (-not (Test-Path $sharedModule)) {
-    Write-Error "未找到共享发布模块: $sharedModule"
+$sharedEntry = Join-Path $PSScriptRoot '..\..\DST-ArknightsItemPackage\tools\publish.ps1'
+if (-not (Test-Path -LiteralPath $sharedEntry)) {
+    Write-Error "未找到物品包统一发布入口（相对路径）: $sharedEntry"
     exit 1
 }
+$sharedEntry = (Resolve-Path -LiteralPath $sharedEntry).Path
 
-Import-Module $sharedModule -Force
-Publish-Mod -ProjectRoot $projectRoot -Bump $Bump -SkipChecks:$SkipChecks -DryRun:$DryRun
+$projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+& $sharedEntry -ProjectRoot $projectRoot -ProjectConfig $projectConfig @args
