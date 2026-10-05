@@ -7,7 +7,8 @@ local assets = {
 local BEAM_LENGTH = 459.2 / 150
 local BEAM_HEIGHT = 1
 local BEAM_THICKNESS_SCALE = 3
-local LIFE_TIME = 0.6
+local BEAM_ANIMATION_SPEED = 2
+local LIFE_TIME = 0.6 / BEAM_ANIMATION_SPEED
 local BEAM_BANKS = { "mon3tr_heal_chain_01", "mon3tr_heal_chain_02" }
 
 local function ClearBeam(inst)
@@ -33,6 +34,7 @@ local function CreateBeam(inst, variant)
     fx.AnimState:SetBank(BEAM_BANKS[variant])
     fx.AnimState:SetBuild(BEAM_BANKS[variant])
     fx.AnimState:PlayAnimation("heal")
+    fx.AnimState:SetDeltaTimeMultiplier(BEAM_ANIMATION_SPEED)
     fx.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround)
     fx.AnimState:SetBloomEffectHandle("shaders/anim.ksh")
     fx.AnimState:SetLightOverride(1)

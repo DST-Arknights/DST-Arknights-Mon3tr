@@ -4,10 +4,12 @@ local HEAL_SKILL_SCALE = 4
 local HEAL_PARTICLE_SCALE = 8
 local HEAL_HEIGHT = 1
 local HEAL_PARTICLE_HEIGHT = 0
+local HEAL_ANIMATION_SPEED = 2
 
 local function ConfigureHealFx(inst, scale, finaloffset, height)
   inst.Transform:SetPosition(0, height, 0)
   inst.AnimState:SetScale(scale, scale, scale)
+  inst.AnimState:SetDeltaTimeMultiplier(HEAL_ANIMATION_SPEED)
   inst.AnimState:SetLightOverride(1)
   inst.AnimState:SetFinalOffset(finaloffset)
 end
