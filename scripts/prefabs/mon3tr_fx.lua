@@ -1,27 +1,46 @@
+-- 按新素材的可见范围校准到原治疗特效的覆盖尺寸。
+local HEAL_NORMAL_SCALE = 4.5
+local HEAL_SKILL_SCALE = 4
+local HEAL_PARTICLE_SCALE = 8
+local HEAL_HEIGHT = 1
+local HEAL_PARTICLE_HEIGHT = 0
+
+local function ConfigureHealFx(inst, scale, finaloffset, height)
+  inst.Transform:SetPosition(0, height, 0)
+  inst.AnimState:SetScale(scale, scale, scale)
+  inst.AnimState:SetLightOverride(1)
+  inst.AnimState:SetFinalOffset(finaloffset)
+end
+
 local fxs = { {
   name = "mon3tr_heal_fx",
-  bank = "mon3tr_heal_fx",
-  build = "mon3tr_heal_fx",
-  anim = "idle",
+  bank = "mon3tr_heal_target_01",
+  build = "mon3tr_heal_target_01",
+  anim = "hit",
+  bloom = true,
   scale_with_parent_size = true,
   fn = function(inst)
-    inst.AnimState:SetDeltaTimeMultiplier(0.3)
-    inst.AnimState:SetFinalOffset(1)
-    inst.Transform:SetPosition(0, 1.5, 0)
-    inst.AnimState:SetScale(3.3, 3.3, 3.3)
-    inst.AnimState:SetMultColour(1, 1, 1, 0.95)
+    ConfigureHealFx(inst, HEAL_NORMAL_SCALE, 1, HEAL_HEIGHT)
+  end,
+}, {
+  name = "mon3tr_skill_heal_fx",
+  bank = "mon3tr_heal_target_02",
+  build = "mon3tr_heal_target_02",
+  anim = "hit",
+  bloom = true,
+  scale_with_parent_size = true,
+  fn = function(inst)
+    ConfigureHealFx(inst, HEAL_SKILL_SCALE, 1, HEAL_HEIGHT)
   end,
 }, {
   name = "mon3tr_heal_fx_2",
-  bank = "mon3tr_heal_fx_2",
-  build = "mon3tr_heal_fx_2",
-  anim = "idle",
+  bank = "mon3tr_s3_heal_particles",
+  build = "mon3tr_s3_heal_particles",
+  anim = "heal",
+  bloom = true,
   scale_with_parent_size = true,
   fn = function(inst)
-    inst.AnimState:SetDeltaTimeMultiplier(0.5)
-    inst.AnimState:SetFinalOffset(2)
-    inst.Transform:SetPosition(0, 1.5, 0)
-    inst.AnimState:SetScale(6, 6, 6)
+    ConfigureHealFx(inst, HEAL_PARTICLE_SCALE, 2, HEAL_PARTICLE_HEIGHT)
   end,
 }, {
   name = "mon3tr_wrath_fx",

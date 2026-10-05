@@ -1,0 +1,77 @@
+{
+  "prefab": "monstr_heal_line_02",
+  "sourceFPS": 30,
+  "frameCount": 18,
+  "duration": 0.6,
+  "animationClipDuration": 0.6666666865348816,
+  "loop": false,
+  "canvas": [
+    496,
+    128
+  ],
+  "anchorPixel": [
+    16,
+    64.0
+  ],
+  "ppuEstimate": 160,
+  "endpointPixels": [
+    [
+      16,
+      64.0
+    ],
+    [
+      475.2027691322334,
+      64.0
+    ]
+  ],
+  "worldEndpointLength": 2.8700173070764587,
+  "lineLayers": [
+    "dark",
+    "light",
+    "light_2",
+    "light_2 (1)",
+    "light_2 (2)"
+  ],
+  "activeLineLayers": [
+    "dark",
+    "light",
+    "light_2",
+    "light_2 (1)",
+    "light_2 (2)"
+  ],
+  "disabledSourceLayers": [],
+  "disabledLayerPolicy": "Disabled layers are exported individually for reference only, excluded from composite/normal/additive animations.",
+  "sourceWorldPoints": [
+    {
+      "x": 6.75,
+      "y": 2.799999952316284,
+      "z": -0.20000000298023224
+    },
+    {
+      "x": 3.880000114440918,
+      "y": 2.809999942779541,
+      "z": -0.20000000298023224
+    }
+  ],
+  "selectedPaths": [
+    "static_offset/fixed/dark",
+    "static_offset/fixed/light",
+    "static_offset/fixed/light_2",
+    "static_offset/fixed/light_2 (1)",
+    "static_offset/fixed/light_2 (2)"
+  ],
+  "recipe": "Original width curves, 60Hz decoded clip samples at 30FPS, source-active original layers with material UV flow/disturb/dissolve. Line01 has three active layers; line02 has five. Disabled source layers remain reference-only. Original world endpoints rebase and rotate to +X. Root FX finish at 0.6s is used.",
+  "approximations": [
+    "Unity world-unit-to-pixel scale is an estimate (160 px/unit), not actual in-game camera calibration.",
+    "GLSL reuses source D3D11 shader transcription; Unity postprocessing, scene depth and game camera are absent.",
+    "8-bit RGBA converts additive energy into ordinary coverage and clips HDR; float additive_linear_rgb.npy retains pre-clamp RGB.",
+    "Line endpoint binding is supplied by the DST caller; this sprite is a fixed straight segment, no target tracking controller included."
+  ],
+  "validation": {
+    "dependencyErrors": [],
+    "unresolved": [],
+    "expectedClipScalarCount": 21,
+    "actualClipScalarCount": 21,
+    "shaderRenderer": "AMD Radeon RX 9070 XT"
+  }
+}

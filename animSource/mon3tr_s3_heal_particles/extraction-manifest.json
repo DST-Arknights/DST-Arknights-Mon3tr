@@ -1,0 +1,88 @@
+{
+  "id": "target_heal",
+  "effectRole": "S3 extra heal hit/cast sparkle",
+  "skin": "default",
+  "sourcePrefab": "monstr_skill_03_heal",
+  "selectedPaths": [
+    "static_offset/rotation_y/icon",
+    "static_offset/rotation_y/lizi"
+  ],
+  "originalSourceBundle": "battle/prefabs/effects/monstr.ab",
+  "originalUnityVersion": "2021.3.39f1",
+  "durationSeconds": 1.8,
+  "sourceFrameRate": 30,
+  "frameCount": 54,
+  "canvas": [
+    128,
+    160
+  ],
+  "pixelsPerSourceUnit": 100,
+  "worldBounds": [
+    -0.8073024990595877,
+    0.4726975009404123,
+    -0.2799297660183868,
+    1.3200702339816133
+  ],
+  "anchorPixelTopLeft": [
+    80.73024990595877,
+    132.00702339816132
+  ],
+  "pivot": [
+    0.6307050773903029,
+    0.17495610376149176
+  ],
+  "loop": false,
+  "integrationStepSeconds": 0.008333333333333333,
+  "warmupSeconds": 0,
+  "camera": "orthographic +Z toward XY; target/root at (0,0,0)",
+  "randomSeedPolicy": "LCG, per emitter constructor node count * 373 + prefab name length * 131; initial seeds in source/particle-parameters.json",
+  "finishPolicy": "Preserve particle lifetimes after emission ends; 0.5/1.5 trigger delay is not used as hard cut. Source ParticleEffect runtime Stop/Finish lifecycle not emulated.",
+  "rendering": {
+    "method": "offline OpenGL 3.3 shader transcription with original textures, original mesh geometry or canonical billboard quads",
+    "renderer": "AMD Radeon RX 9070 XT",
+    "shaderEvidence": "source/shader-evidence.json and source/shaders/*.asm.txt",
+    "formula": "Color = selectedTextureChannels * materialTint * particleColor * 2; original shader dissolve/disturb, ST, per-particle CustomData and FxUVRotation applied where active.",
+    "additive": "Coverage-converted combined straight RGBA. Raw un-clipped float RGB retained in layers/additive-energy.zip. Original SrcAlpha/One additive cannot be exactly represented by ordinary alpha over every background."
+  },
+  "validation": {
+    "graphErrors": 0,
+    "unresolvedPPtrs": 0,
+    "visibleFrameCount": 47,
+    "transparentFrameIndices": [
+      0,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53
+    ],
+    "allCanvasIdentical": true,
+    "allFramesRGBA": true,
+    "noPerFrameCrop": true,
+    "OpenGLShaderCompiled": true,
+    "GIFDurationMilliseconds": 1800,
+    "GIFReadbackDurationMilliseconds": 1800,
+    "visuallyInspected": "Peak render on both dark/light backgrounds and contact sheets, sprites visible. Not Unity or DST runtime comparison.",
+    "maxObservedDrawCallsPerFrame": 11
+  },
+  "files": {
+    "frames": "frames/",
+    "normal": "layers/normal/",
+    "additive": "layers/additive/",
+    "preview": "preview.gif",
+    "contact": "contact.png",
+    "render": "render.png",
+    "renderBackgrounds": "render-backgrounds.png",
+    "firstFrameSHA256": "a700cf75f063e1c3be908f00bb7ffb9577679c6fdcaa2ec12ec9ccab19d37570"
+  },
+  "approximations": [
+    "Source-driven particle simulation is not Unity runtime playback. Shape Box, Hermite curves, Color/Size/Rotation, UV sheet, velocity clamp and CustomData are translated.",
+    "Unity particle noise is approximated by fixed seeded smooth value noise; trajectories/random sampling differ from Unity.",
+    "Particle limit capped at 512 by simulator for original 1000-cap emitters; observed alive counts stay below this cap.",
+    "Velocity clamp damping uses fixed-step approximation; Unity native update ordering and random channel independence are not verified.",
+    "No Unity scene depth/soft particle intersection, HDR bloom, color grading or dynamic target silhouette.",
+    "2D orthographic projection and painter sorting approximate the original gameplay camera."
+  ],
+  "disabledLayer": "static_offset/rotation_y has disabled Renderer and Emission; true Default-Particle material resolved from anon CAB967, retained as source only."
+}

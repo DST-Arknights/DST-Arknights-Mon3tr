@@ -13,20 +13,15 @@ local SKILL3_POSITION_SEARCH_ATTEMPTS = 12
 local SKILL3_LIGHT_UPDATE_INTERVAL = 0.2
 
 local function ConnectHealChain(source, target)
-  if source == nil or target == nil or source.Transform == nil or target.Transform == nil then
-    return
-  end
-  local x, y, z = source.Transform:GetWorldPosition()
-  local x1, y1, z1 = target.Transform:GetWorldPosition()
-  local dx = x1 - x
-  local dz = z1 - z
-  local dsq = dx * dx + dz * dz
   local fx = SpawnPrefab("mon3tr_heal_chain_fx")
-  if fx == nil then
-    return
+  if fx ~= nil then
+    fx:SetEndpoints(source, target)
   end
-  fx.Transform:SetPosition((x + x1) / 2, 0, (z + z1) / 2)
-  fx:SetBeam(math.sqrt(dsq), math.atan2(-dz, dx) * RADIANS)
+end
+
+local function SpawnHealFx(target, skillHeal)
+  target:SpawnChild(skillHeal and "mon3tr_skill_heal_fx" or "mon3tr_heal_fx")
+  target:SpawnChild("mon3tr_heal_fx_2")
 end
 
 local function AppendSkillHealChainParam(skill, healRate, healChainCount)
@@ -123,14 +118,11 @@ local function HealChain(inst, from, data)
   local chain = FindHealChain(inst, from, healCount)
   if #chain > 0 and from ~= nil then
     ConnectHealChain(from, chain[1])
-    from:SpawnChild("mon3tr_heal_fx")
-    from:SpawnChild("mon3tr_heal_fx_2")
-    chain[1]:SpawnChild("mon3tr_heal_fx")
-    chain[1]:SpawnChild("mon3tr_heal_fx_2")
+    SpawnHealFx(from, data.skill_heal)
+    SpawnHealFx(chain[1], data.skill_heal)
     if #chain > 1 then
       for i = 1, #chain - 1 do
-        chain[i + 1]:SpawnChild("mon3tr_heal_fx")
-        chain[i + 1]:SpawnChild("mon3tr_heal_fx_2")
+        SpawnHealFx(chain[i + 1], data.skill_heal)
         ConnectHealChain(chain[i], chain[i + 1])
       end
     end
@@ -194,6 +186,7 @@ local function OnHitOther(inst, data)
     rate = healRate,
     count = healChainCount,
     health = inst.components.combat.defaultdamage,
+    skill_heal = skill1 and skill1:IsActivating(),
   })
   local playerElite = inst.components.ark_elite and inst.components.ark_elite.elite or 1
   if playerElite > 1 then

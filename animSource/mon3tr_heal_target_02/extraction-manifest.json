@@ -1,0 +1,104 @@
+{
+  "id": "monstr_attack_hit_02",
+  "effectRole": "S1/S2 heal target effect",
+  "skin": "default",
+  "sourcePrefab": "monstr_attack_hit_02",
+  "selectedPaths": [
+    "static_offset/fixed/dark",
+    "static_offset/fixed/glow",
+    "static_offset/fixed/glow (1)",
+    "static_offset/fixed/ray",
+    "static_offset/fixed/flow_ring",
+    "static_offset/fixed/icon_1",
+    "static_offset/fixed/icon_2",
+    "static_offset/fixed/icon_3",
+    "static_offset/fixed/ptc",
+    "static_offset/fixed/1",
+    "static_offset/fixed/2",
+    "static_offset/fixed/3",
+    "static_offset/fixed/4",
+    "static_offset/fixed/5",
+    "static_offset/fixed/6"
+  ],
+  "originalSourceBundle": "battle/prefabs/effects/monstr.ab",
+  "originalUnityVersion": "2021.3.39f1",
+  "durationSeconds": 1.8,
+  "sourceFrameRate": 30,
+  "frameCount": 54,
+  "canvas": [
+    192,
+    208
+  ],
+  "pixelsPerSourceUnit": 100,
+  "worldBounds": [
+    -0.96,
+    0.96,
+    -0.944869793876024,
+    1.135130206123976
+  ],
+  "anchorPixelTopLeft": [
+    96.0,
+    113.51302061239761
+  ],
+  "pivot": [
+    0.5,
+    0.4542643239788577
+  ],
+  "loop": false,
+  "integrationStepSeconds": 0.008333333333333333,
+  "warmupSeconds": 0,
+  "camera": "orthographic +Z toward XY; target/root at (0,0,0)",
+  "randomSeedPolicy": "LCG, per emitter constructor node count * 373 + prefab name length * 131; initial seeds in source/particle-parameters.json",
+  "finishPolicy": "Preserve particle lifetimes after emission ends; 0.5/1.5 trigger delay is not used as hard cut. Source ParticleEffect runtime Stop/Finish lifecycle not emulated.",
+  "rendering": {
+    "method": "offline OpenGL 3.3 shader transcription with original textures, original mesh geometry or canonical billboard quads",
+    "renderer": "AMD Radeon RX 9070 XT",
+    "shaderEvidence": "source/shader-evidence.json and source/shaders/*.asm.txt",
+    "formula": "Color = selectedTextureChannels * materialTint * particleColor * 2; original shader dissolve/disturb, ST, per-particle CustomData and FxUVRotation applied where active.",
+    "additive": "Coverage-converted combined straight RGBA. Raw un-clipped float RGB retained in layers/additive-energy.zip. Original SrcAlpha/One additive cannot be exactly represented by ordinary alpha over every background."
+  },
+  "validation": {
+    "graphErrors": 0,
+    "unresolvedPPtrs": 0,
+    "visibleFrameCount": 43,
+    "transparentFrameIndices": [
+      0,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53
+    ],
+    "allCanvasIdentical": true,
+    "allFramesRGBA": true,
+    "noPerFrameCrop": true,
+    "OpenGLShaderCompiled": true,
+    "GIFDurationMilliseconds": 1800
+  },
+  "files": {
+    "frames": "frames/",
+    "normal": "layers/normal/",
+    "additive": "layers/additive/",
+    "preview": "preview.gif",
+    "contact": "contact.png",
+    "render": "render.png",
+    "renderBackgrounds": "render-backgrounds.png",
+    "firstFrameSHA256": "767f2e9ff25114f55325e0f60bd579bf4a8cde7dd2bef2af74fd99c7a3ad5a46"
+  },
+  "approximations": [
+    "Source-driven particle simulation is not Unity runtime playback. Shape Box, Hermite curves, Color/Size/Rotation, UV sheet, velocity clamp and CustomData are translated.",
+    "Unity particle noise is approximated by fixed seeded smooth value noise; trajectories/random sampling differ from Unity.",
+    "Particle limit capped at 512 by simulator for original 1000-cap emitters; observed alive counts stay below this cap.",
+    "Velocity clamp damping uses fixed-step approximation; Unity native update ordering and random channel independence are not verified.",
+    "No Unity scene depth/soft particle intersection, HDR bloom, color grading or dynamic target silhouette.",
+    "2D orthographic projection and painter sorting approximate the original gameplay camera.",
+    "Hit02 FxUVRotation runtime property injection is inferred from its serialized angles and D3D11 UV rotation formula; main 0 degrees and weight 180 degrees."
+  ],
+  "emissionPolicy": "Non-loop emission uses half-open [0,lengthInSec); at end boundary no new rate-over-time births. Original particle lifetime tail preserved. This fixes a source-derived offline simulator endpoint artifact.",
+  "originalCanvasPivotPreserved": true
+}

@@ -1,0 +1,391 @@
+<?xml version='1.0' encoding='utf-8'?>
+<spriter_data scml_version="1.0" generator="fixed-pivot PNG sequence" generator_version="1">
+  <folder id="0" name="frames">
+    <file id="0" name="frames/monstr_attack_hit_02_000.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="1" name="frames/monstr_attack_hit_02_001.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="2" name="frames/monstr_attack_hit_02_002.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="3" name="frames/monstr_attack_hit_02_003.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="4" name="frames/monstr_attack_hit_02_004.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="5" name="frames/monstr_attack_hit_02_005.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="6" name="frames/monstr_attack_hit_02_006.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="7" name="frames/monstr_attack_hit_02_007.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="8" name="frames/monstr_attack_hit_02_008.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="9" name="frames/monstr_attack_hit_02_009.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="10" name="frames/monstr_attack_hit_02_010.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="11" name="frames/monstr_attack_hit_02_011.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="12" name="frames/monstr_attack_hit_02_012.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="13" name="frames/monstr_attack_hit_02_013.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="14" name="frames/monstr_attack_hit_02_014.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="15" name="frames/monstr_attack_hit_02_015.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="16" name="frames/monstr_attack_hit_02_016.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="17" name="frames/monstr_attack_hit_02_017.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="18" name="frames/monstr_attack_hit_02_018.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="19" name="frames/monstr_attack_hit_02_019.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="20" name="frames/monstr_attack_hit_02_020.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="21" name="frames/monstr_attack_hit_02_021.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="22" name="frames/monstr_attack_hit_02_022.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="23" name="frames/monstr_attack_hit_02_023.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="24" name="frames/monstr_attack_hit_02_024.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="25" name="frames/monstr_attack_hit_02_025.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="26" name="frames/monstr_attack_hit_02_026.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="27" name="frames/monstr_attack_hit_02_027.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="28" name="frames/monstr_attack_hit_02_028.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="29" name="frames/monstr_attack_hit_02_029.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="30" name="frames/monstr_attack_hit_02_030.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="31" name="frames/monstr_attack_hit_02_031.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="32" name="frames/monstr_attack_hit_02_032.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="33" name="frames/monstr_attack_hit_02_033.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="34" name="frames/monstr_attack_hit_02_034.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="35" name="frames/monstr_attack_hit_02_035.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="36" name="frames/monstr_attack_hit_02_036.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="37" name="frames/monstr_attack_hit_02_037.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="38" name="frames/monstr_attack_hit_02_038.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="39" name="frames/monstr_attack_hit_02_039.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="40" name="frames/monstr_attack_hit_02_040.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="41" name="frames/monstr_attack_hit_02_041.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="42" name="frames/monstr_attack_hit_02_042.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="43" name="frames/monstr_attack_hit_02_043.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="44" name="frames/monstr_attack_hit_02_044.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="45" name="frames/monstr_attack_hit_02_045.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="46" name="frames/monstr_attack_hit_02_046.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="47" name="frames/monstr_attack_hit_02_047.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="48" name="frames/monstr_attack_hit_02_048.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="49" name="frames/monstr_attack_hit_02_049.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="50" name="frames/monstr_attack_hit_02_050.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="51" name="frames/monstr_attack_hit_02_051.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="52" name="frames/monstr_attack_hit_02_052.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+    <file id="53" name="frames/monstr_attack_hit_02_053.png" width="192" height="208" pivot_x="0.5" pivot_y="0.454264323979" />
+  </folder>
+  <entity id="0" name="mon3tr_heal_target_02">
+    <animation id="0" name="hit" length="1800" interval="33" looping="false">
+      <mainline>
+        <key id="0" time="0">
+          <object_ref id="0" timeline="0" key="0" z_index="0" />
+        </key>
+        <key id="1" time="33">
+          <object_ref id="0" timeline="0" key="1" z_index="0" />
+        </key>
+        <key id="2" time="67">
+          <object_ref id="0" timeline="0" key="2" z_index="0" />
+        </key>
+        <key id="3" time="100">
+          <object_ref id="0" timeline="0" key="3" z_index="0" />
+        </key>
+        <key id="4" time="133">
+          <object_ref id="0" timeline="0" key="4" z_index="0" />
+        </key>
+        <key id="5" time="167">
+          <object_ref id="0" timeline="0" key="5" z_index="0" />
+        </key>
+        <key id="6" time="200">
+          <object_ref id="0" timeline="0" key="6" z_index="0" />
+        </key>
+        <key id="7" time="233">
+          <object_ref id="0" timeline="0" key="7" z_index="0" />
+        </key>
+        <key id="8" time="267">
+          <object_ref id="0" timeline="0" key="8" z_index="0" />
+        </key>
+        <key id="9" time="300">
+          <object_ref id="0" timeline="0" key="9" z_index="0" />
+        </key>
+        <key id="10" time="333">
+          <object_ref id="0" timeline="0" key="10" z_index="0" />
+        </key>
+        <key id="11" time="367">
+          <object_ref id="0" timeline="0" key="11" z_index="0" />
+        </key>
+        <key id="12" time="400">
+          <object_ref id="0" timeline="0" key="12" z_index="0" />
+        </key>
+        <key id="13" time="433">
+          <object_ref id="0" timeline="0" key="13" z_index="0" />
+        </key>
+        <key id="14" time="467">
+          <object_ref id="0" timeline="0" key="14" z_index="0" />
+        </key>
+        <key id="15" time="500">
+          <object_ref id="0" timeline="0" key="15" z_index="0" />
+        </key>
+        <key id="16" time="533">
+          <object_ref id="0" timeline="0" key="16" z_index="0" />
+        </key>
+        <key id="17" time="567">
+          <object_ref id="0" timeline="0" key="17" z_index="0" />
+        </key>
+        <key id="18" time="600">
+          <object_ref id="0" timeline="0" key="18" z_index="0" />
+        </key>
+        <key id="19" time="633">
+          <object_ref id="0" timeline="0" key="19" z_index="0" />
+        </key>
+        <key id="20" time="667">
+          <object_ref id="0" timeline="0" key="20" z_index="0" />
+        </key>
+        <key id="21" time="700">
+          <object_ref id="0" timeline="0" key="21" z_index="0" />
+        </key>
+        <key id="22" time="733">
+          <object_ref id="0" timeline="0" key="22" z_index="0" />
+        </key>
+        <key id="23" time="767">
+          <object_ref id="0" timeline="0" key="23" z_index="0" />
+        </key>
+        <key id="24" time="800">
+          <object_ref id="0" timeline="0" key="24" z_index="0" />
+        </key>
+        <key id="25" time="833">
+          <object_ref id="0" timeline="0" key="25" z_index="0" />
+        </key>
+        <key id="26" time="867">
+          <object_ref id="0" timeline="0" key="26" z_index="0" />
+        </key>
+        <key id="27" time="900">
+          <object_ref id="0" timeline="0" key="27" z_index="0" />
+        </key>
+        <key id="28" time="933">
+          <object_ref id="0" timeline="0" key="28" z_index="0" />
+        </key>
+        <key id="29" time="967">
+          <object_ref id="0" timeline="0" key="29" z_index="0" />
+        </key>
+        <key id="30" time="1000">
+          <object_ref id="0" timeline="0" key="30" z_index="0" />
+        </key>
+        <key id="31" time="1033">
+          <object_ref id="0" timeline="0" key="31" z_index="0" />
+        </key>
+        <key id="32" time="1067">
+          <object_ref id="0" timeline="0" key="32" z_index="0" />
+        </key>
+        <key id="33" time="1100">
+          <object_ref id="0" timeline="0" key="33" z_index="0" />
+        </key>
+        <key id="34" time="1133">
+          <object_ref id="0" timeline="0" key="34" z_index="0" />
+        </key>
+        <key id="35" time="1167">
+          <object_ref id="0" timeline="0" key="35" z_index="0" />
+        </key>
+        <key id="36" time="1200">
+          <object_ref id="0" timeline="0" key="36" z_index="0" />
+        </key>
+        <key id="37" time="1233">
+          <object_ref id="0" timeline="0" key="37" z_index="0" />
+        </key>
+        <key id="38" time="1267">
+          <object_ref id="0" timeline="0" key="38" z_index="0" />
+        </key>
+        <key id="39" time="1300">
+          <object_ref id="0" timeline="0" key="39" z_index="0" />
+        </key>
+        <key id="40" time="1333">
+          <object_ref id="0" timeline="0" key="40" z_index="0" />
+        </key>
+        <key id="41" time="1367">
+          <object_ref id="0" timeline="0" key="41" z_index="0" />
+        </key>
+        <key id="42" time="1400">
+          <object_ref id="0" timeline="0" key="42" z_index="0" />
+        </key>
+        <key id="43" time="1433">
+          <object_ref id="0" timeline="0" key="43" z_index="0" />
+        </key>
+        <key id="44" time="1467">
+          <object_ref id="0" timeline="0" key="44" z_index="0" />
+        </key>
+        <key id="45" time="1500">
+          <object_ref id="0" timeline="0" key="45" z_index="0" />
+        </key>
+        <key id="46" time="1533">
+          <object_ref id="0" timeline="0" key="46" z_index="0" />
+        </key>
+        <key id="47" time="1567">
+          <object_ref id="0" timeline="0" key="47" z_index="0" />
+        </key>
+        <key id="48" time="1600">
+          <object_ref id="0" timeline="0" key="48" z_index="0" />
+        </key>
+        <key id="49" time="1633">
+          <object_ref id="0" timeline="0" key="49" z_index="0" />
+        </key>
+        <key id="50" time="1667">
+          <object_ref id="0" timeline="0" key="50" z_index="0" />
+        </key>
+        <key id="51" time="1700">
+          <object_ref id="0" timeline="0" key="51" z_index="0" />
+        </key>
+        <key id="52" time="1733">
+          <object_ref id="0" timeline="0" key="52" z_index="0" />
+        </key>
+        <key id="53" time="1767">
+          <object_ref id="0" timeline="0" key="53" z_index="0" />
+        </key>
+      </mainline>
+      <timeline id="0" name="mon3tr_heal_target_02" object_type="sprite">
+        <key id="0" time="0" spin="0" curve_type="instant">
+          <object folder="0" file="0" x="0" y="0" angle="0" />
+        </key>
+        <key id="1" time="33" spin="0" curve_type="instant">
+          <object folder="0" file="1" x="0" y="0" angle="0" />
+        </key>
+        <key id="2" time="67" spin="0" curve_type="instant">
+          <object folder="0" file="2" x="0" y="0" angle="0" />
+        </key>
+        <key id="3" time="100" spin="0" curve_type="instant">
+          <object folder="0" file="3" x="0" y="0" angle="0" />
+        </key>
+        <key id="4" time="133" spin="0" curve_type="instant">
+          <object folder="0" file="4" x="0" y="0" angle="0" />
+        </key>
+        <key id="5" time="167" spin="0" curve_type="instant">
+          <object folder="0" file="5" x="0" y="0" angle="0" />
+        </key>
+        <key id="6" time="200" spin="0" curve_type="instant">
+          <object folder="0" file="6" x="0" y="0" angle="0" />
+        </key>
+        <key id="7" time="233" spin="0" curve_type="instant">
+          <object folder="0" file="7" x="0" y="0" angle="0" />
+        </key>
+        <key id="8" time="267" spin="0" curve_type="instant">
+          <object folder="0" file="8" x="0" y="0" angle="0" />
+        </key>
+        <key id="9" time="300" spin="0" curve_type="instant">
+          <object folder="0" file="9" x="0" y="0" angle="0" />
+        </key>
+        <key id="10" time="333" spin="0" curve_type="instant">
+          <object folder="0" file="10" x="0" y="0" angle="0" />
+        </key>
+        <key id="11" time="367" spin="0" curve_type="instant">
+          <object folder="0" file="11" x="0" y="0" angle="0" />
+        </key>
+        <key id="12" time="400" spin="0" curve_type="instant">
+          <object folder="0" file="12" x="0" y="0" angle="0" />
+        </key>
+        <key id="13" time="433" spin="0" curve_type="instant">
+          <object folder="0" file="13" x="0" y="0" angle="0" />
+        </key>
+        <key id="14" time="467" spin="0" curve_type="instant">
+          <object folder="0" file="14" x="0" y="0" angle="0" />
+        </key>
+        <key id="15" time="500" spin="0" curve_type="instant">
+          <object folder="0" file="15" x="0" y="0" angle="0" />
+        </key>
+        <key id="16" time="533" spin="0" curve_type="instant">
+          <object folder="0" file="16" x="0" y="0" angle="0" />
+        </key>
+        <key id="17" time="567" spin="0" curve_type="instant">
+          <object folder="0" file="17" x="0" y="0" angle="0" />
+        </key>
+        <key id="18" time="600" spin="0" curve_type="instant">
+          <object folder="0" file="18" x="0" y="0" angle="0" />
+        </key>
+        <key id="19" time="633" spin="0" curve_type="instant">
+          <object folder="0" file="19" x="0" y="0" angle="0" />
+        </key>
+        <key id="20" time="667" spin="0" curve_type="instant">
+          <object folder="0" file="20" x="0" y="0" angle="0" />
+        </key>
+        <key id="21" time="700" spin="0" curve_type="instant">
+          <object folder="0" file="21" x="0" y="0" angle="0" />
+        </key>
+        <key id="22" time="733" spin="0" curve_type="instant">
+          <object folder="0" file="22" x="0" y="0" angle="0" />
+        </key>
+        <key id="23" time="767" spin="0" curve_type="instant">
+          <object folder="0" file="23" x="0" y="0" angle="0" />
+        </key>
+        <key id="24" time="800" spin="0" curve_type="instant">
+          <object folder="0" file="24" x="0" y="0" angle="0" />
+        </key>
+        <key id="25" time="833" spin="0" curve_type="instant">
+          <object folder="0" file="25" x="0" y="0" angle="0" />
+        </key>
+        <key id="26" time="867" spin="0" curve_type="instant">
+          <object folder="0" file="26" x="0" y="0" angle="0" />
+        </key>
+        <key id="27" time="900" spin="0" curve_type="instant">
+          <object folder="0" file="27" x="0" y="0" angle="0" />
+        </key>
+        <key id="28" time="933" spin="0" curve_type="instant">
+          <object folder="0" file="28" x="0" y="0" angle="0" />
+        </key>
+        <key id="29" time="967" spin="0" curve_type="instant">
+          <object folder="0" file="29" x="0" y="0" angle="0" />
+        </key>
+        <key id="30" time="1000" spin="0" curve_type="instant">
+          <object folder="0" file="30" x="0" y="0" angle="0" />
+        </key>
+        <key id="31" time="1033" spin="0" curve_type="instant">
+          <object folder="0" file="31" x="0" y="0" angle="0" />
+        </key>
+        <key id="32" time="1067" spin="0" curve_type="instant">
+          <object folder="0" file="32" x="0" y="0" angle="0" />
+        </key>
+        <key id="33" time="1100" spin="0" curve_type="instant">
+          <object folder="0" file="33" x="0" y="0" angle="0" />
+        </key>
+        <key id="34" time="1133" spin="0" curve_type="instant">
+          <object folder="0" file="34" x="0" y="0" angle="0" />
+        </key>
+        <key id="35" time="1167" spin="0" curve_type="instant">
+          <object folder="0" file="35" x="0" y="0" angle="0" />
+        </key>
+        <key id="36" time="1200" spin="0" curve_type="instant">
+          <object folder="0" file="36" x="0" y="0" angle="0" />
+        </key>
+        <key id="37" time="1233" spin="0" curve_type="instant">
+          <object folder="0" file="37" x="0" y="0" angle="0" />
+        </key>
+        <key id="38" time="1267" spin="0" curve_type="instant">
+          <object folder="0" file="38" x="0" y="0" angle="0" />
+        </key>
+        <key id="39" time="1300" spin="0" curve_type="instant">
+          <object folder="0" file="39" x="0" y="0" angle="0" />
+        </key>
+        <key id="40" time="1333" spin="0" curve_type="instant">
+          <object folder="0" file="40" x="0" y="0" angle="0" />
+        </key>
+        <key id="41" time="1367" spin="0" curve_type="instant">
+          <object folder="0" file="41" x="0" y="0" angle="0" />
+        </key>
+        <key id="42" time="1400" spin="0" curve_type="instant">
+          <object folder="0" file="42" x="0" y="0" angle="0" />
+        </key>
+        <key id="43" time="1433" spin="0" curve_type="instant">
+          <object folder="0" file="43" x="0" y="0" angle="0" />
+        </key>
+        <key id="44" time="1467" spin="0" curve_type="instant">
+          <object folder="0" file="44" x="0" y="0" angle="0" />
+        </key>
+        <key id="45" time="1500" spin="0" curve_type="instant">
+          <object folder="0" file="45" x="0" y="0" angle="0" />
+        </key>
+        <key id="46" time="1533" spin="0" curve_type="instant">
+          <object folder="0" file="46" x="0" y="0" angle="0" />
+        </key>
+        <key id="47" time="1567" spin="0" curve_type="instant">
+          <object folder="0" file="47" x="0" y="0" angle="0" />
+        </key>
+        <key id="48" time="1600" spin="0" curve_type="instant">
+          <object folder="0" file="48" x="0" y="0" angle="0" />
+        </key>
+        <key id="49" time="1633" spin="0" curve_type="instant">
+          <object folder="0" file="49" x="0" y="0" angle="0" />
+        </key>
+        <key id="50" time="1667" spin="0" curve_type="instant">
+          <object folder="0" file="50" x="0" y="0" angle="0" />
+        </key>
+        <key id="51" time="1700" spin="0" curve_type="instant">
+          <object folder="0" file="51" x="0" y="0" angle="0" />
+        </key>
+        <key id="52" time="1733" spin="0" curve_type="instant">
+          <object folder="0" file="52" x="0" y="0" angle="0" />
+        </key>
+        <key id="53" time="1767" spin="0" curve_type="instant">
+          <object folder="0" file="53" x="0" y="0" angle="0" />
+        </key>
+      </timeline>
+    </animation>
+  </entity>
+</spriter_data>
