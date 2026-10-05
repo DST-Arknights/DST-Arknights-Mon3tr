@@ -34,8 +34,8 @@ local function AppendSkillHealChainParam(skill, healRate, healChainCount)
   return healRate, healChainCount
 end
 
-local function CanBeHealed(ent, source, owner)
-  if ent == nil or ent == source or not ent:IsValid() then
+local function CanBeHealed(ent, owner, attackTarget)
+  if ent == nil or ent == attackTarget or not ent:IsValid() then
     return false
   end
   if ent.components == nil or ent.components.health == nil then
@@ -59,14 +59,14 @@ local function CanBeHealed(ent, source, owner)
     end
   end
 
-  if ent.components.combat ~= nil and ent.components.combat.target == source then
+  if attackTarget ~= nil and ent.components.combat ~= nil and ent.components.combat.target == attackTarget then
     return true
   end
 
   return false
 end
 
-local function FindBestHealTarget(from, source, owner, visited)
+local function FindBestHealTarget(from, owner, visited, attackTarget)
   if from == nil or from.Transform == nil then
     return nil
   end
@@ -77,7 +77,7 @@ local function FindBestHealTarget(from, source, owner, visited)
   local best
   local bestPercent
   for _, v in ipairs(ents) do
-    if v ~= from and not visited[v] and CanBeHealed(v, source, owner) then
+    if not visited[v] and CanBeHealed(v, owner, attackTarget) then
       local hp = v.components.health
       local percent = hp ~= nil and hp:GetPercent() or 1
       if best == nil or percent < bestPercent then
@@ -90,12 +90,12 @@ local function FindBestHealTarget(from, source, owner, visited)
   return best
 end
 
-local function FindHealChain(inst, from, maxCount)
+local function FindHealChain(inst, maxCount, attackTarget)
   local chain = {}
   local visited = {}
-  local from = from
+  local from = inst
   while #chain < maxCount and from ~= nil do
-    local best = FindBestHealTarget(from, from, inst, visited)
+    local best = FindBestHealTarget(from, inst, visited, attackTarget)
     if best == nil then
       break
     end
@@ -106,7 +106,7 @@ local function FindHealChain(inst, from, maxCount)
   return chain
 end
 
-local function HealChain(inst, from, data)
+local function HealChain(inst, data)
   local healRateAttenuation = 0.75
   local healRate = data.rate or 0
   local healCount = data.count or 0
@@ -115,16 +115,19 @@ local function HealChain(inst, from, data)
     return {}
   end
 
-  local chain = FindHealChain(inst, from, healCount)
-  if #chain > 0 and from ~= nil then
-    ConnectHealChain(from, chain[1])
-    SpawnHealFx(from, data.skill_heal)
-    SpawnHealFx(chain[1], data.skill_heal)
-    if #chain > 1 then
-      for i = 1, #chain - 1 do
-        SpawnHealFx(chain[i + 1], data.skill_heal)
-        ConnectHealChain(chain[i], chain[i + 1])
+  local chain = FindHealChain(inst, healCount, data.attack_target)
+  if #chain > 0 then
+    local from = inst
+    SpawnHealFx(inst, data.skill_heal)
+    for _, target in ipairs(chain) do
+      -- 起点也可被治疗，但不创建自连线或重复生成起点特效。
+      if target ~= inst then
+        SpawnHealFx(target, data.skill_heal)
       end
+      if from ~= target then
+        ConnectHealChain(from, target)
+      end
+      from = target
     end
   end
 
@@ -137,7 +140,7 @@ local function HealChain(inst, from, data)
         -- 被治疗事件
         target:PushEvent("mon3tr_healed", {
           amount = actualHeal,
-          first = from,
+          first = inst,
           source = inst,
         })
       end
@@ -182,7 +185,8 @@ local function OnHitOther(inst, data)
     return
   end
 
-  local chain = HealChain(inst, data.target, {
+  local chain = HealChain(inst, {
+    attack_target = data.target,
     rate = healRate,
     count = healChainCount,
     health = inst.components.combat.defaultdamage,
