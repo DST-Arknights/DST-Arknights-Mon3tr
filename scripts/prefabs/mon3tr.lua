@@ -6,7 +6,7 @@ local assets =
   Asset("ATLAS", "images/map_icons/mon3tr.xml"),
 }
 
-local start_inv = { "construct_sword", "ark_backpack" }
+local start_inv = { "construct_sword" }
 local prefabs = FlattenTree(start_inv, true)
 
 

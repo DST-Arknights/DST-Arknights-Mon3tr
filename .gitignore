@@ -3,3 +3,5 @@ soundSource/**/*.bak
 soundSource/**/*.fev
 soundSource/**/*.fsb
 /temp
+.*
+__pycache__

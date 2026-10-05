@@ -27,7 +27,7 @@ RegisterPOFile(GetModConfigData("language"), {
 })
 ArkLogger:DeclareLogger('TRACE', 'Mon3tr')
 
-local mon3tr_starting_items = {"construct_sword", "ark_backpack"}
+local mon3tr_starting_items = {"construct_sword"}
 TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.MON3TR = mon3tr_starting_items
 TUNING.GAMEMODE_STARTING_ITEMS.LAVAARENA.MON3TR = mon3tr_starting_items
 TUNING.GAMEMODE_STARTING_ITEMS.QUAGMIRE.MON3TR = mon3tr_starting_items
