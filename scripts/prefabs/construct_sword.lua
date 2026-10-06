@@ -6,6 +6,11 @@ local assets =
     Asset("ANIM", "anim/swap_construct_sword.zip"),
 }
 
+local prefabs =
+{
+    "construct_sword_blade_fx",
+}
+
 local MAX_CONDITION = 1000
 local INITIAL_CONDITION_PERCENT = 0.05
 local BASE_DAMAGE = 42
@@ -15,11 +20,11 @@ local EXCHANGE_RATE_PER_SECOND = MAX_CONDITION / (6*8 * 60)
 local EXCHANGE_TICK = 3
 local HUNGER_TO_CONDITION_RATE = 1
 local AUTO_CHARGE_CONDITION_THRESHOLD = 0.8
-local AUTO_CHARGE_MIN_HUNGER_PERCENT = 0.6
+local AUTO_CHARGE_MIN_HUNGER = 40
 local SKILL3_CONDITION_COST_PERCENT = 0.1
 
 local TRUE_DAMAGE_MODIFIER_KEY = "construct_sword_true_damage"
-local BLOOM_SYMBOL = "swap_object"
+local SWORD_SYMBOL = "construct_sword"
 
 local function Clamp01(value)
     return math.max(0, math.min(1, value or 0))
@@ -52,39 +57,61 @@ local function ApplyOwnerCombatModifier(inst, owner)
     end
 end
 
-local function ClearSwordBloom(owner)
-    if owner == nil or owner.AnimState == nil then
-        return
-    end
-
-    owner.AnimState:ClearSymbolBloom(BLOOM_SYMBOL)
-    owner.AnimState:SetSymbolMultColour(BLOOM_SYMBOL, 1, 1, 1, 1)
-    owner.AnimState:SetSymbolAddColour(BLOOM_SYMBOL, 0, 0, 0, 0)
-end
-
-local function UpdateSwordBloom(inst, owner)
-    if owner == nil or owner.AnimState == nil then
-        return
-    end
-
-    local percent = GetDurabilityPercent(inst)
+local function SetSwordGlowColour(animstate, percent)
     local red = Lerp(0.2, 1.0, percent)
     local green = Lerp(0.45, 0.2, percent)
     local blue = Lerp(1.0, 0.15, percent)
     local intensity = Lerp(0.08, 0.45, percent)
 
-    owner.AnimState:SetSymbolBloom(BLOOM_SYMBOL)
-    owner.AnimState:SetSymbolMultColour(BLOOM_SYMBOL, Lerp(0.8, 1.0, percent), Lerp(0.9, 0.75, percent), Lerp(1.0, 0.8, percent), 1)
-    owner.AnimState:SetSymbolAddColour(BLOOM_SYMBOL, red * intensity, green * intensity, blue * intensity, 0)
+    animstate:SetSymbolMultColour(SWORD_SYMBOL, Lerp(0.8, 1.0, percent), Lerp(0.9, 0.75, percent), Lerp(1.0, 0.8, percent), 1)
+    animstate:SetSymbolAddColour(SWORD_SYMBOL, red * intensity, green * intensity, blue * intensity, 0)
+end
+
+local function UpdateSwordGlow(inst)
+    local percent = GetDurabilityPercent(inst)
+    SetSwordGlowColour(inst.AnimState, percent)
+    SetSwordGlowColour(inst.bladefx.AnimState, percent)
+end
+
+local function SetFxOwner(inst, owner)
+    if inst._fxowner ~= nil and inst._fxowner.components.colouradder ~= nil then
+        inst._fxowner.components.colouradder:DetachChild(inst.bladefx)
+    end
+
+    inst._fxowner = owner
+    if owner ~= nil then
+        inst.bladefx.entity:SetParent(owner.entity)
+        inst.bladefx.Follower:FollowSymbol(owner.GUID, "swap_object", nil, nil, nil, true)
+        inst.bladefx.components.highlightchild:SetOwner(owner)
+        if owner.components.colouradder ~= nil then
+            owner.components.colouradder:AttachChild(inst.bladefx)
+        end
+    else
+        inst.bladefx.entity:SetParent(inst.entity)
+        -- 地面 idle 使用物品本体泛光；此 symbol 只在漂浮时显示。
+        inst.bladefx.Follower:FollowSymbol(inst.GUID, "swap_spear", nil, nil, nil, true)
+        inst.bladefx.components.highlightchild:SetOwner(inst)
+    end
+end
+
+local function OnRemoveSword(inst)
+    if inst._fxowner ~= nil and inst._fxowner.components.colouradder ~= nil then
+        inst._fxowner.components.colouradder:DetachChild(inst.bladefx)
+    end
+    if inst.bladefx:IsValid() then
+        inst.bladefx:Remove()
+    end
+    inst._fxowner = nil
+    inst.bladefx = nil
 end
 
 local function RefreshSwordState(inst)
     UpdateWeaponDamage(inst)
+    UpdateSwordGlow(inst)
 
     local owner = inst.components.inventoryitem ~= nil and inst.components.inventoryitem.owner or nil
     if owner ~= nil and inst.components.equippable ~= nil and inst.components.equippable:IsEquipped() then
         ApplyOwnerCombatModifier(inst, owner)
-        UpdateSwordBloom(inst, owner)
     end
 end
 
@@ -120,7 +147,8 @@ local function DoSwordHungerExchange(inst)
     end
 
     local hunger = owner.components.hunger
-    if hunger:GetPercent() <= AUTO_CHARGE_MIN_HUNGER_PERCENT then
+    local availableHunger = hunger.current - AUTO_CHARGE_MIN_HUNGER
+    if availableHunger <= 0 then
         return
     end
 
@@ -128,12 +156,6 @@ local function DoSwordHungerExchange(inst)
     local thresholdCondition = finiteuses.total * AUTO_CHARGE_CONDITION_THRESHOLD
     local missingToThreshold = thresholdCondition - current
     if missingToThreshold <= 0 then
-        return
-    end
-
-    local minHunger = hunger.max * AUTO_CHARGE_MIN_HUNGER_PERCENT
-    local availableHunger = hunger.current - minHunger
-    if availableHunger <= 0 then
         return
     end
 
@@ -170,6 +192,7 @@ local function onequip(inst, owner)
     end
     owner.AnimState:Show("ARM_carry")
     owner.AnimState:Hide("ARM_normal")
+    SetFxOwner(inst, owner)
 
     inst:ListenForEvent("mon3tr_healed", inst._OnMon3trSkillHeal, owner)
     RefreshSwordState(inst)
@@ -181,7 +204,7 @@ local function onunequip(inst, owner)
     owner.AnimState:Show("ARM_normal")
     inst:RemoveEventCallback("mon3tr_healed", inst._OnMon3trSkillHeal, owner)
     ClearOwnerCombatModifier(owner)
-    ClearSwordBloom(owner)
+    SetFxOwner(inst, nil)
     StopExchangeTask(inst)
 
     local skin_build = inst:GetSkinBuild()
@@ -202,6 +225,9 @@ local function fn()
     inst.AnimState:SetBank("construct_sword")
     inst.AnimState:SetBuild("construct_sword")
     inst.AnimState:PlayAnimation("idle")
+    inst.AnimState:SetSymbolBloom(SWORD_SYMBOL)
+    inst.AnimState:SetSymbolLightOverride(SWORD_SYMBOL, 0.5)
+    inst.AnimState:SetLightOverride(0.1)
 
     inst:AddTag("sharp")
     inst:AddTag("pointy")
@@ -209,13 +235,18 @@ local function fn()
     --weapon (from weapon component) added to pristine state for optimization
     inst:AddTag("weapon")
 
-    MakeInventoryFloatable(inst, "med", 0.05, {1.1, 0.5, 1.1}, true, -9)
+    MakeInventoryFloatable(inst, "med", 0.05, {1.1, 0.5, 1.1}, true, -9,
+        { sym_build = "swap_construct_sword", sym_name = SWORD_SYMBOL })
 
     inst.entity:SetPristine()
 
     if not TheWorld.ismastersim then
         return inst
     end
+
+    inst.bladefx = SpawnPrefab("construct_sword_blade_fx")
+    SetFxOwner(inst, nil)
+    inst:ListenForEvent("onremove", OnRemoveSword)
 
     inst._OnMon3trSkillHeal = function(owner, data)
         if data == nil or data.amount == nil or data.amount <= 0 then
@@ -282,4 +313,4 @@ local function fn()
     return inst
 end
 
-return Prefab("construct_sword", fn, assets)
+return Prefab("construct_sword", fn, assets, prefabs)

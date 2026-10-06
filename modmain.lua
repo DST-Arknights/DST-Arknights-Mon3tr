@@ -6,7 +6,7 @@ GLOBAL.setmetatable(env, {
 
 assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
 
-PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "mon3tr_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon", "construct_claw"}
+PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "construct_sword_blade_fx", "mon3tr_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon", "construct_claw"}
 Assets = {
   Asset("ATLAS", "bigportraits/mon3tr.xml"),
   Asset("ATLAS", "images/saveslot_portraits/mon3tr.xml"),
