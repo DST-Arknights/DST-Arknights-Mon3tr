@@ -13,6 +13,33 @@ local function IsMon3trSkill3Activating(inst)
   return false
 end
 
+-- 客户端隐藏骑乘动作，服务端也拒绝已缓存的骑乘请求。
+AddComponentAction("SCENE", "rideable", function(inst, doer, actions)
+  if IsMon3trSkill3Activating(doer) then
+    for i = #actions, 1, -1 do
+      if actions[i] == ACTIONS.MOUNT then
+        table.remove(actions, i)
+      end
+    end
+  end
+end)
+
+ArkHookFunction(ACTIONS.MOUNT, "fn", function(next, act)
+  if IsMon3trSkill3Activating(act.doer) then
+    return false
+  end
+  return next(act)
+end)
+
+AddComponentPostInit("rider", function(self)
+  ArkHookFunction(self, "Mount", function(next, rider, ...)
+    if IsMon3trSkill3Activating(rider.inst) then
+      return
+    end
+    return next(rider, ...)
+  end)
+end)
+
 AddStategraphPostInit("wilson", function(sg)
   local OldAttackOnEnter = sg.states["attack"].onenter
   sg.states["attack"].onenter = function(inst, ...)
@@ -296,6 +323,11 @@ AddStategraphState("wilson", State {
       SpawnPrefab("pine_needles_chop").Transform:SetPosition(targetpos.x, 0, targetpos.z)
       SpawnPrefab("boss_ripple_fx").Transform:SetPosition(targetpos.x, 0, targetpos.z)
       -- SpawnPrefab("groundpound_fx").Transform:SetPosition(targetpos.x, 0, targetpos.z)
+
+      local skill = GetMon3trSkill3(inst)
+      if skill and skill:IsActivating() then
+        skill:DoSkill3LandingAttack()
+      end
 
       inst.SoundEmitter:PlaySound("dontstarve/movement/bodyfall_dirt")
       inst.SoundEmitter:PlaySound("dontstarve/common/deathpoof")

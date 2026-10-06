@@ -12,6 +12,13 @@ local SKILL3_POSITION_SEARCH_ATTEMPTS = 12
 
 local SKILL3_LIGHT_UPDATE_INTERVAL = 0.2
 
+RegisterTargetSelector("mon3tr_skill3_aoe", AreaTargetSelector {
+  range = 20,
+  deployradius = 1, -- 落点周围的额外净空校验
+  reticuleprefab = "mon3tr_skill3_reticuleaoe",
+  pingprefab = "mon3tr_skill3_reticuleaoeping",
+})
+
 local function ConnectHealChain(source, target)
   local fx = SpawnPrefab("mon3tr_heal_chain_fx")
   if fx ~= nil then
@@ -403,6 +410,17 @@ local function OnSkill3AttackOther(inst, data)
 end
 
 local function InstallSkill3Interface(skill)
+  function skill:DoSkill3LandingAttack()
+    local params = self:GetLevelParams()
+    -- 仅本次范围攻击使用固定伤害，避免叠加普攻倍率或影响回调中的其他攻击。
+    local combat = setmetatable({
+      CalcDamage = function(_, target)
+        return target:HasTag("alwaysblock") and 0 or params.landing_damage
+      end,
+    }, { __index = self.inst.components.combat })
+    combat:DoAreaAttack(self.inst, params.landing_range)
+  end
+
   function skill:SpawnConstructBeacon()
     local pos = self:GetState("start_pos")
     if pos and not self.construct_beacon then
@@ -532,17 +550,22 @@ local function OnSkill3Remove(skill)
   skill._mon3tr_skill3_light_fx = nil
 end
 
+local function Skill3ActivateTest(skill)
+  local rider = skill.inst.components.rider
+  return rider == nil or not rider:IsRiding()
+end
+
 local function OnSkill3Activate(skill, data)
   local inst = skill.inst
   local targetpos = nil
-  if inst.components.combat and inst.components.combat.target then
-    targetpos = GetSkill3ActivePosFromTarget(inst, inst.components.combat.target)
+  if data and data.targetPos then
+    targetpos = GetSkill3ActivePosFromPoint(data.targetPos)
   end
   if targetpos == nil and data and data.target then
     targetpos = GetSkill3ActivePosFromTarget(inst, data.target)
   end
-  if targetpos == nil and data and data.targetPos then
-    targetpos = GetSkill3ActivePosFromPoint(data.targetPos)
+  if targetpos == nil and inst.components.combat and inst.components.combat.target then
+    targetpos = GetSkill3ActivePosFromTarget(inst, inst.components.combat.target)
   end
   if not targetpos then
     return
@@ -828,6 +851,9 @@ local skills = { {
   atlas = "images/ui_mon3tr_skill.xml",
   image = "skill3.tex",
   recipe_image = "skill3_recipe.tex",
+  targetSelector = "mon3tr_skill3_aoe",
+  ActivateSelectorTest = Skill3ActivateTest,
+  ActivateTest = Skill3ActivateTest,
   OnInstall = OnSkill3Install,
   OnRemove = OnSkill3Remove,
   OnActivate = OnSkill3Activate,
@@ -838,7 +864,7 @@ local skills = { {
     activationEnergy = 1,
     buffDuration = 125,
     desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][1],
-    params = { healChainCount = 3, attack_damage_multiplier = 2, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80, },
+    params = { healChainCount = 3, attack_damage_multiplier = 2, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80, landing_damage = 120, landing_range = 6 },
   }, {
     activationEnergy = 15,
     buffDuration = 25,
