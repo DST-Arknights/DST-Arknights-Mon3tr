@@ -3,7 +3,6 @@ local ARK_CONSTANTS = require "ark_constants"
 local ATTACK_RECOVERY_ENERGY = 1
 local HEAL_CHAIN_RANGE = 16
 local HEAL_CHAIN_EXCLUDE_TAGS = { "INLIMBO", "flight", "invisible", "notarget", "noattack" }
-local ARMOR_CONSTRUCT_HEAL_CHARGE_MULT = 0.25
 
 local MON3TR_SKILL3_MODIFIER_KEY = "mon3tr_skill3_modifier"
 local SKILL3_MIN_HEALTH_REMOVE_DELAY = 5 -- 3技能结束的无敌保护持续时间
@@ -107,20 +106,6 @@ local function FindHealChain(inst, maxCount, attackTarget)
   return chain
 end
 
-local function ChargeEquippedConstructArmor(target, healAmount)
-  if healAmount <= 0 or target.components.inventory == nil then
-    return
-  end
-
-  local charged = false
-  target.components.inventory:ForEachEquipment(function(item)
-    if not charged and item.prefab == "armor_construct" and item.components.armor ~= nil then
-      item.components.armor:Repair(healAmount * ARMOR_CONSTRUCT_HEAL_CHARGE_MULT)
-      charged = true
-    end
-  end)
-end
-
 local function HealChain(inst, data)
   local healRateAttenuation = 0.75
   local healRate = data.rate or 0
@@ -151,12 +136,11 @@ local function HealChain(inst, data)
     nextRate = nextRate * healRateAttenuation
     if target.components.health then
       local healAmount = healHealth * nextRate
-      local actualHeal = target.components.health:DoDelta(healAmount, nil, "mon3tr_skill_heal", false, inst)
-      ChargeEquippedConstructArmor(target, healAmount)
-      if actualHeal ~= nil and actualHeal > 0 then
-        -- 被治疗事件
+      target.components.health:DoDelta(healAmount, nil, "mon3tr_skill_heal", false, inst)
+      if healAmount > 0 then
+        -- 装备统一按计划治疗量充能，满血时也发送事件。
         target:PushEvent("mon3tr_healed", {
-          amount = actualHeal,
+          amount = healAmount,
           first = inst,
           source = inst,
         })

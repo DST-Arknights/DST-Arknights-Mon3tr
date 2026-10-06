@@ -23,7 +23,6 @@ local AUTO_CHARGE_CONDITION_THRESHOLD = 0.8
 local AUTO_CHARGE_MIN_HUNGER = 40
 local SKILL3_CONDITION_COST_PERCENT = 0.1
 
-local TRUE_DAMAGE_MODIFIER_KEY = "construct_sword_true_damage"
 local SWORD_SYMBOL = "construct_sword"
 
 local function Clamp01(value)
@@ -40,20 +39,15 @@ local function GetDurabilityPercent(inst)
 end
 
 local function UpdateWeaponDamage(inst)
-    if inst.components.weapon ~= nil then
-        inst.components.weapon:SetDamage(BASE_DAMAGE + MAX_DAMAGE_BONUS * GetDurabilityPercent(inst))
-    end
-end
+    local weapon = inst.components.weapon
+    if weapon ~= nil then
+        local damage = BASE_DAMAGE + MAX_DAMAGE_BONUS * GetDurabilityPercent(inst)
+        local owner = inst.components.inventoryitem.owner
+        local is_mon3tr_equipped = inst.components.equippable:IsEquipped()
+            and owner ~= nil and owner.prefab == "mon3tr"
 
-local function ClearOwnerCombatModifier(owner)
-    if owner ~= nil and owner.components.combat ~= nil and owner.components.combat.truedamagemultipliers ~= nil then
-        owner.components.combat.truedamagemultipliers:RemoveModifier(TRUE_DAMAGE_MODIFIER_KEY)
-    end
-end
-
-local function ApplyOwnerCombatModifier(inst, owner)
-    if owner ~= nil and owner.components.combat ~= nil and owner.components.combat.truedamagemultipliers ~= nil then
-        owner.components.combat.truedamagemultipliers:SetModifier(TRUE_DAMAGE_MODIFIER_KEY, GetDurabilityPercent(inst))
+        weapon:SetDamage(is_mon3tr_equipped and 0 or damage)
+        weapon.true_damage = is_mon3tr_equipped and damage or 0
     end
 end
 
@@ -108,11 +102,6 @@ end
 local function RefreshSwordState(inst)
     UpdateWeaponDamage(inst)
     UpdateSwordGlow(inst)
-
-    local owner = inst.components.inventoryitem ~= nil and inst.components.inventoryitem.owner or nil
-    if owner ~= nil and inst.components.equippable ~= nil and inst.components.equippable:IsEquipped() then
-        ApplyOwnerCombatModifier(inst, owner)
-    end
 end
 
 local function RepairCondition(inst, amount)
@@ -203,7 +192,7 @@ local function onunequip(inst, owner)
     owner.AnimState:Hide("ARM_carry")
     owner.AnimState:Show("ARM_normal")
     inst:RemoveEventCallback("mon3tr_healed", inst._OnMon3trSkillHeal, owner)
-    ClearOwnerCombatModifier(owner)
+    UpdateWeaponDamage(inst)
     SetFxOwner(inst, nil)
     StopExchangeTask(inst)
 
@@ -248,12 +237,9 @@ local function fn()
     SetFxOwner(inst, nil)
     inst:ListenForEvent("onremove", OnRemoveSword)
 
-    inst._OnMon3trSkillHeal = function(owner, data)
+    -- 只监听持有者身上的被治疗事件。
+    inst._OnMon3trSkillHeal = function(_, data)
         if data == nil or data.amount == nil or data.amount <= 0 then
-            return
-        end
-        -- 只有持有者自己被治疗才充能
-        if data.target ~= owner then
             return
         end
         -- 80% 以上才接受治疗充能
