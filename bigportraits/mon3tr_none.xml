@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Atlas>
+  <Texture filename="mon3tr.tex" />
+  <Elements>
+    <Element name="mon3tr_none.tex" u1="0.0009765625" u2="0.9560546875" v1="0.36083984375" v2="0.99951171875" />
+    <Element name="mon3tr_none_oval.tex" u1="0.0009765625" u2="0.9560546875" v1="0.36083984375" v2="0.99951171875" />
+  </Elements>
+</Atlas>
