@@ -235,7 +235,8 @@ local function fn()
 
     inst.bladefx = SpawnPrefab("construct_sword_blade_fx")
     SetFxOwner(inst, nil)
-    inst:ListenForEvent("onremove", OnRemoveSword)
+    -- inventoryitem 移除时仍会触发卸装，特效要保留到组件清理完成。
+    inst.OnRemoveEntity = OnRemoveSword
 
     -- 只监听持有者身上的被治疗事件。
     inst._OnMon3trSkillHeal = function(_, data)
