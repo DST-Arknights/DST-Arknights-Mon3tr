@@ -1,6 +1,6 @@
 [b]“Destroy, and heal.”[/b]
 
-Mon3tr, the operator from Arknights, enters the Constant. Wield Reconstruction against your enemies, build Skill Points through attacks, and sustain yourself and your allies with bouncing heals. When it is time to break through, leap into the enemy ranks in Meltdown form.
+Mon3tr, the operator from Arknights, enters the Constant. Wield Reconstruction against your enemies and support your allies with bouncing heals. When it is time to break through, leap into the enemy ranks in Meltdown form.
 
 [b]Requires subscribing to and enabling [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]Arknights Item Package[/url].[/b]
 
@@ -11,12 +11,39 @@ Mon3tr, the operator from Arknights, enters the Constant. Wield Reconstruction a
 [b]Starting Stats:[/b] Health 150 · Hunger 150 · Sanity 200
 [b]Starting Item:[/b] Reconstruction
 
-Mon3tr combines melee damage with healing support. Landing attacks restores her own Health and builds Skill Points.
+Mon3tr combines melee damage with healing support. Elite promotions expand this toolkit from automatic healing to sustained support and Meltdown assaults, offering more ways to approach a fight.
 
-Bouncing heals can reach Mon3tr herself and nearby allies, prioritizing those with the lowest Health percentage. Healing passes between targets, with each subsequent bounce restoring less Health.
+[hr][/hr]
 
-[b]Tactical Synergy[/b]
-From Elite 1 onward, units reached by bouncing heals receive a brief attack speed boost. Fight alongside your allies to keep healing and offense working together.
+[h2]Combat Skills[/h2]
+
+Successful attacks build Skill Points. Hyperpressurized Link activates automatically, while Overload and Meltdown are activated manually.
+
+[b]Bouncing Heals and Tactical Synergy[/b]
+Hyperpressurized Link and Overload provide bouncing heals for Mon3tr and nearby allies. Healing prioritizes targets with the lowest Health percentage, then jumps to other targets, with each subsequent bounce restoring less Health.
+
+From Elite 1 onward, bouncing heals also trigger [b]Tactical Synergy[/b], granting healed units a brief attack speed boost.
+
+[h3]Stratagem: Hyperpressurized Link[/h3]
+[b]Available from the start · Automatic activation[/b]
+
+Once enough Skill Points have been accumulated, the next attack hit triggers a bouncing heal. Stay in the fight to provide periodic healing for yourself and your allies.
+
+[h3]Stratagem: Overload[/h3]
+[b]Unlocked at Elite 1 · Manual activation[/b]
+
+For a period after activation, every attack hit triggers a bouncing heal and strengthens the attack speed bonus granted by Tactical Synergy.
+
+Stacks with Hyperpressurized Link for stronger healing, helping your team handle prolonged fights and larger groups of enemies.
+
+[h3]Stratagem: Meltdown[/h3]
+[b]Unlocked at Elite 2 · Manual activation with a selected landing point[/b]
+
+Leap to the selected location, strike nearby enemies on landing, and unequip the hand slot to enter Meltdown form. Handheld equipment cannot be used while the skill is active.
+
+Meltdown form greatly increases maximum Health and boosts attack damage, attack speed, and attack range. Melee attacks deal [b]True damage to enemies in an area[/b]. While transformed, Health drains continuously, but each hit restores Health equal to 100% of Mon3tr's base attack power, making continued attacks essential to sustaining the assault.
+
+When the skill ends or Mon3tr is close to death, Mon3tr returns near the starting point. There is a brief period of protection against death afterwards, so watch your remaining Health and heal promptly. [b]Meltdown cannot be used while riding.[/b]
 
 [hr][/hr]
 
@@ -32,33 +59,6 @@ While equipped, Reconstruction slowly consumes Hunger above 40 to charge itself 
 Bouncing heals also restore durability to [b]M3 Cocoon Armor[/b] worn by the healed unit. Even at full Health, healing can still charge both pieces of equipment. See the required Item Package mod's description for the armor's other effects.
 
 If Reconstruction is equipped when Meltdown begins, a small amount of its charge is consumed to further increase attack power for that transformation. Stay well fed before a fight and keep healing during combat to bring out more of its power.
-
-[hr][/hr]
-
-[h2]Combat Skills[/h2]
-
-Skills gain Skill Points through successful attacks. Hyperpressurized Link activates automatically, while Overload and Meltdown are activated manually.
-
-[h3]Stratagem: Hyperpressurized Link[/h3]
-[b]Available from the start · Automatic activation[/b]
-
-When enough Skill Points have been accumulated, an attack hit triggers a bouncing heal for several nearby allies. Provides steady healing during sustained combat.
-
-[h3]Stratagem: Overload[/h3]
-[b]Unlocked at Elite 1 · Manual activation[/b]
-
-For a period after activation, every attack hit triggers a bouncing heal and strengthens the attack speed bonus granted by Tactical Synergy.
-
-Stacks with Hyperpressurized Link for stronger healing, helping your team handle prolonged fights and larger groups of enemies.
-
-[h3]Stratagem: Meltdown[/h3]
-[b]Unlocked at Elite 2 · Manual activation with a selected landing point[/b]
-
-Leap to the selected location, strike nearby enemies on landing, and unequip the hand slot to enter Meltdown form. Handheld equipment cannot be used while the skill is active.
-
-This form greatly increases maximum Health and boosts attack damage, attack speed, and attack range. Melee attacks deal [b]True damage to enemies in an area[/b]. Meanwhile, Health drains continuously; keep landing attacks to heal yourself and sustain the assault.
-
-When the skill ends or Mon3tr is close to death, she returns near her starting point. There is a brief period of protection against death afterwards, so watch your remaining Health and heal promptly. [b]Meltdown cannot be used while riding.[/b]
 
 [hr][/hr]
 
