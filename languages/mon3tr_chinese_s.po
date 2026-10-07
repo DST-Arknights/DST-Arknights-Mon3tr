@@ -22,8 +22,8 @@ msgstr "Mon3tr"
 
 #. STRINGS.CHARACTER_DESCRIPTIONS.mon3tr
 msgctxt "STRINGS.CHARACTER_DESCRIPTIONS.mon3tr"
-msgid "*Builds Skill Points through attacks to heal allies\n*Charges Reconstruction to deal True damage\n*Unlocks new stratagems through Elite promotion"
-msgstr "*攻击积蓄技力，弹射治疗友军\n*为重构体充能，转化真实伤害\n*精英化解锁新的战斗策略"
+msgid "A character from Arknights."
+msgstr "*治疗，毁灭\n*正在切换形态"
 
 #. STRINGS.CHARACTER_QUOTES.mon3tr
 msgctxt "STRINGS.CHARACTER_QUOTES.mon3tr"
@@ -47,8 +47,8 @@ msgstr "重构体"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.CONSTRUCT_SWORD
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.CONSTRUCT_SWORD"
-msgid "Hunger and healing feed its power."
-msgstr "饱食与治疗，都能化作它的力量。"
+msgid "It is sharp enough."
+msgstr "它足够锋利"
 
 #. STRINGS.UI.MON3TR_SKILL.NAME.1
 msgctxt "STRINGS.UI.MON3TR_SKILL.NAME.1"

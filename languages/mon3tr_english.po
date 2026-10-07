@@ -22,8 +22,8 @@ msgstr "Mon3tr"
 
 #. STRINGS.CHARACTER_DESCRIPTIONS.mon3tr
 msgctxt "STRINGS.CHARACTER_DESCRIPTIONS.mon3tr"
-msgid "*Builds Skill Points through attacks to heal allies\n*Charges Reconstruction to deal True damage\n*Unlocks new stratagems through Elite promotion"
-msgstr "*Builds Skill Points through attacks to heal allies\n*Charges Reconstruction to deal True damage\n*Unlocks new stratagems through Elite promotion"
+msgid "A character from Arknights."
+msgstr "A character from Arknights."
 
 #. STRINGS.CHARACTER_QUOTES.mon3tr
 msgctxt "STRINGS.CHARACTER_QUOTES.mon3tr"
@@ -47,8 +47,8 @@ msgstr "Reconstruction"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.CONSTRUCT_SWORD
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.CONSTRUCT_SWORD"
-msgid "Hunger and healing feed its power."
-msgstr "Hunger and healing feed its power."
+msgid "It is sharp enough."
+msgstr "It is sharp enough."
 
 #. STRINGS.UI.MON3TR_SKILL.NAME.1
 msgctxt "STRINGS.UI.MON3TR_SKILL.NAME.1"
