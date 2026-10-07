@@ -8,15 +8,21 @@ name = T({
     en = "Mon3tr",
     zh = "Mon3tr"
 })
-version = "1.0.1"
+version = "1.0.2"
 
 -- 版本更新说明（由发布脚本自动维护，请勿手动编辑）
 local UPDATE_EN = [[
+v1.0.2 (2026-10-08)
+- Fixed Skill 3 lifesteal not taking effect.
+---
 v1.0.1 (2026-10-08)
 - Updated the character description to add artist and code information.
 ]]
 
 local UPDATE_ZH = [[
+v1.0.2 (2026-10-08)
+- 修复 Skill 3 生命偷取未生效的问题。
+---
 v1.0.1 (2026-10-08)
 - 更新角色描述，补充艺术家和代码信息。
 ]]
