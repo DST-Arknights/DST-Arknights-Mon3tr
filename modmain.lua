@@ -9,6 +9,8 @@ assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n pleas
 PrefabFiles = {"mon3tr", "mon3tr_none", "construct_sword", "construct_sword_blade_fx", "mon3tr_buff", "mon3tr_heal_chain_fx", "mon3tr_fx", "construct_beacon", "construct_claw", "mon3tr_reticule"}
 Assets = {
   Asset("ATLAS", "bigportraits/mon3tr.xml"),
+  Asset("ATLAS", "bigportraits/mon3tr_none.xml"),
+  Asset("IMAGE", "bigportraits/mon3tr.tex"),
   Asset("ATLAS", "images/saveslot_portraits/mon3tr.xml"),
   Asset("ATLAS", "images/selectscreen_portraits/mon3tr.xml"),
   Asset("ATLAS", "images/selectscreen_portraits/mon3tr_silho.xml"),
@@ -20,6 +22,14 @@ Assets = {
   Asset("SOUNDPACKAGE", "sound/mon3tr.fev"),
   Asset("SOUND", "sound/mon3tr.fsb"),
 }
+RegisterArkBigPortraitAnim("mon3tr", {
+  asset = "anim/mon3tr_bigportrait.zip",
+  bank = "mon3tr_bigportrait",
+  build = "mon3tr_bigportrait",
+  anim = "idle_winter_forest",
+  scale = 1,
+  offset = { 0, 0 },
+})
 AddMinimapAtlas("images/map_icons/mon3tr.xml")
 
 RegisterPOFile(GetModConfigData("language"), {
