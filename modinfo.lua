@@ -8,7 +8,7 @@ name = T({
     en = "Mon3tr",
     zh = "Mon3tr"
 })
-version = "0.0.1"
+version = "1.0.0"
 
 -- 版本更新说明（由发布脚本自动维护，请勿手动编辑）
 local UPDATE_EN = [[]]
