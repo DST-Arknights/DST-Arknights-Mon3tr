@@ -5,3 +5,4 @@ soundSource/**/*.fsb
 /temp
 .*
 __pycache__
+/dist
