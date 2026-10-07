@@ -16,12 +16,16 @@ local UPDATE_EN = [[]]
 local UPDATE_ZH = [[]]
 
 description = T({
-    en = [[Mon3tr, the operator from Arknights, enters the Constant.
+    en = [[Artists: Jack Day, GPT-Image-2.5 | Code: 望月心灵, GPT-6.1 Sol
+
+Mon3tr, the operator from Arknights, enters the Constant.
 Destroy, and heal: Strike with True damage and support allies with bouncing heals.
 Requires DST-ArknightsItemPackage.
 
 Current version: ]] .. version .. "\n" .. UPDATE_EN,
-    zh = [[明日方舟干员 Mon3tr 来到永恒领域。
+    zh = [[画师: Jack Day, GPT-Image-2.5 | 代码: 望月心灵, GPT-6.1 Sol
+
+明日方舟干员 Mon3tr 来到永恒领域。
 毁灭，同时治愈：以真实伤害迎敌，用弹射治疗支援友军。
 需要前置模组 DST-ArknightsItemPackage。
 
