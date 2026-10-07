@@ -2,7 +2,7 @@ soundSource/**/.fsbcache
 soundSource/**/*.bak
 soundSource/**/*.fev
 soundSource/**/*.fsb
-/temp
+/temp/
 .*
 __pycache__
 /dist
