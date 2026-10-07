@@ -234,37 +234,15 @@ local function OnHitOtherTask(inst, data)
   OnHitOther(inst, data)
 end
 
-local function SafeMapCall(map, fnName, default, ...)
-  local fn = map ~= nil and map[fnName] or nil
-  if fn == nil then
-    return default
-  end
-  local ok, result = pcall(fn, map, ...)
-  if ok then
-    return result
-  end
-  return default
-end
-
 local function BuildSkill3Pos(x, z)
   return Vector3(x, 0, z)
 end
 
 local function IsSkill3WalkablePoint(x, z)
-  local map = TheWorld ~= nil and TheWorld.Map or nil
-  if map == nil then
-    return true
-  end
-  if not SafeMapCall(map, "IsAboveGroundAtPoint", true, x, 0, z) then
-    return false
-  end
-  if not SafeMapCall(map, "IsPassableAtPoint", true, x, 0, z) then
-    return false
-  end
-  if SafeMapCall(map, "IsGroundTargetBlocked", false, x, 0, z) then
-    return false
-  end
-  return true
+  local map = TheWorld.Map
+  return map:IsAboveGroundAtPoint(x, 0, z)
+      and map:IsPassableAtPoint(x, 0, z)
+      and not map:IsGroundTargetBlocked(BuildSkill3Pos(x, z))
 end
 
 local function FindSkill3WalkablePos(centerX, centerZ, angle, radius)
@@ -279,8 +257,11 @@ local function FindSkill3WalkablePos(centerX, centerZ, angle, radius)
 
   if FindWalkableOffset ~= nil then
     local center = BuildSkill3Pos(centerX, centerZ)
-    local ok, offset = pcall(FindWalkableOffset, center, angle, searchRadius, SKILL3_POSITION_SEARCH_ATTEMPTS, true)
-    if ok and offset ~= nil then
+    local offset = FindWalkableOffset(center, angle, searchRadius, SKILL3_POSITION_SEARCH_ATTEMPTS, true, nil,
+      function(pos)
+        return IsSkill3WalkablePoint(pos.x, pos.z)
+      end)
+    if offset ~= nil then
       return BuildSkill3Pos(centerX + offset.x, centerZ + offset.z)
     end
   end
@@ -341,7 +322,18 @@ local function GetSkill3ActivePosFromPoint(pos)
     return nil
   end
 
-  return FindSkill3WalkablePos(x, z, 0, 0) or BuildSkill3Pos(x, z)
+  return FindSkill3WalkablePos(x, z, 0, 0)
+end
+
+local function GetSkill3ActivePos(inst, data)
+  if data and data.targetPos then
+    return GetSkill3ActivePosFromPoint(data.targetPos)
+  end
+  local targetpos = data and data.target and GetSkill3ActivePosFromTarget(inst, data.target) or nil
+  if targetpos == nil and inst.components.combat and inst.components.combat.target then
+    targetpos = GetSkill3ActivePosFromTarget(inst, inst.components.combat.target)
+  end
+  return targetpos
 end
 
 local function CancelSkill3LightTask(skill)
@@ -404,7 +396,7 @@ local function OnSkill3AttackOther(inst, data)
   if skill and skill:IsActivating() then
     local combat = inst.components.combat
     combat:DoAreaAttack(inst, 3, combat:GetWeapon(), function(ent)
-      return data and ent ~= data.target or true
+      return data == nil or ent ~= data.target
     end, nil, nil, nil)
   end
 end
@@ -470,6 +462,23 @@ local function InstallSkill3Interface(skill)
     if self.b_weapon ~= nil then
       self.b_weapon:Remove()
       self.b_weapon = nil
+    end
+  end
+
+  function skill:SetSkill3WeaponHidden(hidden)
+    if self.f_weapon ~= nil then
+      if hidden then
+        self.f_weapon:Hide()
+      else
+        self.f_weapon:Show()
+      end
+    end
+    if self.b_weapon ~= nil then
+      if hidden then
+        self.b_weapon:Hide()
+      else
+        self.b_weapon:Show()
+      end
     end
   end
 
@@ -550,23 +559,18 @@ local function OnSkill3Remove(skill)
   skill._mon3tr_skill3_light_fx = nil
 end
 
-local function Skill3ActivateTest(skill)
+local function Skill3ActivateSelectorTest(skill)
   local rider = skill.inst.components.rider
   return rider == nil or not rider:IsRiding()
 end
 
+local function Skill3ActivateTest(skill, data)
+  return Skill3ActivateSelectorTest(skill) and GetSkill3ActivePos(skill.inst, data) ~= nil
+end
+
 local function OnSkill3Activate(skill, data)
   local inst = skill.inst
-  local targetpos = nil
-  if data and data.targetPos then
-    targetpos = GetSkill3ActivePosFromPoint(data.targetPos)
-  end
-  if targetpos == nil and data and data.target then
-    targetpos = GetSkill3ActivePosFromTarget(inst, data.target)
-  end
-  if targetpos == nil and inst.components.combat and inst.components.combat.target then
-    targetpos = GetSkill3ActivePosFromTarget(inst, inst.components.combat.target)
-  end
+  local targetpos = GetSkill3ActivePos(inst, data)
   if not targetpos then
     return
   end
@@ -852,7 +856,7 @@ local skills = { {
   image = "skill3.tex",
   recipe_image = "skill3_recipe.tex",
   targetSelector = "mon3tr_skill3_aoe",
-  ActivateSelectorTest = Skill3ActivateTest,
+  ActivateSelectorTest = Skill3ActivateSelectorTest,
   ActivateTest = Skill3ActivateTest,
   OnInstall = OnSkill3Install,
   OnRemove = OnSkill3Remove,

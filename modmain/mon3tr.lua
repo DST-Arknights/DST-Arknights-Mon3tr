@@ -170,6 +170,9 @@ AddStategraphState("wilson", State {
       skill:RemoveConstructBeacon()
     end
     if data ~= nil then
+      if skill then
+        skill:SetSkill3WeaponHidden(true)
+      end
       inst.sg.statemem.data = data
       ToggleOffPhysics(inst)
       inst.AnimState:PlayAnimation("superjump")
@@ -247,9 +250,10 @@ AddStategraphState("wilson", State {
     end
     -- 重新生成特效
     local skill = GetMon3trSkill3(inst)
-    if skill then
+    if skill and skill:IsActivating() then
       skill:SpawnWrathFx()
       skill:SetupSkill3Weapon()
+      skill:SetSkill3WeaponHidden(false)
     end
     inst:Show()
   end,
@@ -405,11 +409,12 @@ AddStategraphState("wilson", State {
     end),
   },
 
-  onexit = function(inst)
-    if not inst.sg:HasStateTag("mon3tr_skill") then
+  onexit = function(inst, nextstate)
+    if nextstate ~= "mon3tr_return_jump_pst" then
       if inst.sg.statemem.isphysicstoggle then
         ToggleOnPhysics(inst)
       end
+      inst:Show()
       inst.DynamicShadow:Enable(true)
       inst.components.health:SetInvincible(false)
     end
@@ -427,6 +432,7 @@ AddStategraphState("wilson", State {
     end
 
     inst.sg.statemem.data = data
+    ToggleOffPhysics(inst)
     inst:Show()
     inst.Physics:Teleport(data.targetpos.x, 0, data.targetpos.z)
     inst.AnimState:PlayAnimation("superjump_land")
