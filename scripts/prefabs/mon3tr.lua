@@ -49,6 +49,7 @@ local common_postinit = function(inst)
   inst.MiniMapEntity:SetIcon("mon3tr.tex")
   -- choose which sounds this character will play
   inst.talksoundoverride = "mon3tr/jp/talk_LP"
+  inst:AddTag("mon3tr")
   inst:AddTag("ark_character")
 end
 
@@ -80,12 +81,15 @@ local master_postinit = function(inst)
   inst:AddComponent("ark_skill")
   inst.components.ark_skill:DeclareBuiltin("mon3tr_skill1", {
     requiredElite = 1,
+    eliteLevelMap = { [1] = 1, [2] = 2, [3] = 3 },
   })
   inst.components.ark_skill:DeclareBuiltin("mon3tr_skill2", {
     requiredElite = 2,
+    eliteLevelMap = { [2] = 1, [3] = 2 },
   })
   inst.components.ark_skill:DeclareBuiltin("mon3tr_skill3", {
     requiredElite = 3,
+    eliteLevelMap = { [3] = 1 },
   })
   inst:AddComponent("ark_currency")
   BindVoice(inst, "mon3tr")

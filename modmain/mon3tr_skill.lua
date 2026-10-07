@@ -2,6 +2,8 @@ local ARK_CONSTANTS = require "ark_constants"
 
 local ATTACK_RECOVERY_ENERGY = 1
 local HEAL_CHAIN_RANGE = 16
+local HEAL_CHAIN_ATTENUATION = 0.75
+local SKILL1_HEAL_RATE_BONUS = 0.5
 local HEAL_CHAIN_EXCLUDE_TAGS = { "INLIMBO", "flight", "invisible", "notarget", "noattack" }
 
 local MON3TR_SKILL3_MODIFIER_KEY = "mon3tr_skill3_modifier"
@@ -114,7 +116,6 @@ local function FindHealChain(inst, maxCount, attackTarget)
 end
 
 local function HealChain(inst, data)
-  local healRateAttenuation = 0.75
   local healRate = data.rate or 0
   local healCount = data.count or 0
   local healHealth = data.health or 0
@@ -140,7 +141,7 @@ local function HealChain(inst, data)
 
   local nextRate = healRate
   for _, target in ipairs(chain) do
-    nextRate = nextRate * healRateAttenuation
+    nextRate = nextRate * HEAL_CHAIN_ATTENUATION
     if target.components.health then
       local healAmount = healHealth * nextRate
       target.components.health:DoDelta(healAmount, nil, "mon3tr_skill_heal", false, inst)
@@ -183,7 +184,7 @@ local function OnHitOther(inst, data)
   local healRate = 0
   local healChainCount = 0
   if skill1 and skill1:IsActivating() then
-    healRate = healRate + 0.5
+    healRate = healRate + SKILL1_HEAL_RATE_BONUS
     healChainCount = healChainCount + 1
   end
   healRate, healChainCount = AppendSkillHealChainParam(skill1, healRate, healChainCount)
@@ -713,72 +714,83 @@ local function OnSkill3Load(skill, data)
   skill:StartGreenFade(true)
 end
 
+local function Skill1Desc(skill)
+  local params = skill:GetLevelParams()
+  return string.format(STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1],
+    params.healChainCount, (params.healRate + SKILL1_HEAL_RATE_BONUS) * HEAL_CHAIN_ATTENUATION * 100,
+    (1 - HEAL_CHAIN_ATTENUATION) * 100)
+end
+
+local function Skill2Desc(skill)
+  local params = skill:GetLevelParams()
+  return string.format(STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2],
+    params.healChainCount, params.healRate * HEAL_CHAIN_ATTENUATION * 100,
+    (1 - HEAL_CHAIN_ATTENUATION) * 100, params.tactical_synergy_passive_bonus_scale)
+end
+
+local function Skill3Desc(skill)
+  local params = skill:GetLevelParams()
+  return string.format(STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3],
+    params.attack_damage_multiplier, params.health_bonus, params.lose_health_per_second)
+end
+
 local skills = { {
   id = "mon3tr_skill1",
   name = STRINGS.UI.MON3TR_SKILL.NAME[1],
+  desc = Skill1Desc,
   energyRecoveryMode = ARK_CONSTANTS.ENERGY_RECOVERY_MODE.ATTACK,
   activationMode = ARK_CONSTANTS.ACTIVATION_MODE.AUTO,
-  lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[1],
   atlas = "images/ui_mon3tr_skill.xml",
   image = "skill1.tex",
   recipe_image = "skill1_recipe.tex",
   OnInstall = OnCommonSkillInstall,
   levels = { {
     activationEnergy = 5,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][1],
     params = { healRate = 1.1, healChainCount = 4 },
   }, {
     activationEnergy = 5,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][2],
     params = { healRate = 1.2, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 5) }
   }, {
     activationEnergy = 5,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][3],
     params = { healRate = 1.25, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 5), Ingredient("ark_item_mtl_sl_boss1", 4), Ingredient("ark_item_mtl_sl_rush1", 4) }
   }, {
     activationEnergy = 5,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][4],
     params = { healRate = 1.35, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_g2", 7) }
   }, {
     activationEnergy = 5,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][5],
     params = { healRate = 1.5, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 8), Ingredient("ark_item_mtl_sl_strg2", 4), Ingredient("ark_item_mtl_sl_ketone2", 4) }
   }, {
     activationEnergy = 5,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][6],
     params = { healRate = 1.6, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_strg3", 7) }
   }, {
     activationEnergy = 3,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][7],
     params = { healRate = 1.7, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_ccf", 5), Ingredient("ark_item_mtl_sl_rush3", 3) }
   }, {
     activationEnergy = 3,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][8],
     params = { healRate = 1.8, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_zyk", 4), Ingredient("ark_item_mtl_sl_g3", 10) }
   }, {
     activationEnergy = 3,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][9],
     params = { healRate = 1.9, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 12), Ingredient("ark_item_mtl_sl_htt", 4), Ingredient("ark_item_mtl_sl_pgel4", 9) }
   }, {
     activationEnergy = 2,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[1][10],
     params = { healRate = 2.0, healChainCount = 4 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 15), Ingredient("ark_item_mtl_sl_ds", 6), Ingredient("ark_item_mtl_sl_pg2", 6) }
   }, }
 }, {
   id = "mon3tr_skill2",
   name = STRINGS.UI.MON3TR_SKILL.NAME[2],
+  desc = Skill2Desc,
   energyRecoveryMode = ARK_CONSTANTS.ENERGY_RECOVERY_MODE.ATTACK,
   activationMode = ARK_CONSTANTS.ACTIVATION_MODE.MANUAL,
-  lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[2],
+  lockedDesc = STRINGS.UI.CRAFTING.NEEDSARK_ELITE_ONE,
   hotkey = KEY_X,
   atlas = "images/ui_mon3tr_skill.xml",
   image = "skill2.tex",
@@ -786,71 +798,62 @@ local skills = { {
   OnInstall = OnCommonSkillInstall,
   OnActivate = OnSkill2Activate,
   levels = { {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][1],
     params = { healRate = 1.5, healChainCount = 3, tactical_synergy_passive_bonus_scale = 1.5 },
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][2],
     params = { healRate = 1.6, healChainCount = 3, tactical_synergy_passive_bonus_scale = 1.6 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 5) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][3],
     params = { healRate = 1.7, healChainCount = 3, tactical_synergy_passive_bonus_scale = 1.7 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 5), Ingredient("ark_item_mtl_sl_boss1", 4), Ingredient("ark_item_mtl_sl_rush1", 4) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][4],
     params = { healRate = 1.8, healChainCount = 3, tactical_synergy_passive_bonus_scale = 1.8 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_g2", 7) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][5],
     params = { healRate = 2, healChainCount = 3, tactical_synergy_passive_bonus_scale = 2 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 8), Ingredient("ark_item_mtl_sl_strg2", 4), Ingredient("ark_item_mtl_sl_ketone2", 4) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][6],
     params = { healRate = 2.1, healChainCount = 3, tactical_synergy_passive_bonus_scale = 2.1 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_strg3", 7) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][7],
     params = { healRate = 2.3, healChainCount = 3, tactical_synergy_passive_bonus_scale = 2.3 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_ccf", 5), Ingredient("ark_item_mtl_sl_rush3", 3) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][8],
     params = { healRate = 2.5, healChainCount = 3, tactical_synergy_passive_bonus_scale = 2.5 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_iron4", 4), Ingredient("ark_item_mtl_sl_pg1", 3) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][9],
     params = { healRate = 2.6, healChainCount = 3, tactical_synergy_passive_bonus_scale = 2.6 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 12), Ingredient("ark_item_mtl_sl_rs", 4) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 25,
     buffDuration = 30,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[2][10],
     params = { healRate = 2.8, healChainCount = 3, tactical_synergy_passive_bonus_scale = 2.8 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 15), Ingredient("ark_item_mtl_sl_shj", 6), Ingredient("ark_item_mtl_sl_g4", 2) }
   }, }
 }, {
   id = "mon3tr_skill3",
   name = STRINGS.UI.MON3TR_SKILL.NAME[3],
+  desc = Skill3Desc,
   energyRecoveryMode = ARK_CONSTANTS.ENERGY_RECOVERY_MODE.ATTACK,
   activationMode = ARK_CONSTANTS.ACTIVATION_MODE.MANUAL,
-  lockedDesc = STRINGS.UI.MON3TR_SKILL.LOCKED_DESC[3],
+  lockedDesc = STRINGS.UI.CRAFTING.NEEDSARK_ELITE_TWO,
   hotkey = KEY_C,
   atlas = "images/ui_mon3tr_skill.xml",
   image = "skill3.tex",
@@ -865,69 +868,61 @@ local skills = { {
   OnDeactivate = OnSkill3Deactivate,
   OnLoad = OnSkill3Load,
   levels = { {
-    activationEnergy = 1,
+    activationEnergy = 40,
     buffDuration = 125,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][1],
     params = { healChainCount = 3, attack_damage_multiplier = 2, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80, landing_damage = 120, landing_range = 6 },
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][2],
     params = { healChainCount = 3, attack_damage_multiplier = 2.2, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 5) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][3],
     params = { healChainCount = 3, attack_damage_multiplier = 2.3, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 5), Ingredient("ark_item_mtl_sl_boss1", 4), Ingredient("ark_item_mtl_sl_rush1", 4) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][4],
     params = { healChainCount = 3, attack_damage_multiplier = 2.5, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_g2", 7) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][5],
     params = { healChainCount = 3, attack_damage_multiplier = 2.6, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill1", 8), Ingredient("ark_item_mtl_sl_strg2", 4), Ingredient("ark_item_mtl_sl_ketone2", 4) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][6],
     params = { healChainCount = 3, attack_damage_multiplier = 2.7, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill2", 8), Ingredient("ark_item_mtl_sl_strg3", 7) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][7],
     params = { healChainCount = 3, attack_damage_multiplier = 2.8, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_ccf", 5), Ingredient("ark_item_mtl_sl_rush3", 3) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][8],
     params = { healChainCount = 3, attack_damage_multiplier = 3, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 8), Ingredient("ark_item_mtl_sl_plcf", 4), Ingredient("ark_item_mtl_sl_iam3", 7) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][9],
     params = { healChainCount = 3, attack_damage_multiplier = 3.1, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 12), Ingredient("ark_item_mtl_sl_xwb", 4), Ingredient("ark_item_mtl_sl_rma7024", 7) }
   }, {
-    activationEnergy = 15,
+    activationEnergy = 40,
     buffDuration = 25,
-    desc = STRINGS.UI.MON3TR_SKILL.LEVEL_DESC[3][9],
     params = { healChainCount = 3, attack_damage_multiplier = 3.3, attack_speed_multiplier = 1.5, attack_range_bonus = 2, health_bonus = 5000, lose_health_per_second = 80 },
     recipeIngredients = { Ingredient("ark_item_mtl_skill3", 15), Ingredient("ark_item_mtl_sl_oeu", 6), Ingredient("ark_item_mtl_sl_iam4", 1) }
   } }
 } }
 
 for _, skill in ipairs(skills) do
-  -- TODO: 先只保留一级, 剩余所有级删除
-  skill.levels = { skill.levels[1] }
+  -- TODO: 暂时移除所有的升级配方
+  for i, level in ipairs(skill.levels) do
+    level.recipeIngredients = nil
+  end
   RegisterArkSkill(skill)
 end

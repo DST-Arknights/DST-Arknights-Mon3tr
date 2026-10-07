@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Language: zh\n"
+"Language: en\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT Version: 2.0"
@@ -23,17 +23,17 @@ msgstr "Mon3tr"
 #. STRINGS.CHARACTER_DESCRIPTIONS.mon3tr
 msgctxt "STRINGS.CHARACTER_DESCRIPTIONS.mon3tr"
 msgid "*Builds Skill Points through attacks to heal allies\n*Charges Reconstruction to deal True damage\n*Unlocks new stratagems through Elite promotion"
-msgstr "*攻击积蓄技力，弹射治疗友军\n*为重构体充能，转化真实伤害\n*精英化解锁新的战斗策略"
+msgstr "*Builds Skill Points through attacks to heal allies\n*Charges Reconstruction to deal True damage\n*Unlocks new stratagems through Elite promotion"
 
 #. STRINGS.CHARACTER_QUOTES.mon3tr
 msgctxt "STRINGS.CHARACTER_QUOTES.mon3tr"
 msgid "Destroy, and heal."
-msgstr "毁灭，同时治愈。"
+msgstr "Destroy, and heal."
 
 #. STRINGS.CHARACTER_SURVIVABILITY.mon3tr
 msgctxt "STRINGS.CHARACTER_SURVIVABILITY.mon3tr"
 msgid "All can live."
-msgstr "都能活着"
+msgstr "All can live."
 
 #. STRINGS.NAMES.MON3TR
 msgctxt "STRINGS.NAMES.MON3TR"
@@ -43,79 +43,79 @@ msgstr "Mon3tr"
 #. STRINGS.NAMES.CONSTRUCT_SWORD
 msgctxt "STRINGS.NAMES.CONSTRUCT_SWORD"
 msgid "Reconstruction"
-msgstr "重构体"
+msgstr "Reconstruction"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.CONSTRUCT_SWORD
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.CONSTRUCT_SWORD"
 msgid "Hunger and healing feed its power."
-msgstr "饱食与治疗，都能化作它的力量。"
+msgstr "Hunger and healing feed its power."
 
 #. STRINGS.UI.MON3TR_SKILL.NAME.1
 msgctxt "STRINGS.UI.MON3TR_SKILL.NAME.1"
 msgid "Stratagem: Hyperpressurized Link"
-msgstr "策略：超压链接"
+msgstr "Stratagem: Hyperpressurized Link"
 
 #. STRINGS.UI.MON3TR_SKILL.NAME.2
 msgctxt "STRINGS.UI.MON3TR_SKILL.NAME.2"
 msgid "Stratagem: Overload"
-msgstr "策略：超负荷"
+msgstr "Stratagem: Overload"
 
 #. STRINGS.UI.MON3TR_SKILL.NAME.3
 msgctxt "STRINGS.UI.MON3TR_SKILL.NAME.3"
 msgid "Stratagem: Meltdown"
-msgstr "策略：熔毁"
+msgstr "Stratagem: Meltdown"
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.1"
 msgid "The next hit heals up to %d nearby allies, prioritizing the lowest HP ratio. The first target recovers %g%% of base ATK as HP; each bounce reduces healing by %g%%."
-msgstr "下次命中弹射治疗附近最多%d位友军，优先治疗生命比例最低的目标。首位恢复基础攻击力%g%%的生命，之后每跳降低%g%%。"
+msgstr "The next hit heals up to %d nearby allies, prioritizing the lowest HP ratio. The first target recovers %g%% of base ATK as HP; each bounce reduces healing by %g%%."
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.2"
 msgid "While active, each hit heals up to %d nearby allies. The first target recovers %g%% of base ATK as HP; each bounce reduces healing by %g%%. Healing grants %g times the usual attack speed bonus for 10 seconds. Stacks with Hyperpressurized Link."
-msgstr "技能期间，每次命中弹射治疗附近最多%d位友军。首位恢复基础攻击力%g%%的生命，之后每跳降低%g%%。治疗提供的攻速加成提升至%g倍，持续10秒。可与超压链接叠加。"
+msgstr "While active, each hit heals up to %d nearby allies. The first target recovers %g%% of base ATK as HP; each bounce reduces healing by %g%%. Healing grants %g times the usual attack speed bonus for 10 seconds. Stacks with Hyperpressurized Link."
 
 #. STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.3
 msgctxt "STRINGS.UI.MON3TR_SKILL.LEVEL_DESC.3"
 msgid "Leap to the selected position and unequip the hand slot. Consume up to 10%% of Reconstruction's durability to gain base ATK.\nAttack damage becomes %g times its original value, attack speed and range increase, and melee attacks deal True damage to nearby enemies.\nMax HP +%d; lose %d HP per second. Hits restore 100%% of base ATK as HP to herself.\nReturn to the starting position when the skill ends or lethal damage is taken."
-msgstr "跃向选定位置并解除手持装备，吸收重构体最高10%%的耐久，获得基础攻击力加成。\n攻击伤害变为%g倍，攻速与攻击范围提高，近战攻击对附近敌人造成真实伤害。\n生命上限+%d，每秒流失%d点生命；命中时恢复自身基础攻击力100%%的生命。\n技能结束或受到致命伤害时，返回初始位置。"
+msgstr "Leap to the selected position and unequip the hand slot. Consume up to 10%% of Reconstruction's durability to gain base ATK.\nAttack damage becomes %g times its original value, attack speed and range increase, and melee attacks deal True damage to nearby enemies.\nMax HP +%d; lose %d HP per second. Hits restore 100%% of base ATK as HP to herself.\nReturn to the starting position when the skill ends or lethal damage is taken."
 
 #. STRINGS.UI.MON3TR_TACTICAL_SYNERGY_BUFF.TITLE
 msgctxt "STRINGS.UI.MON3TR_TACTICAL_SYNERGY_BUFF.TITLE"
 msgid "Tactical Synergy"
-msgstr "战术协同"
+msgstr "Tactical Synergy"
 
 #. STRINGS.UI.MON3TR_TACTICAL_SYNERGY_BUFF.DESC
 msgctxt "STRINGS.UI.MON3TR_TACTICAL_SYNERGY_BUFF.DESC"
 msgid "Units healed by Mon3tr have +%d%% attack speed."
-msgstr "被Mon3tr治疗的单位攻击速度+%d%%"
+msgstr "Units healed by Mon3tr have +%d%% attack speed."
 
 #. STRINGS.UI.MON3TR_SELF_REPAIR_BUFF.TITLE
 msgctxt "STRINGS.UI.MON3TR_SELF_REPAIR_BUFF.TITLE"
 msgid "Self-repair"
-msgstr "自我修复"
+msgstr "Self-repair"
 
 #. STRINGS.UI.MON3TR_SELF_REPAIR_BUFF.DESC
 msgctxt "STRINGS.UI.MON3TR_SELF_REPAIR_BUFF.DESC"
 msgid "Characters around Reconstruction gain +%d%% ATK, buff lasts %ds after leaving."
-msgstr "重构体周围的角色攻击力增加%d%%, 离开后持续 %d秒"
+msgstr "Characters around Reconstruction gain +%d%% ATK, buff lasts %ds after leaving."
 
 #. STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL2_0"
 msgctxt "STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL2_0"
 msgid "My claws will listen for me."
-msgstr "我的爪子会替我听诊。"
+msgstr "My claws will listen for me."
 
 #. STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_0"
 msgctxt "STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_0"
 msgid "Switching form."
-msgstr "正在切换形态。"
+msgstr "Switching form."
 
 #. STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_1"
 msgctxt "STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_1"
 msgid "Destruction and healing."
-msgstr "毁灭，同时治愈。"
+msgstr "Destruction and healing."
 
 #. STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_2"
 msgctxt "STRINGS.CHARACTERS.GENERIC.MON3TR_SKILL3_2"
 msgid "Engage the enemy, swift battle."
-msgstr "接敌，速战速决。"
+msgstr "Engage the enemy, swift battle."

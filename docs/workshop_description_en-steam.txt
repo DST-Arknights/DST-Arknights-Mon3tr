@@ -1,0 +1,82 @@
+[b]“Destroy, and heal.”[/b]
+
+Mon3tr, the operator from Arknights, enters the Constant. Wield Reconstruction against your enemies, build Skill Points through attacks, and sustain yourself and your allies with bouncing heals. When it is time to break through, leap into the enemy ranks in Meltdown form.
+
+[b]Requires subscribing to and enabling [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]Arknights Item Package[/url].[/b]
+
+[hr][/hr]
+
+[h2]Basic Information[/h2]
+
+[b]Starting Stats:[/b] Health 150 · Hunger 150 · Sanity 200
+[b]Starting Item:[/b] Reconstruction
+
+Mon3tr combines melee damage with healing support. Landing attacks restores her own Health and builds Skill Points.
+
+Bouncing heals can reach Mon3tr herself and nearby allies, prioritizing those with the lowest Health percentage. Healing passes between targets, with each subsequent bounce restoring less Health.
+
+[b]Tactical Synergy[/b]
+From Elite 1 onward, units reached by bouncing heals receive a brief attack speed boost. Fight alongside your allies to keep healing and offense working together.
+
+[hr][/hr]
+
+[h2]Equipment and Charging[/h2]
+
+[b]Reconstruction[/b]
+
+A special weapon that Mon3tr starts with. Its durability represents its charge: more charge means stronger attacks, and its glow changes with its charge level. When wielded by Mon3tr, it deals [b]True damage[/b]. Normal attacks do not consume charge.
+
+[b]Hunger and healing feed its power.[/b]
+While equipped, Reconstruction slowly consumes Hunger above 40 to charge itself up to 80%. Once it reaches this threshold, its wielder can receive Mon3tr's bouncing heals to charge it further toward full capacity.
+
+Bouncing heals also restore durability to [b]M3 Cocoon Armor[/b] worn by the healed unit. Even at full Health, healing can still charge both pieces of equipment. See the required Item Package mod's description for the armor's other effects.
+
+If Reconstruction is equipped when Meltdown begins, a small amount of its charge is consumed to further increase attack power for that transformation. Stay well fed before a fight and keep healing during combat to bring out more of its power.
+
+[hr][/hr]
+
+[h2]Combat Skills[/h2]
+
+Skills gain Skill Points through successful attacks. Hyperpressurized Link activates automatically, while Overload and Meltdown are activated manually.
+
+[h3]Stratagem: Hyperpressurized Link[/h3]
+[b]Available from the start · Automatic activation[/b]
+
+When enough Skill Points have been accumulated, an attack hit triggers a bouncing heal for several nearby allies. Provides steady healing during sustained combat.
+
+[h3]Stratagem: Overload[/h3]
+[b]Unlocked at Elite 1 · Manual activation[/b]
+
+For a period after activation, every attack hit triggers a bouncing heal and strengthens the attack speed bonus granted by Tactical Synergy.
+
+Stacks with Hyperpressurized Link for stronger healing, helping your team handle prolonged fights and larger groups of enemies.
+
+[h3]Stratagem: Meltdown[/h3]
+[b]Unlocked at Elite 2 · Manual activation with a selected landing point[/b]
+
+Leap to the selected location, strike nearby enemies on landing, and unequip the hand slot to enter Meltdown form. Handheld equipment cannot be used while the skill is active.
+
+This form greatly increases maximum Health and boosts attack damage, attack speed, and attack range. Melee attacks deal [b]True damage to enemies in an area[/b]. Meanwhile, Health drains continuously; keep landing attacks to heal yourself and sustain the assault.
+
+When the skill ends or Mon3tr is close to death, she returns near her starting point. There is a brief period of protection against death afterwards, so watch your remaining Health and heal promptly. [b]Meltdown cannot be used while riding.[/b]
+
+[hr][/hr]
+
+[h2]Leveling and Elite Promotion[/h2]
+
+Earn experience by defeating enemies and participating in boss fights, gradually increasing Health and base attack power. Once you reach the current stage's level cap, spend the required materials in the crafting menu to promote and begin the next stage of growth.
+
+[b]Initial Stage:[/b] Use Hyperpressurized Link.
+[b]Elite 1:[/b] Unlock Overload and Tactical Synergy, and improve Hyperpressurized Link.
+[b]Elite 2:[/b] Unlock Meltdown and further improve the first two skills and Tactical Synergy.
+
+Promotion recipes depend on the Item Package mod's material drop settings. If Arknights material drops are disabled, the recipes use vanilla Don't Starve materials.
+
+[hr][/hr]
+
+[h2]Feedback and Suggestions[/h2]
+
+Bug reports and suggestions are welcome.
+
+[b]Issue:[/b] [url=https://github.com/TohsakaKuro/DST-Arknights-Mon3tr/issues]GitHub Issues[/url]
+[b]Email:[/b] tohsakakuro@outlook.com
