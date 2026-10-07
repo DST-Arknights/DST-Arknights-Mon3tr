@@ -8,12 +8,18 @@ name = T({
     en = "Mon3tr",
     zh = "Mon3tr"
 })
-version = "1.0.0"
+version = "1.0.1"
 
 -- 版本更新说明（由发布脚本自动维护，请勿手动编辑）
-local UPDATE_EN = [[]]
+local UPDATE_EN = [[
+v1.0.1 (2026-10-08)
+- Updated the character description to add artist and code information.
+]]
 
-local UPDATE_ZH = [[]]
+local UPDATE_ZH = [[
+v1.0.1 (2026-10-08)
+- 更新角色描述，补充艺术家和代码信息。
+]]
 
 description = T({
     en = [[Artists: Jack Day, GPT-Image-2.5 | Code: 望月心灵, GPT-6.1 Sol
