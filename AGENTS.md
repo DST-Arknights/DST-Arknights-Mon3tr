@@ -1,64 +1,32 @@
-# AGENTS
+# Mon3tr 项目协作约定
 
-总是用俏皮可爱的二次元口吻与我沟通.
+## 共享规范与依赖
 
-## 适用范围
+- 通用的 DST Lua、Prefab、状态图、客户端/主机分层、国际化、动画、音频、发布和验证规范，统一遵循共享项目 `DST-Arknights-AICoding` 中与任务匹配的 skill；本文件只补充 Mon3tr 项目特有约定。
+- 本项目依赖 `DST-Arknights-Nexus`（源枢）。源枢的位置从记忆中查找；记忆不明确时先询问用户。保持 `modinfo.lua` 的依赖键和源枢提供的运行时 API 契约，不把源枢代码内联到本项目。
 
-这些说明适用于整个 DST-Arknights-Mon3tr 工作区。本项目完全依赖于另一个项目 DST-ArknightsItemPackage，
+## 入口与玩法范围
 
-## 项目结构
+- `modmain.lua` 负责源枢依赖检查、Prefab/资源注册、Mon3tr 大肖像注册、语言和语音注册，以及 `modmain/mon3tr.lua`、`modmain/mon3tr_skill.lua` 的导入。
+- `modmain/mon3tr.lua` 维护角色、装备、骑乘限制、治疗和生命周期整合；`modmain/mon3tr_skill.lua` 维护技能、目标选择、跳跃/落点、战斗和治疗链。
+- `scripts/prefabs/` 中的 Mon3tr、构造剑、构造爪、信标、治疗链、Buff、特效和目标选择器 Prefab，必须与 `modmain.lua` 中的 `PrefabFiles` 一一对应。
+- Mon3tr 在本项目文案和视觉中作为独立角色处理，不写成凯尔希的召唤物；源枢提供的共享装备机制按其项目说明使用。
 
-- 主要入口：
-  - `modinfo.lua`：模组元数据和依赖声明。
-  - `modmain.lua`：Prefab 注册、资源声明、本地化、TUNING 配置和模块导入。
-  - `modmain/mon3tr.lua`：玩法钩子和状态图相关整合。
-  - `modmain/mon3tr_skill.lua`：技能逻辑，以及战斗和治疗链行为。
-  - `scripts/prefabs/`：角色、武器、Buff 和特效的 Prefab 实现。
-- 资源流程：
-  - 运行时使用的编译后资源位于 `anim/` 和 `images/`。
-  - 动画源文件位于 `animSource/`。
-  - 优先修改源 SCML 或工具脚本，不要直接修改生成后的运行时资源。
+## 资源与文案约定
 
-## 工作规则
+- 运行时资源位于 `anim/`、`images/`、`sound/` 和 `bigportraits/`；动画可编辑来源优先使用 `animSource/`，不要直接把生成后的 `anim/` 压缩资源当作编辑源。
+- `soundSource/` 与 `sound/` 必须保持音频工程、音频事件、soundbank 和运行时文件同步；语音绑定位于 `languages/mon3tr_voice.lua`。
+- `languages/mon3tr_chinese_s.po` 与 `mon3tr_english.po` 保存双语文本；新增角色、技能或装备文本时保持两种语言键集合一致。
+- `docs/workshop_description_zh-steam.txt` 与 `docs/workshop_description_en-steam.txt` 是工坊说明的双语来源。文案以玩家可见内容为主，省略技能快捷键和过密的内部数值；说明构造剑与 M3 Cocoon Armor 的治疗充能，详细共享装备机制以源枢说明为准。
+- 保留艺术家和代码署名的既有格式；不要在说明中加入实现路径、调试信息或开发者机器路径。
 
-- 这是一个 Don't Starve Together 模组。很多全局符号来自游戏引擎，例如 `GLOBAL`、`SpawnPrefab`、`TheWorld`、`RADIANS`、`FRAMES`。Lua 工具把它们报成未定义时，不一定是真错误。
-- 保持 DST Prefab 常见的主从端分层：
-  - 共享标签和表现层内容放在 `common_postinit`。
-  - 组件和玩法逻辑放在 `master_postinit`。
-  - 如果某个 Prefab 模式需要主机专属逻辑，用 `if not TheWorld.ismastersim then return inst end` 做保护。
-- TUNING 值和功能常量尽量放在文件顶部，作为局部常量定义。
-- 遵循现有 Prefab 结构：先写本地 `assets` 和 `prefabs`，再写辅助函数，最后写工厂函数和 `return`。
-- 发现已有 Ark 模组系统时，优先复用，例如 `ark_skill`、`ark_elite`、Ark 的日志和辅助函数，不要额外造一套平行抽象。
-- 除非代码本来就是这么写的，否则不要把引擎全局访问改成手动导入。
+## 动画与改动边界
 
-## 验证方式
+- 修改武器或爪击动画时，先确认实际来源是 `animSource/`、Prefab 的 `AnimState` 设置还是 `tools/` 脚本，再修改来源并重新生成运行时资源。
+- 需要保留的原始动画、预览或候选文件按当前目录约定放在 `temp/` 或项目已有的预览目录；不要删除与当前任务无关的来源文件。
+- 新增技能、装备或 Prefab 时，同时更新注册列表、对应资源和双语文本；跨项目 API 变更先核对源枢项目的当前公开接口。
 
-- 这个工作区没有独立的构建流程，也没有自动化测试。
-- 修改 Lua 时，优先使用最小范围的验证：
-  - 检查改动文件的本地语法和明显诊断；
-  - 确认 `modmain.lua` 里的 Prefab 注册和模块导入仍然一致；
-  - 如果行为改动较大，补充说明预期的游戏内验证路径。
-- 处理动画源文件时，优先使用 `tools/` 里的现有脚本：
-  - `python tools/mirror_scml_animation.py <file.scml> <animation...> [--backup] [--dry-run]`
-  - `python tools/offset_scml_timeline.py <file.scml> -o <offset>`
-  - `powershell tools/update_construct_beacon_scml.ps1`
+## 项目专属检查
 
-## 常见陷阱
-
-- 不要把 LuaLS 的 undefined global 警告当成这个仓库里的绝对错误依据。
-- 在热路径里做链式搜索或访问去重时，优先使用以实体为键的本地 `visited` 表，而不是反复做线性包含判断。
-- Prefab 名、图集路径、动画 bank/build 名，以及 `PrefabFiles` 条目必须严格对应；这里的很多错误会表现为加载失败或显示异常，而不是编译错误。
-- 如果某个功能依赖 DST-ArknightsItemPackage，要保持 `modinfo.lua` 中的依赖契约，不要悄悄把外部 API 内联进当前仓库。
-
-## 改动建议
-
-- 不做冗余的判断条件.
-- 优先在真正拥有玩法逻辑的文件里做小范围修改，不要把逻辑拆散到无关 Prefab 中。
-- 如果新增 Prefab，要同时更新 `scripts/prefabs/` 下的脚本文件和 `modmain.lua` 里的 `PrefabFiles` 列表。
-- 如果新增 UI、肖像或物品栏贴图，保持 atlas 和 texture 文件继续放在现有 `images/` 目录布局里。
-- 如果修改动画行为，先确认真正的来源是 `animSource/`、某个 Prefab 的 `AnimState` 设置，还是 `tools/` 里的 Python 脚本，再决定改哪里，不要先动生成资源。
-
-## 游戏源码
-允许访问游戏源码, 位于 "C:\Saved Games\Steam\steamapps\common\Don't Starve Together\data\databundles\scripts> "
-DST-Arknights-ItemPackage 模组的源码位于 "C:\Users\Tohsa\projects\DST-ArknightsItemPackage" 同时根目录下有 AGENTS.md 文件, 该文件包含了 DST-Arknights-Mon3tr 工作区的说明和规范。
-允许访问其他项目源码, 必要时申请权限.
+- 修改技能、角色状态或装备后，检查 `modmain.lua` 的导入/Prefab 注册、动画 bank/build 名称、双语 PO 和工坊两份说明。
+- 修改动画或 FMOD 资源后，按 `DST-Arknights-AICoding` 的对应 skill 检查来源、生成物和清理范围；静态检查通过不等于已完成游戏内或联机验证。
