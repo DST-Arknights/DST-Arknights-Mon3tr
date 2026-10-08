@@ -56,7 +56,7 @@ A special weapon that Mon3tr starts with. Its durability represents its charge: 
 [b]Hunger and healing feed its power.[/b]
 While equipped, Reconstruction slowly consumes Hunger above 40 to charge itself up to 80%. Once it reaches this threshold, its wielder can receive Mon3tr's bouncing heals to charge it further toward full capacity.
 
-Bouncing heals also restore durability to [b]M3 Cocoon Armor[/b] worn by the healed unit. Even at full Health, healing can still charge both pieces of equipment. See the required Item Package mod's description for the armor's other effects.
+Bouncing heals also restore durability to [b]M3 Cocoon Armor[/b] worn by the healed unit. Even at full Health, healing can still charge both pieces of equipment. See the required "Arknights: Nexus" mod's description for the armor's other effects.
 
 If Reconstruction is equipped when Meltdown begins, a small amount of its charge is consumed to further increase attack power for that transformation. Stay well fed before a fight and keep healing during combat to bring out more of its power.
 
@@ -70,7 +70,7 @@ Earn experience by defeating enemies and participating in boss fights, gradually
 [b]Elite 1:[/b] Unlock Overload and Tactical Synergy, and improve Hyperpressurized Link.
 [b]Elite 2:[/b] Unlock Meltdown and further improve the first two skills and Tactical Synergy.
 
-Promotion recipes depend on the Item Package mod's material drop settings. If Arknights material drops are disabled, the recipes use vanilla Don't Starve materials.
+Promotion recipes depend on the "Arknights: Nexus" mod's material drop settings. If Arknights material drops are disabled, the recipes use vanilla Don't Starve materials.
 
 [hr][/hr]
 
