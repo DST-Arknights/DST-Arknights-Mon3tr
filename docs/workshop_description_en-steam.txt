@@ -1,76 +1,105 @@
-[b]“Destroy, and heal.”[/b]
+[h1]Mon3tr[/h1]
+[i]“Destroy, and heal.”[/i]
 
-Mon3tr, the operator from Arknights, enters the Constant. Wield Reconstruction against your enemies and support your allies with bouncing heals. When it is time to break through, leap into the enemy ranks in Meltdown form.
+The Arknights operator [b]Mon3tr[/b] enters the Constant. Wield Reconstruction against your enemies, protect your allies with bouncing heals, and leap into the enemy ranks in Meltdown form when it matters most.
 
-[b]Requires subscribing to and enabling [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]Arknights: Nexus[/url].[/b]
+[b]Melee damage · Bouncing heals · Meltdown assault[/b]
+
+[b]Before playing, subscribe to and enable the required mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]Arknights: Nexus[/url].[/b]
 
 [hr][/hr]
 
-[h2]Basic Information[/h2]
+[h2]Character Overview[/h2]
 
-[b]Starting Stats:[/b] Health 150 · Hunger 150 · Sanity 200
-[b]Starting Item:[/b] Reconstruction
+[table noborder=1 equalcells=1]
+[tr][td][b]Health[/b][/td][td][b]Hunger[/b][/td][td][b]Sanity[/b][/td][/tr]
+[tr][td]150[/td][td]150[/td][td]200[/td][/tr]
+[/table]
 
-Mon3tr combines melee damage with healing support. Elite promotions expand this toolkit from automatic healing to sustained support and Meltdown assaults, offering more ways to approach a fight.
+[b]Starting Equipment:[/b] Reconstruction
+
+Build Skill Points in combat to combine attacks with healing. Elite promotions gradually unlock sustained support and Meltdown assaults, letting you care for your allies while fighting on the front line.
 
 [hr][/hr]
 
 [h2]Combat Skills[/h2]
 
-Successful attacks build Skill Points. Hyperpressurized Link activates automatically, while Overload and Meltdown are activated manually.
+Successful attacks build Skill Points. Elite promotions unlock new ways to fight.
+
+[table noborder=1]
+[tr][td][b]Skill[/b][/td][td][b]Unlock · Activation[/b][/td][td][b]Main Effect[/b][/td][/tr]
+[tr][td]Hyperpressurized Link[/td][td]Initial · Automatic[/td][td]Attacks trigger bouncing heals[/td][/tr]
+[tr][td]Overload[/td][td]Elite 1 · Manual[/td][td]Repeated heals, stronger synergy[/td][/tr]
+[tr][td]Meltdown[/td][td]Elite 2 · Manual targeting[/td][td]Leaping assault, area true damage[/td][/tr]
+[/table]
 
 [b]Bouncing Heals and Tactical Synergy[/b]
-Hyperpressurized Link and Overload provide bouncing heals for Mon3tr and nearby allies. Healing prioritizes targets with the lowest Health percentage, then jumps to other targets, with each subsequent bounce restoring less Health.
-
-From Elite 1 onward, bouncing heals also trigger [b]Tactical Synergy[/b], granting healed units a brief attack speed boost.
+[list]
+[*][b]Bouncing Heals:[/b] Prioritize targets with the lowest Health percentage, then jump to other allies. Each subsequent bounce restores less Health.
+[*][b]Tactical Synergy:[/b] From Elite 1 onward, bouncing heals grant healed units a brief attack speed boost.
+[/list]
 
 [h3]Stratagem: Hyperpressurized Link[/h3]
 [b]Available from the start · Automatic activation[/b]
 
-Once enough Skill Points have been accumulated, the next attack hit triggers a bouncing heal. Stay in the fight to provide periodic healing for yourself and your allies.
+Once enough Skill Points have been accumulated, the next attack hit triggers a [b]bouncing heal[/b]. Stay in the fight to provide periodic healing for yourself and nearby allies.
 
 [h3]Stratagem: Overload[/h3]
 [b]Unlocked at Elite 1 · Manual activation[/b]
 
-For a period after activation, every attack hit triggers a bouncing heal and strengthens the attack speed bonus granted by Tactical Synergy.
+For a period after activation, [b]every attack hit[/b] triggers a bouncing heal and strengthens the attack speed bonus granted by Tactical Synergy.
 
-Stacks with Hyperpressurized Link for stronger healing, helping your team handle prolonged fights and larger groups of enemies.
+[b]Stacks with Hyperpressurized Link[/b] for stronger healing, helping your team handle prolonged fights.
 
 [h3]Stratagem: Meltdown[/h3]
-[b]Unlocked at Elite 2 · Manual activation with a selected landing point[/b]
+[b]Unlocked at Elite 2 · Manual activation · Select a landing point[/b]
 
-Leap to the selected location, strike nearby enemies on landing, and unequip the hand slot to enter Meltdown form. Handheld equipment cannot be used while the skill is active.
+Leap to the selected location, strike nearby enemies on landing, and unequip your handheld item to enter [b]Meltdown form[/b].
 
-Meltdown form greatly increases maximum Health and boosts attack damage, attack speed, and attack range. Melee attacks deal [b]True damage to enemies in an area[/b]. While transformed, Health drains continuously, but each hit restores Health equal to 100% of Mon3tr's base attack power, making continued attacks essential to sustaining the assault.
+[list]
+[*][b]Enhanced Form:[/b] Greatly increases maximum Health and boosts damage, attack speed, and attack range.
+[*][b]Area True Damage:[/b] Melee attacks deal true damage to surrounding enemies.
+[*][b]Fight to Survive:[/b] Health drains continuously, while successful attacks restore Health based on Mon3tr's base attack power.
+[/list]
 
-When the skill ends or Mon3tr is close to death, Mon3tr returns near the starting point. There is a brief period of protection against death afterwards, so watch your remaining Health and heal promptly. [b]Meltdown cannot be used while riding.[/b]
+When the skill ends or Mon3tr is close to death, Mon3tr returns near the starting point. A brief period of [b]protection against death[/b] follows, so watch your remaining Health and heal promptly.
+
+[b]Restrictions:[/b] Cannot be activated while riding. Handheld equipment and riding are unavailable during Meltdown.
 
 [hr][/hr]
 
 [h2]Equipment and Charging[/h2]
 
-[b]Reconstruction[/b]
+[h3]Reconstruction[/h3]
 
-A special weapon that Mon3tr starts with. Its durability represents its charge: more charge means stronger attacks, and its glow changes with its charge level. When wielded by Mon3tr, it deals [b]True damage[/b]. Normal attacks do not consume charge.
+Mon3tr's starting weapon. [b]More charge means stronger attacks[/b], and the blade's glow changes with its charge level. Durability represents its charge; normal attacks do not consume charge. When wielded by Mon3tr, it deals [b]true damage[/b].
 
-[b]Hunger and healing feed its power.[/b]
-While equipped, Reconstruction slowly consumes Hunger above 40 to charge itself up to 80%. Once it reaches this threshold, its wielder can receive Mon3tr's bouncing heals to charge it further toward full capacity.
+[list]
+[*][b]Hunger Charging:[/b] While equipped, slowly consumes Hunger when it is above 40 to charge the weapon up to 80%.
+[*][b]Healing Charging:[/b] Once the weapon reaches 80%, its wielder can receive Mon3tr's bouncing heals to charge it further toward full capacity.
+[*][b]Meltdown Boost:[/b] If Reconstruction is equipped when Meltdown begins, a small amount of charge is consumed to further increase attack power for that transformation.
+[/list]
 
-Bouncing heals also restore durability to [b]M3 Cocoon Armor[/b] worn by the healed unit. Even at full Health, healing can still charge both pieces of equipment. See the required "Arknights: Nexus" mod's description for the armor's other effects.
+Stay well fed before a fight and keep healing during combat to build Reconstruction's power.
 
-If Reconstruction is equipped when Meltdown begins, a small amount of its charge is consumed to further increase attack power for that transformation. Stay well fed before a fight and keep healing during combat to bring out more of its power.
+[h3]M3 Cocoon Armor[/h3]
+
+Bouncing heals also [b]restore durability to M3 Cocoon Armor[/b] worn by the healed unit, keeping equipment in good condition as allies recover.
+
+See the required Arknights: Nexus mod's description for the armor's other effects.
 
 [hr][/hr]
 
 [h2]Leveling and Elite Promotion[/h2]
 
-Earn experience by defeating enemies and participating in boss fights, gradually increasing Health and base attack power. Once you reach the current stage's level cap, spend the required materials in the crafting menu to promote and begin the next stage of growth.
+Earn experience by defeating enemies and participating in boss fights, gradually increasing Health and base attack power. Once you reach the current stage's level cap, spend materials in the crafting menu to promote and begin the next stage of growth.
 
-[b]Initial Stage:[/b] Use Hyperpressurized Link.
-[b]Elite 1:[/b] Unlock Overload and Tactical Synergy, and improve Hyperpressurized Link.
-[b]Elite 2:[/b] Unlock Meltdown and further improve the first two skills and Tactical Synergy.
-
-Promotion recipes depend on the "Arknights: Nexus" mod's material drop settings. If Arknights material drops are disabled, the recipes use vanilla Don't Starve materials.
+[table noborder=1]
+[tr][td][b]Stage[/b][/td][td][b]New Abilities[/b][/td][td][b]Growth Focus[/b][/td][/tr]
+[tr][td]Initial[/td][td]Hyperpressurized Link[/td][td]Automatic healing in combat[/td][/tr]
+[tr][td]Elite 1[/td][td]Overload, Tactical Synergy[/td][td]Improved Hyperpressurized Link[/td][/tr]
+[tr][td]Elite 2[/td][td]Meltdown[/td][td]Improved first two skills and synergy[/td][/tr]
+[/table]
 
 [hr][/hr]
 
@@ -78,5 +107,5 @@ Promotion recipes depend on the "Arknights: Nexus" mod's material drop settings.
 
 Bug reports and suggestions are welcome.
 
-[b]Issue:[/b] [url=https://github.com/TohsakaKuro/DST-Arknights-Mon3tr/issues]GitHub Issues[/url]
+[b]Issue Reports:[/b] [url=https://github.com/TohsakaKuro/DST-Arknights-Mon3tr/issues]GitHub Issues[/url]
 [b]Email:[/b] tohsakakuro@outlook.com
