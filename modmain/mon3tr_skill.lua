@@ -407,8 +407,9 @@ local function InstallSkill3Interface(skill)
     local params = self:GetLevelParams()
     -- 仅本次范围攻击使用固定伤害，避免叠加普攻倍率或影响回调中的其他攻击。
     local combat = setmetatable({
-      CalcDamage = function(_, target)
-        return target:HasTag("alwaysblock") and 0 or params.landing_damage
+      CalcDamage = function(combat, target)
+        if target:HasTag("alwaysblock") then return 0 end
+        return combat:ConvertToTrueDamage(params.landing_damage)
       end,
     }, { __index = self.inst.components.combat })
     combat:DoAreaAttack(self.inst, params.landing_range)
